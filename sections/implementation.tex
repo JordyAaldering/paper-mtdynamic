@@ -1,0 +1,97 @@
+\section{Energy-Aware Dynamic Adaptation}\label{sec:implementation}
+In Section~\ref{sec:observations} we determine a multitude of running conditions that affect the
+selection of a thread-count for maximal energy-efficiency. Given the multitude of effects, a static
+cost-model-based approach seems infeasible. A profiling-based approach might provide better data but
+would incur a significant energy overhead. Consequently, we look for a solution that avoids the need
+for manual tuning by dynamically adapting to runtime changes.
+
+The overall idea is based on the observation that data-parallel codes typically perform several
+repetitions of the same parallel computation. This behaviour allows dynamic adaptation to tune the
+parallelism between such repetitions~\cite{sac-mtdynamic}. Our adaptation algorithm monitors changes
+in the energy consumption from one repetition to the next, and periodically adjusts the recommended
+thread-count to find the thread-count with the lowest energy consumption. Based on measured changes
+in energy consumption, using meters built in to the processor, the algorithm determines whether to
+increase or decrease the thread count for the next iteration, and by what amount. The hypothesis is
+that with this approach, we can adapt the thread-count during runtime in correspondence to changes
+in energy consumption, converging to a (local) optimum for energy-efficiency.
+
+The algorithm recomputes the recommended thread-count at a fixed interval; waiting for a fixed
+amount of energy measurements to arrive. Each of these energy measurements is the energy consumed
+during a single iteration of the parallel region, measured using RAPL
+(Section~\ref{sec:defining-energy}). The frequency is configurable, but we find for our benchmarks
+that a frequency of ten iterations per thread-count adjustment strikes a balance between a high
+adaptation speed whilst also being resilient against noise such as short-running background tasks
+and operating system overhead. The algorithm uses two variables for steering the thread-count of an
+application: a step direction, and a step size. The step direction describes whether the number of
+threads will be increased or decreased, corresponding to a value of $1$ or $-1$. The step size gives
+the amount of threads that will be added or removed from the current thread-count, respectively.
+
+When the median energy consumption of an iteration differs more than a factor $\alpha$ compared to
+the energy consumption of the previous iteration, we hypothesize that there is likely a change in
+workload behaviour or system configuration. To quickly converge to the new optimal thread-count, the
+step size is reset to half the number of maximum threads. For our benchmarks we observe that a value
+of $0.5$ for $\alpha$ works well. Otherwise, if there was an increase in energy consumption that is
+less than factor $\alpha$, this means that the previous iteration was more energy-efficient. We
+predict that the optimal thread-count is somewhere in between the current thread-count and the
+previous thread-count. Therefore, the step direction is inverted, and the current step size is
+halved.
+
+As we observe in Section~\ref{sec:observations}, changing the thread-count by even a single thread
+can have a significant negative impact on the energy consumption of a program. In an attempt to
+minimize this overhead, alongside the intrinsic scheduling overhead for making changes to the
+thread-count, we aim to settle into a fixed thread-count when we are close to the (local) optimum.
+To this end we use a real-valued step size that nears zero as we get close to this optimum, as
+opposed to a positive integer step size that always results in a change to the thread-count. Whereas
+typically the step size is halved in each iteration, as it reaches zero we gradually decrease it by
+a lower amount, ensuring that changes to the thread-count do still occur occasionally. This change
+to the step size is defined by a function $\Delta t\, /\, (\Delta t + \beta)$, where a lower value
+for $\beta$ results in smaller changes to the step size. For our benchmarks we find that a value of
+$0.85$ for $\beta$ works well.
+
+Eventually the step size reaches zero, and the thread-count will stagnate. In an attempt to escape
+potential local optima, the step size is reset to half the maximum number of threads when it becomes
+less than $\gamma$. The lower the value of $\gamma$, the more iterations are required until the step
+size is reset. Given our choice for $\beta$, a value of $0.155$ for $\gamma$ works well for our
+benchmarks.
+
+A formal definition of this algorithm is described in Algorithm~\ref{alg:controller}.
+
+\begin{algorithm}[!ht]
+    \begin{algorithmic}[1]
+            \State $\hat{d} \gets -1$
+            \State $\Delta t \gets m_t\, /\, 2$
+            \State $E_{old} \gets 0$
+            \Loop
+                \State $S \gets$ Wait for samples
+                \State $E_{new} \gets median(S)$
+                \If{$E_{new}\, /\, E_{old} < (1 - \alpha)\, \vee\, E_{new}\, /\, E_{old} > (1 + \alpha)$}
+                    \State $\hat{d} \gets sign(m_t - 2 n_t)$
+                    \State $\Delta t \gets m_t\, /\, 2$
+                \Else
+                    \If{$E_{new} > E_{old}$}
+                        \State $\hat{d} \gets -\hat{d}$
+                    \EndIf
+                    \If{$\Delta t > \gamma$}
+                        \State $\Delta t \gets max(\Delta t\, /\, 2,\, \Delta t\, /\, (\Delta t + \beta))$
+                    \Else
+                        \State $\hat{d} \gets sign(m_t - 2 n_t)$
+                        \State $\Delta t \gets m_t\, /\, 2$
+                    \EndIf
+                \EndIf
+                \State $E_{old} \gets E_{new}$
+                \State $n_t \gets n_t + \hat{d} \cdot \Delta t$
+                \State $n_t \gets max(1,\, min(m_t,\, n_t))$
+            \EndLoop
+    \end{algorithmic}%
+    \caption{Algorithm for repeatedly updating the thread-count $n_t$ based on energy measurements
+    $S$, using step direction $\hat{d}$ and step size $\Delta t$.}
+    \label{alg:controller}
+\end{algorithm}
+
+A limitation of this approach are its manually tuned variables, which may require reconfiguration in
+different contexts. The main challenge arises from variations in energy-efficiency across hardware,
+and run-to-run fluctuations due to input-dependent behaviour and changes in the software
+environment. While control theory~\cite{control-theory} appears promising, it is not easily
+applicable to discrete values like thread-count, as it is designed for continuous systems. We
+believe genetic algorithms may be more suitable, which we
+plan to explore in future work.

@@ -1,0 +1,53 @@
+\section{Introduction}
+The importance of software sustainability has grown rapidly in recent years, alongside an increasing
+awareness of environmental concerns. From mobile applications to data centres, minimizing the energy
+consumption of software has become essential for mitigating environmental impact, increasing battery
+life, and reducing operational costs. Traditional software systems often focus on maximizing runtime
+performance without adequately considering energy consumption. However, as sustainability becomes a
+priority, there is a growing need for approaches that balance runtime performance and
+energy-efficiency.
+
+The current landscape of computing hardware is characterized by its heterogeneity, with a shift
+towards multicore and many-core systems. High-perfor\-mance computing applications typically aim to
+fully utilize all available resources on these systems, with the goal of maximizing runtime
+performance. Determining efficient resource allocation for optimizing performance -- be it runtime
+or energy-efficiency -- depends not only on an algorithm's implementation, but also on input data
+size, hardware characteristics, cache utilization, and system-specific configurations such as thread
+pinning. This makes static approaches for determining resource allocation increasingly difficult, as
+they fail to account for variations in hardware capabilities~\cite{heterogeneous-systems}.
+Furthermore, it has been shown that optimizing for runtime is not always equivalent to optimizing
+for energy-efficiency, and that optimizing runtime can have a negative effect on energy
+consumption~\cite{compiler-energy-android,compiler-energy-differences}.
+
+A key candidate for improving the energy-efficiency through more efficient resource allocation is
+the thread management of an application. Traditionally, thread management in software systems has
+focused primarily on performance metrics such as execution time and operations per second. A notable
+approach in the context of the Single assignment C (SaC) language uses a dynamic adaptation
+algorithm that adjusts the thread-count of a program by observing changes in runtime
+metrics~\cite{sac-mtdynamic}. This technique enables SaC applications to adapt to varying
+workloads and resource availability, improving runtime performance by efficiently utilizing
+computational resources. This method optimizes for runtime performance, but does not directly
+address energy consumption.
+
+We present a method that extends existing runtime adaptation techniques by incorporating energy
+consumption as the primary factor in decision-making. By dynamically adjusting the number of threads
+based on real-time energy consumption metrics, we show that it is possible to achieve a more
+sustainable balance between runtime performance and energy-efficiency. Functional languages are an
+especially suitable target for this dynamic adaptation algorithm, as their side-effect-free nature
+and strong semantic guarantees allow for easier code generation and straightforward scalability of
+the parallelism of programs.
+
+Our contributions are:
+\begin{itemize}
+    \item A static analysis of data-parallel programs that investigates the relation between the
+    level of parallelism and overall energy consumption. (Section~\ref{sec:observations})
+    \item A dynamic adaptation algorithm that aims to minimize energy consumption of data-parallel
+    programs at runtime through external control. (Section~\ref{sec:implementation})
+    \item An implementation of a thread-steering mechanism in the data-parallel functional language
+    SaC, based on this adaptation algorithm. (Section~\ref{sec:implementation-sac})
+    \item An evaluation of how close the adaptation algorithm comes to the energy-efficiency of a
+    theoretical optimum. (Section~\ref{sec:evalation-adaptation} and \ref{sec:evalation-oracle})
+    \item An evaluation of the energy-efficiency of the adaptation algorithm compared a
+    runtime-based approach and static approaches. (Section~\ref{sec:evalation-runtime} and
+    \ref{sec:evalation-static})
+\end{itemize}

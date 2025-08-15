@@ -1,0 +1,81 @@
+\section{Related Work}
+
+\paragraph{Dynamic adaptation algorithms.}
+Besides the runtime-based dynamic adaptation algorithm\cite{sac-mtdynamic}, there are more
+approaches that steer the resource allocation of a system through dynamic control, in an attempt to
+improve runtime performance.
+
+Grand Central Dispatch (GCD) is a technology developed by Apple that aids developers in writing
+parallel
+programs~\cite{grand-central-dispatch-queues,grand-central-dispatch2,grand-central-dispatch}. GCD is
+integrated into the host operating system and provides an integrated approach for thread management,
+shifting this load from the developer to the scheduler. However, GCD still requires some manual
+instrumentation from developers. They must define blocks of code that are dispatched to GCD
+synchronously or asynchronously, using one of several types of waiting queues. Parallel Dispatch
+Queues (PDQ) are a similar programming abstraction~\cite{dispatch-queues}. By synchronizing messages
+in a queue, it aims to reduce the overhead caused by acquiring and releasing synchronization
+primitives, as well as preventing busy waiting within handlers. These approaches do not consider
+energy-efficiency, and only optimize for runtime performance.
+
+Related is Dynamic Voltage Frequency Scaling (DVFS). Instead of trying to increase energy-efficiency
+or runtime performance by instrumenting the software, this approach aims to instrument the hardware
+by scaling the voltage supplied to the CPU. Dynamic programming approaches have been applied to
+further improve the effectiveness of DVFS~\cite{dvfs-dynamic-programming}.
+
+\paragraph{Profile-based optimization.}
+Profile-based optimizations use the results of profiling runs to select an optimal implementation of
+an algorithm for the given input or hardware configuration. A prominent example of this is FFTW3,
+which selects one of many discrete Fourier transformation implementations through
+profiling~\cite{fftw3}. They achieve this through the use of a special-purpose compiler, that
+generates optimized code for the given hardware in a planning phase. It would be interesting to
+investigate whether similar results can be obtained by optimizing for energy-efficiency instead.
+
+Profile-based optimization of virtual machine scheduling is a popular avenue of research in the
+context of data-centres~\cite{profile-based1,profile-based2,profile-based3,profile-based4}. These
+approaches focus on the development of resource allocation policies and scheduling algorithms that
+aim to decrease the carbon footprint of data-centres without compromising on the required quality of
+service.
+
+\paragraph{Static methods for optimizing energy.}
+Although there exists a myriad of compiler optimizations that aim to minimize the runtime of
+programs, not many optimizations exist that aim to specifically reduce energy
+consumption~\cite{compiler-energy-differences}. Pallister et~al. have provided several optimizations
+that aim to reduce the energy consumption of programs, in the context of embedded
+devices~\cite{compiler-energy-flash,compiler-energy-methods}. As have we, they have found that for
+optimal energy-efficiency gains a vertical integration process that exploits hardware-specific
+energy characteristics is needed, to bridge the gap between hardware and software.
+
+Bangash et~al. have investigated byte-code transformations in the context of Android applications,
+determining whether certain (combinations of) transformations lead to in increase or decrease in
+energy consumption~\cite{compiler-energy-android}. They found that certain combinations of byte-code
+transformations can actually increase energy consumption, whereas choosing the right combination of
+transformation can lead to a reduction of up to $11\%$ in energy consumption.
+
+\paragraph{Energy visualization \& analysis.}
+One of the key requirements in allowing developers to increase the energy-efficiency of their
+software is the ability to visualize and analyse the energy consumption of their
+code~\cite{van2023organizational}. There exist semantics for programming languages that can
+calculate the energy consumption of their programs, and allow for calculation of break even points
+of algorithms~\cite{symbolic-dependent-types,symbolic-dependent-types2,phdBernard}. However, making
+these semantics work for a full language is hard~\cite{energy-analysis}.
+
+Another approach uses model checking to detecting energy bugs and hotspots in control
+software~\cite{symbolic-energy-bugs}. The control software targetted with this model does have key
+interaction between software and hardware made explicit in the source code This is not the case for
+our target domain, in which all interactions are implicit. This makes using model checking harder.
+Using the same explicit interaction, energy consumption graphs can be generated next to control
+software source code inside an IDE~\cite{symbolic-skylines}. Although it allows for near instant
+feedback to programmers, which is great for improving the code, it does not fit our target domain.
+
+\paragraph{Energy-optimizing strategies.}
+There is a handful of programming patterns that are known to improve the energy-efficiency of
+programs. These include applica\-tion-level techniques such as caching, buffering, and batching, but
+also system-wide techniques such as retention policies and data compression. The effectiveness and
+adoption of such techniques have been previously
+investigated~\cite{strategies-hpc,strategies-industry}.
+
+Another prominent example of a well-known pattern for reducing energy consumption is load balancing.
+Multiple approaches exist, however these make generalized assumptions about the energy-efficiency of
+the hardware. Kistowski et~al. have compared a variety of load distribution strategies, and propose
+a new strategy that reduces a system's energy consumption even
+further~\cite{strategies-load-distribution}.

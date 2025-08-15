@@ -1,0 +1,22 @@
+\begin{abstract}
+In recent years the energy-efficiency of software has become a key focus for both researchers and
+software developers, aiming to reduce greenhouse-gas emissions and operational costs. Despite this
+growing awareness, developers still lack effective strategies to improve the energy-efficiency of
+their programs beyond the well-established approaches that optimize for runtime performance. In this
+paper we present a dynamic adaptation algorithm that uses energy consumption feedback to optimize
+the energy-efficiency of data-parallel applications, by steering the level of parallelism during
+runtime through external control. This approach is especially suited to functional languages, whose
+side-effect-free nature and strong semantic guarantees allow for easier code generation and
+straightforward scalability of the parallelism of programs.
+
+Through a series of experiments we evaluate the effectiveness of our approach. We measure how well
+the adaptation algorithm adapts to runtime changes, and we evaluate its effectiveness compared to a
+hypothesized oracle that knows the optimal level of parallelism, as well as a
+runtime-optimising-based approach. We show that in a fixed-workload scenario we approach the
+theoretical best energy-efficiency, and that in changing workload scenarios the adaptation algorithm
+converges towards an optimal level of parallelism that minimizes
+energy consumption.
+
+\keywords{Dynamic Adaptation, Runtime Systems, Energy-Efficiency, Sustainability,
+High-Performance Computing, Parallel Programming}
+\end{abstract}

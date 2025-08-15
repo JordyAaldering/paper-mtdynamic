@@ -1,0 +1,64 @@
+\section{Single assignment C}\label{sac}
+Single assignment C (SaC) is a functional array language that resembles the imperative syntax of
+languages such as C, whilst remaining side-effect-free~\cite{sac1,sac2}. It aims to generate
+high-performance parallel code for a wide range of multicore and many-core architectures from a
+single source code.
+
+One of the key design choices that makes this possible is the use of a single language construct for
+all array operations, named a tensor comprehension~\cite{sac-tensor}. These tensor comprehensions
+are side-effect-free mappings from index spaces to element values, based on the set builder
+notation.
+
+Take for example the following tensor comprehension:
+\begin{verbatim}
+res = { iv -> arr[iv] + 1 | [0,0] <= iv < [9,9] };
+\end{verbatim}
+
+It constitutes an index vector \verb|iv| that ranges over the index set with lower bound
+\verb|[0,0]| and upper bound \verb|[9,9]|. If the lower or upper bound can be inferred from the
+usage of \verb|iv| in the inner expression, they may be left out. In the example, the upper bound
+would be inferred as the shape of \verb|arr|. For each index vector in this range, the result is a
+selection into the array \verb|arr| incremented by one.
+
+All array types in SaC consist of an element type followed by a shape specification in square
+brackets. In simple cases, such shape specifications are lists of numbers describing the length of
+each dimension of the array. To express relations between shape components, these shape lengths can
+be replaced by variables, where identical variable names require identical lengths in the
+corresponding positions. For example, an integer vector of length $100$ can be defined as
+\verb|int[100]|, and a square integer matrix of size $n \times n$ can be referred to as
+\verb|int[n,n]|. A multi-dimensional array of doubles with rank $d$ and shape vector $shp$ can be
+described by \verb|double[d:shp]|. This notation is referred to as type
+patterns~\cite{sac-typepattern}. It allows not only to express constraints within shapes but also
+between different function arguments and return types. Take for example the shape constraints of a
+matrix multiplication. It requires that the multiplied matrices are of shapes $u \times v$ and $v
+\times w$, resulting in a $u \times w$ matrix.
+
+This can be expressed as:
+\begin{verbatim}
+double[u,w] matmul(double[u,v] a, double[v,w] b)
+\end{verbatim}
+
+Furthermore, shape variables such as \verb|u|, \verb|v|, and \verb|w| can be used in function bodies
+as if they are user-defined variables. In combination with variable-rank type patterns, this allows
+for the embeddings of complicated shape expressions within type patterns, simplifying the function
+bodies.
+
+\subsection{Parallelism in Single assignment C}\label{sac-par}
+The SaC compiler is able to generate parallel code for a range of parallel architectures,
+including multicore machines~\cite{sac-shared}, GPUs~\cite{sac-gpu,sac-gpu2}, and
+clusters~\cite{sac-mpi}. In this paper, we extend the work on code generation for multicore
+machines.
+
+Before the actual generation of multithreaded code, the high-level optimization phase of the
+compiler extensively fuses tensor comprehensions to increase the granularity of parallelism and to
+improve the locality of code~\cite{sac1}. The multicore back-end then generates code to execute all
+top-level tensor comprehensions of sufficiently large size in parallel~\cite{sac-shared}. Each of
+these regions is executed in a fork-join style of bulk synchronous computing. To avoid the overhead
+of thread creation and termination for each such parallel region, threads are created only once upon
+program startup and kept active throughout the execution.
+
+We refer to such a set of threads as \textit{bees} in a \textit{bee hive}. One designated thread,
+the \textit{queen bee}, executes the entire program including the sequential sections, and
+coordinates all the other bees. The other bees wait until the start of a parallel section is
+signalled to them by the queen, and they return to the waiting state thereafter. More details on the
+multithreaded back-end can be found in~\cite{sac-shared}.

@@ -1,0 +1,33 @@
+\section{Conclusion}
+We present a dynamic adaptation algorithm aimed at minimizing the energy consumption of
+data-parallel applications. It is based on the observation that data-parallel programs typically
+apply the same parallel operations in a repetitive fashion. This property allows for a dynamic
+feedback loop that reacts to changes in energy consumption from one repetition to the next. Our
+experiments show that such a non-intrusive method, in a functional context where scaling the level
+of parallelism is straightforward, can be very effective while requiring no in-depth program
+analysis, involving no programmer effort at all and causing negligible overhead. Looking at four
+different use cases with dynamically changing behaviour, we can see that our adaptation approach in
+most cases gets within 15\% of a manually generated, ideally adapting runtime. The only remarkable
+outlier is the case of matrix multiplication where the ideal case depends on the thread pinning
+strategy, which our adaptation algorithm fails to find. However, we also find that optimizing these
+cases is highly context-dependent and that slight variations in configuration or implementation can
+introduce significant changes to the energy consumption characteristics of a program.
+
+Furthermore, we observe that the dynamic approach yields energy improvements over static approaches.
+Depending on the number of threads chosen, the gains are up to 79\% for any reasonable choice, and
+up to 100\% if a poor decision is made. We also notice that in many cases our energy-optimising
+algorithm improves slightly over the runtime-optimising approach. This is reflected by our static
+analyses, which show that, while there is a correlation between overall runtime and energy use, the
+energy minima usually are reached before runtime minima when increasing the number of threads.
+Overall, we show that our method provides a feasible method for lowering the energy footprint of
+data-parallel applications solely based on automatic code instrumentation.
+
+Whilst our adaptation algorithm proves effective across a range of data-parallel workloads, future
+work could explore the capability of the algorithm to adapt to changes in runtime conditions caused
+by other processes running in the background. Furthermore, it would be interesting to investigate
+whether the same approach can be applied to switch between devices in a heterogeneous system, such
+as CPU and GPU implementation of an algorithm, or to switch between thread pinning strategies.
+Beyond the array based domain, there is potential for applying this approach in other contexts that
+handle a large amount of similar computational complexity. For example, by adjusting resources
+dynamically in response to workload demands, web-servers could decrease their energy consumption,
+potentially without compromising on responsiveness.

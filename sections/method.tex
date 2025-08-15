@@ -1,0 +1,40 @@
+\section{Defining ``energy consumption''}\label{sec:defining-energy}
+To quantify the energy-efficiency of a program, it is essential that we accurately define what we
+mean by its ``energy consumption''. Ideally we would isolate the total amount of energy consumed by
+the hardware to run one specific program, separating it from other sources of energy consumption
+such as operating system overhead, background tasks, and the baseline power required to keep the
+hardware operational. However, fully isolating the energy consumption of a single process remains a
+challenge.
+
+Currently, separating a program's energy consumption from that of other programs is only possible in
+certain environments. On Apple Silicon, for example, this is possible through the use of the
+\verb|task_info| API, which returns a per-process energy consumption value~\cite{firefox-profiling}.
+For Apple's Intel-based machines, the \verb|diagCall64| function can be used instead. On Linux-based
+operating systems, separating the energy consumption is theoretically possible by extending the
+scheduler statistics, however to our knowledge there is no implementation available. Although these
+methods provide potential solutions, they lack necessary documentation and would require specific
+hardware and elevated permissions, which go against our goal of making a broadly applicable
+adaptation algorithm. Furthermore, these methods still fail to exclude the baseline power required
+to keep the hardware operational, for which currently no solution exists.
+
+For the purposes of this study we define the energy consumption of a program as the total amount of
+energy consumed by the CPU throughout the entire runtime of that program, given that no other
+user-defined programs are running on that device. This implies that operating system overhead and
+baseline power required to keep the hardware operational are included in these measurements, as we
+cannot control or isolate these. We hypothesize that: if we succeed in improving the
+energy-efficiency of a program, this will result in a measurable decrease in total energy
+consumption across the runtime of that program.
+
+\subsection{Measuring energy consumption}
+Running Average Power Limit (RAPL) is a technology developed by Intel to measure and control the
+energy consumption of the CPU. It can be used to measure the total amount of energy consumed by the
+CPU throughout the runtime of a program. Although initially based on estimation models, thanks to
+improvements in hardware support, RAPL has evolved into a precise energy measurement tool. RAPL
+reports fine-grained and reliable energy consumption data across various CPU domains, such as the
+package, PSys, and DRAM~\cite{rapl}. RAPL operates using a running counter that tracks the
+cumulative energy consumed by each of these domains. The energy consumption in micro-Joules over a
+time interval is calculated as the difference in counter values at the start and end of that time
+period. RAPL is available on Intel CPUs since the Sandy Bridge architecture (2011), and AMD supports
+a similar feature starting with their Zen architecture (2017). In addition to its wide availability
+over the past decade, RAPL requires only slightly elevated privileges~\cite{rapl-security}, making
+it accessible on most systems.
