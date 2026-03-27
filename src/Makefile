@@ -1,4 +1,4 @@
-LOCAL=$(HOME)/.local
+LOCAL ?= $(HOME)/.local
 
 all: debug
 
