@@ -1,4 +1,3 @@
-use rand::Rng;
 use rayon::prelude::*;
 
 pub struct Matrix {
@@ -13,11 +12,8 @@ impl Matrix {
     }
 
     pub fn random(x: usize, y: usize) -> Self {
-        let mut rng = rand::thread_rng();
         let data = (0..y).map(|_| {
-            let mut row = vec![0.0; x];
-            rng.fill(row.as_mut_slice());
-            row
+            (0..x).map(|_| rand::random()).collect()
         }).collect();
         Self::new(data)
     }
@@ -35,23 +31,4 @@ impl Matrix {
 
         Matrix::new(res)
     }
-}
-
-pub fn threadpool(num_threads: usize) -> rayon::ThreadPool {
-    let cores = core_affinity::get_core_ids().unwrap();
-    rayon::ThreadPoolBuilder::new()
-        .num_threads(num_threads)
-        .start_handler(move |idx| {
-            assert!(core_affinity::set_for_current(cores[idx]));
-        })
-        .build()
-        .unwrap()
-}
-
-#[allow(unused)]
-pub fn stddev(xs: &Vec<f32>) -> f32 {
-    let n = xs.len() as f32;
-    let mean = xs.iter().sum::<f32>() / n;
-    let variance = xs.iter().map(|x| (x - mean).powi(2)).sum::<f32>() / n;
-    variance.sqrt()
 }

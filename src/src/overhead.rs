@@ -1,3 +1,5 @@
+//! TODO: No longer working, as it depends on old logic.
+
 use std::hint::black_box;
 
 use energy_bench::EnergyBenchBuilder;
