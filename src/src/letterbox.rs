@@ -63,7 +63,7 @@ impl Letterbox {
         self.stream.write_all(b"\n").unwrap();
     }
 
-    fn read<T: serde::de::DeserializeOwned>(&mut self, ) -> T {
+    fn read<T: serde::de::DeserializeOwned>(&mut self) -> T {
         let mut line = String::new();
         assert_ne!(self.reader.read_line(&mut line).unwrap(), 0);
         serde_json::from_str(line.trim_end()).unwrap()

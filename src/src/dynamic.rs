@@ -26,6 +26,7 @@ fn main() {
             let _ = pool.install(|| black_box(x.mul(&y)));
 
             let sample = stop_measurements(instant);
+            letterbox.end_signal(&sample);
 
             println!("{},{},{},{}", size, threads, sample.runtime, sample.energy);
         }

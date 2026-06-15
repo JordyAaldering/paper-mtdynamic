@@ -7,19 +7,19 @@ bin/ecodynamic:
 bin/matmul: sac/matmul.sac
 	sac2c -t mt_pth $< -o $@
 
-bin/matmul_mtd: src/matmul.sac
+bin/matmul_mtd: src/matmul_mtd.sac
 	$(SAC) -t mt_pth -mt_dynamic $< -o $@
 
 bin/nbody: sac/nbody.sac
 	sac2c -t mt_pth $< -o $@
 
-bin/nbody_mtd: sac/nbody.sac
+bin/nbody_mtd: sac/nbody_mtd.sac
 	sac2c -t mt_pth -mt_dynamic $< -o $@
 
 bin/stencil: sac/stencil.sac
 	sac2c -t mt_pth $< -o $@
 
-bin/stencil_mtd: sac/stencil.sac
+bin/stencil_mtd: sac/stencil_mtd.sac
 	sac2c -t mt_pth -mt_dynamic $< -o $@
 
 clean:
