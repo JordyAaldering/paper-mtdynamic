@@ -10,12 +10,12 @@
 
 cargo build --release --bin baseline
 
-mkdir -p ../res/cn125
+mkdir -p ../results/cn125
 
-echo "size,threads,runtime,energy" > ../res/cn125/rust.csv
+echo "size,threads,runtime,energy" > ../results/cn125/rust.csv
 
 for size in 500 1000 1500; do
     for threads in $(seq 16); do
-        RAYON_NUM_THREADS=$threads taskset -c 0-$(($threads-1)) ./target/release/baseline $size >> ../res/cn125/rust.csv
+        RAYON_NUM_THREADS=$threads taskset -c 0-$(($threads-1)) ./target/release/baseline $size >> ../results/cn125/rust.csv
     done
 done

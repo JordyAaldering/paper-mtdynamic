@@ -3,6 +3,7 @@ use std::{io::{BufRead, BufReader, Write}, os::unix::net::UnixStream, time::Inst
 use controller::*;
 use rapl_energy::Rapl;
 
+#[allow(unused)]
 pub fn threadpool(threads: usize) -> rayon::ThreadPool {
     rayon::ThreadPoolBuilder::new()
         .num_threads(threads)

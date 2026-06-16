@@ -10,12 +10,12 @@
 
 make bin/stencil
 
-mkdir -p ../res/cn125
+mkdir -p ../results/cn125
 
-echo "size,threads,runtime,energy" > ../res/cn125/stencil.csv
+echo "size,threads,runtime,energy" > ../results/cn125/stencil.csv
 
 for size in 10000 25000 40000; do
     for threads in $(seq 16); do
-        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/stencil $size >> ../res/cn125/stencil.csv
+        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/stencil $size >> ../results/cn125/stencil.csv
     done
 done

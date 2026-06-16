@@ -8,12 +8,15 @@ name = "baseline"
 path = "src/baseline.rs"
 
 [[bin]]
+name = "overhead"
+path = "src/overhead.rs"
+
+[[bin]]
 name = "dynamic"
 path = "src/dynamic.rs"
 
 [dependencies]
 controller = { git = "https://github.com/JordyAaldering/ecodynamic.git" }
-energy-bench = "0.2.5"
 rand = "0.10.1"
 rapl-energy = "0.2.2"
 rayon = "1.12.0"

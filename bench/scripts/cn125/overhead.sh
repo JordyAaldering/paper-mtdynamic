@@ -8,4 +8,10 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=overhead.out
 
-cargo run --release --bin overhead
+cargo build --release --bin overhead
+
+mkdir -p ../results/cn125
+
+echo "runtime,energy" > ../results/cn125/overhead.csv
+
+./target/release/overhead >> ../results/cn125/overhead.csv
