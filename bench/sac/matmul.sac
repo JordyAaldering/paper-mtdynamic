@@ -11,7 +11,7 @@ double[u,w] matmul(double[u,v] a, double[v,w] b)
     ControlFlow::touch();
 
     return { [i,j] -> sum(
-                { [k] -> a[i,k], * b[k,j] | [k] < [v] }
+                { [k] -> a[i,k] * b[k,j] | [k] < [v] }
             ) | [i,j] < [u,w] };
 }
 

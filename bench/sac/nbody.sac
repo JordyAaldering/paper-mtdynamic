@@ -51,8 +51,8 @@ int main()
     N = String::toi(CommandLine::argv(1));
 
     bodies = { [i] -> Body {
-            Vector3{ tod(i), tod(i), tod(i) },
-            Vector3{ },
+            Vector3d{ tod(i), tod(i), tod(i) },
+            Vector3d{ },
             tod(i)
         } | [i] < [N] };
 

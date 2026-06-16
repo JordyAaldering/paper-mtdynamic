@@ -53,18 +53,18 @@ int main()
     N3 = String::toi(CommandLine::argv(3));
 
     bodies1 = { [i] -> Body {
-            Vector3{ tod(i), tod(i), tod(i) },
-            Vector3{ },
+            Vector3d{ tod(i), tod(i), tod(i) },
+            Vector3d{ },
             tod(i)
         } | [i] < [N1] };
     bodies2 = { [i] -> Body {
-            Vector3{ tod(i), tod(i), tod(i) },
-            Vector3{ },
+            Vector3d{ tod(i), tod(i), tod(i) },
+            Vector3d{ },
             tod(i)
         } | [i] < [N2] };
     bodies3 = { [i] -> Body {
-            Vector3{ tod(i), tod(i), tod(i) },
-            Vector3{ },
+            Vector3d{ tod(i), tod(i), tod(i) },
+            Vector3d{ },
             tod(i)
         } | [i] < [N3] };
 

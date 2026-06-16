@@ -7,8 +7,8 @@ bin/ecodynamic:
 bin/matmul: sac/matmul.sac
 	sac2c -t mt_pth $< -o $@
 
-bin/matmul_mtd: src/matmul_mtd.sac
-	$(SAC) -t mt_pth -mt_dynamic $< -o $@
+bin/matmul_mtd: sac/matmul_mtd.sac
+	sac2c -t mt_pth -mt_dynamic $< -o $@
 
 bin/nbody: sac/nbody.sac
 	sac2c -t mt_pth $< -o $@
