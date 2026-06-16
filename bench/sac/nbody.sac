@@ -7,7 +7,7 @@ use StdIO: all;
 #define EPSILON 0x1p-53
 
 #ifndef ITER
-#define ITER 200
+#define ITER 30
 #endif
 
 struct Body {
@@ -51,13 +51,13 @@ int main()
     N = String::toi(CommandLine::argv(1));
 
     bodies = { [i] -> Body {
-            Vector3 { tod(i), tod(i), tod(i) },
-            Vector3 { tod(i), tod(i), tod(i) },
+            Vector3{ tod(i), tod(i), tod(i) },
+            Vector3{ },
             tod(i)
         } | [i] < [N] };
 
     // Warmup runs
-    for (i = 0; i < 10; i += 1) {
+    for (i = 0; i < 3; i += 1) {
         bodies = timestep(bodies, 0.01);
     }
 

@@ -21,9 +21,9 @@ mkdir -p ../results/cn125
 # Energy-based (delta) approach
 echo "size,threads,runtime,energy" > ../results/cn125/delta_matmul.csv
 ./bin/ecodynamic --once -w 3.08 delta
-SAC_PARALLEL=16 taskset -c 0-15 ./bin/matmul_mtd >> ../results/cn125/delta_matmul.csv
+SAC_PARALLEL=16 taskset -c 0-15 ./bin/matmul_mtd 500 1000 1500 >> ../results/cn125/delta_matmul.csv
 
 # Runtime-based (corridor) approach
 echo "size,threads,runtime,energy" > ../results/cn125/corridor_matmul.csv
 ./bin/ecodynamic --once -w 3.08 corridor
-SAC_PARALLEL=16 taskset -c 0-15 ./bin/matmul_mtd >> ../results/cn125/corridor_matmul.csv
+SAC_PARALLEL=16 taskset -c 0-15 ./bin/matmul_mtd 500 1000 1500 >> ../results/cn125/corridor_matmul.csv

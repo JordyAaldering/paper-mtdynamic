@@ -6,6 +6,8 @@ use std::time::Instant;
 
 use rapl_energy::Rapl;
 
+const ITER: usize = 30;
+
 const CYCLES: usize = 1_000_000;
 
 fn test(letterbox: &mut Letterbox) {
@@ -24,11 +26,11 @@ fn main() {
     let mut rapl = Rapl::new(false).unwrap();
 
     // Warmup runs
-    for _ in 0..10 {
+    for _ in 0..3 {
         test(&mut letterbox);
     }
 
-    for _ in 0..100 {
+    for _ in 0..ITER {
         rapl.reset();
         let instant = Instant::now();
 

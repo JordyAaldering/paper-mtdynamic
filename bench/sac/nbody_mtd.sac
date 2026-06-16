@@ -7,7 +7,7 @@ use StdIO: all;
 #define EPSILON 0x1p-53
 
 #ifndef ITER
-#define ITER 200
+#define ITER 250
 #endif
 
 struct Body {
@@ -48,22 +48,45 @@ struct Body[n] timestep(struct Body[n] bs, double dt)
 
 int main()
 {
-    bodies = { [i] -> Body {
-            Vector3 { tod(i), tod(i), tod(i) },
-            Vector3 { tod(i), tod(i), tod(i) },
+    N1 = String::toi(CommandLine::argv(1));
+    N2 = String::toi(CommandLine::argv(2));
+    N3 = String::toi(CommandLine::argv(3));
+
+    bodies1 = { [i] -> Body {
+            Vector3{ tod(i), tod(i), tod(i) },
+            Vector3{ },
             tod(i)
-        } | [i] < [N] };
+        } | [i] < [N1] };
+    bodies2 = { [i] -> Body {
+            Vector3{ tod(i), tod(i), tod(i) },
+            Vector3{ },
+            tod(i)
+        } | [i] < [N2] };
+    bodies3 = { [i] -> Body {
+            Vector3{ tod(i), tod(i), tod(i) },
+            Vector3{ },
+            tod(i)
+        } | [i] < [N3] };
 
     for (i = 0; i < ITER * 3; i += 1) {
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
-        bodies = timestep(bodies, 0.01);
+        if (i < ITER) {
+            n = N1;
+            bodies1 = timestep(bodies1, 0.01);
+        } else if (i < ITER * 2) {
+            n = N2;
+            bodies2 = timestep(bodies2, 0.01);
+        } else {
+            n = N3;
+            bodies3 = timestep(bodies3, 0.01);
+        }
 
         sec2, nsec2 = MTClock::gettime();
         energy_uj = Rapl::raplStop(0, rapl);
         threads = Rapl::numThreads();
-        printf("%d,%d,%g,%g\n", N, threads,
+        printf("%d,%d,%g,%g\n", n, threads,
             MTClock::timediff(sec1, nsec1, sec2, nsec2),
             Rapl::tod(energy_uj));
     }
