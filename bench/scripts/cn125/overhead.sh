@@ -15,5 +15,5 @@ mkdir -p res/cn125
 
 echo "runtime,energy" > res/cn125/overhead.csv
 
-./bin/ecodynamic --once -w 3.08 delta
+./bin/ecodynamic --once -w 3.08 delta --energy-preference 1
 ./target/release/overhead >> res/cn125/overhead.csv
