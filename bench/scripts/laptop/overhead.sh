@@ -2,8 +2,8 @@
 
 cargo build --release --bin overhead
 
-mkdir -p ../results/laptop
+mkdir -p res/laptop
 
-echo "runtime,energy" > ../results/laptop/overhead.csv
+echo "runtime,energy" > res/laptop/overhead.csv
 
-./target/release/overhead >> ../results/laptop/overhead.csv
+./target/release/overhead >> res/laptop/overhead.csv

@@ -10,14 +10,14 @@
 
 make bin/stencil_mtd
 
-mkdir -p ../results/cn125
+mkdir -p res/cn125
 
 # Energy-based (delta) approach
-echo "size,threads,runtime,energy" > ../results/cn125/delta_stencil.csv
+echo "size,threads,runtime,energy" > res/cn125/delta_stencil.csv
 ./bin/ecodynamic --once -w 3.08 delta
-SAC_PARALLEL=16 taskset -c 0-15 ./bin/stencil_mtd 10000 25000 40000 >> ../results/cn125/delta_stencil.csv
+SAC_PARALLEL=16 taskset -c 0-15 ./bin/stencil_mtd 10000 25000 40000 >> res/cn125/delta_stencil.csv
 
 # Runtime-based (corridor) approach
-echo "size,threads,runtime,energy" > ../results/cn125/corridor_stencil.csv
+echo "size,threads,runtime,energy" > res/cn125/corridor_stencil.csv
 ./bin/ecodynamic --once -w 3.08 corridor
-SAC_PARALLEL=16 taskset -c 0-15 ./bin/stencil_mtd 10000 25000 40000 >> ../results/cn125/corridor_stencil.csv
+SAC_PARALLEL=16 taskset -c 0-15 ./bin/stencil_mtd 10000 25000 40000 >> res/cn125/corridor_stencil.csv

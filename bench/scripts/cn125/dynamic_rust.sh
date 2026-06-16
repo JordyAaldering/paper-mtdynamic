@@ -10,14 +10,14 @@
 
 cargo build --release --bin dynamic
 
-mkdir -p ../results/cn125
+mkdir -p res/cn125
 
 # Energy-based (delta) approach
-echo "size,threads,runtime,energy" > ../results/cn125/delta_rust.csv
+echo "size,threads,runtime,energy" > res/cn125/delta_rust.csv
 ./bin/ecodynamic --once -w 3.08 delta
-RAYON_NUM_THREADS=16 taskset -c 0-15 ./target/release/dynamic 500 1000 1500 >> ../results/cn125/delta_rust.csv
+RAYON_NUM_THREADS=16 taskset -c 0-15 ./target/release/dynamic 500 1000 1500 >> res/cn125/delta_rust.csv
 
 # Runtime-based (corridor) approach
-echo "size,threads,runtime,energy" > ../results/cn125/corridor_rust.csv
+echo "size,threads,runtime,energy" > res/cn125/corridor_rust.csv
 ./bin/ecodynamic --once -w 3.08 corridor
-RAYON_NUM_THREADS=16 taskset -c 0-15 ./target/release/dynamic 500 1000 1500 >> ../results/cn125/corridor_rust.csv
+RAYON_NUM_THREADS=16 taskset -c 0-15 ./target/release/dynamic 500 1000 1500 >> res/cn125/corridor_rust.csv

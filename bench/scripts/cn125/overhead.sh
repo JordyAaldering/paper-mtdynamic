@@ -10,8 +10,8 @@
 
 cargo build --release --bin overhead
 
-mkdir -p ../results/cn125
+mkdir -p res/cn125
 
-echo "runtime,energy" > ../results/cn125/overhead.csv
+echo "runtime,energy" > res/cn125/overhead.csv
 
-./target/release/overhead >> ../results/cn125/overhead.csv
+./target/release/overhead >> res/cn125/overhead.csv
