@@ -15,7 +15,7 @@ fn main() {
     let n3: usize = args[3].parse().unwrap();
     let max_threads = rayon::max_num_threads();
 
-    let mut letterbox = Letterbox::new(max_threads);
+    let mut letterbox = Letterbox::new(max_threads as u16);
 
     for size in [n1, n2, n3] {
         let x = Matrix::random(size, size);

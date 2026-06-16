@@ -8,10 +8,12 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=overhead.out
 
+make bin/ecodynamic
 cargo build --release --bin overhead
 
 mkdir -p res/cn125
 
 echo "runtime,energy" > res/cn125/overhead.csv
 
+./bin/ecodynamic --once -w 3.08 delta
 ./target/release/overhead >> res/cn125/overhead.csv

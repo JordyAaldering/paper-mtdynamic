@@ -1,5 +1,6 @@
 #!/bin/sh
 
+make bin/ecodynamic
 make bin/matmul_mtd
 
 mkdir -p res/laptop

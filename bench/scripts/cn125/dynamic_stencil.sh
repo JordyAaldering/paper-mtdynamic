@@ -8,6 +8,7 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=dynamic_stencil.out
 
+make bin/ecodynamic
 make bin/stencil_mtd
 
 mkdir -p res/cn125

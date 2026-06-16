@@ -1,5 +1,6 @@
 #!/bin/sh
 
+make bin/ecodynamic
 cargo build --release --bin dynamic
 
 mkdir -p res/laptop

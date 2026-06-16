@@ -8,6 +8,7 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=dynamic_matmul.out
 
+make bin/ecodynamic
 make bin/matmul_mtd
 
 mkdir -p res/cn125

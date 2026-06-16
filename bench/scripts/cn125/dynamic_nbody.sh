@@ -8,6 +8,7 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=dynamic_nbody.out
 
+make bin/ecodynamic
 make bin/nbody_mtd
 
 mkdir -p res/cn125

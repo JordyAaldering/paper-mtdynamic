@@ -8,6 +8,7 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=dynamic_rust.out
 
+make bin/ecodynamic
 cargo build --release --bin dynamic
 
 mkdir -p res/cn125
