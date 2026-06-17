@@ -2,7 +2,7 @@ use Array: all;
 use StdIO: all;
 
 #ifndef ITER
-#define ITER 50
+#define ITER 30
 #endif
 
 noinline

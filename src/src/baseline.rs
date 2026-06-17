@@ -6,7 +6,7 @@ use std::{env, hint::black_box, time::Instant};
 
 use rapl_energy::Rapl;
 
-const ITER: usize = 50;
+const ITER: usize = 30;
 
 fn main() {
     let args: Vec<String> = env::args().collect();

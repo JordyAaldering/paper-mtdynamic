@@ -7,7 +7,7 @@ use StdIO: all;
 #define EPSILON 0x1p-53
 
 #ifndef ITER
-#define ITER 50
+#define ITER 30
 #endif
 
 struct Body {

@@ -29,6 +29,11 @@ fn plot(df: &DataFrame<Record>) -> TikzPicture {
 
 fn main() {
     let df = read_csv("cn125/matmul");
-    let doc = plot(&df);
+
+    let doc = plot(&df.clone().filter(|_, r| r.size == 500));
+    println!("{}", doc.render());
+    let doc = plot(&df.clone().filter(|_, r| r.size == 1000));
+    println!("{}", doc.render());
+    let doc = plot(&df.clone().filter(|_, r| r.size == 1500));
     println!("{}", doc.render());
 }
