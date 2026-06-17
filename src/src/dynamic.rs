@@ -4,7 +4,7 @@ mod matrix;
 use crate::letterbox::*;
 use crate::matrix::*;
 
-use std::hint::black_box;
+use std::{env, hint::black_box};
 
 const ITER: usize = 250;
 
@@ -13,9 +13,9 @@ fn main() {
     let n1: usize = args[1].parse().unwrap();
     let n2: usize = args[2].parse().unwrap();
     let n3: usize = args[3].parse().unwrap();
-    let max_threads = rayon::max_num_threads();
+    let max_threads: u16 = env::var("RAYON_NUM_THREADS").unwrap().parse().unwrap();
 
-    let mut letterbox = Letterbox::new(max_threads as u16);
+    let mut letterbox = Letterbox::new(max_threads);
 
     for size in [n1, n2, n3] {
         let x = Matrix::random(size, size);

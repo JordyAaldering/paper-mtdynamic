@@ -11,7 +11,7 @@ const ITER: usize = 30;
 fn main() {
     let args: Vec<String> = env::args().collect();
     let size: usize = args[1].parse().unwrap();
-    let threads = rayon::max_num_threads();
+    let threads: usize = env::var("RAYON_NUM_THREADS").unwrap().parse().unwrap();
 
     let x = Matrix::random(size, size);
     let y = Matrix::random(size, size);
