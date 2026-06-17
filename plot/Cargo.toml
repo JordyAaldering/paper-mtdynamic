@@ -1,0 +1,13 @@
+[package]
+name = "plot"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "baseline"
+path = "src/baseline.rs"
+
+[dependencies]
+csv = "1.4.0"
+epy = { git = "https://github.com/JordyAaldering/epy.git" }
+serde = { version = "1.0.228", features = ["derive"] }
