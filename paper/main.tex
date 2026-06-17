@@ -11,12 +11,25 @@
 
 \usepackage{pgfplots}
 \usetikzlibrary{patterns}
-\pgfplotsset{compat=newest}
+\pgfplotsset{
+  compat=newest,
+  every axis legend/.append style={font=\tiny},
+  legend image code/.code={
+    \path[#1] (0pt,0pt) -- (10pt,0pt) plot coordinates {(5pt,0pt)};
+  },
+  area legend/.append style={
+    legend image code/.code={
+      \draw[#1,draw=none] (0pt,-0.5ex) rectangle (10pt,0.5ex);
+    }
+  },
+}
+
 \definecolor{energycolor}{RGB}{2,158,115}
 \definecolor{runtimecolor}{RGB}{1,115,178}
 \definecolor{colorblind0}{RGB}{1,115,178}
 \definecolor{colorblind1}{RGB}{222,143,5}
 \definecolor{colorblind2}{RGB}{2,158,115}
+
 \newcommand{\epyfigurewidth}{\linewidth}
 \newcommand{\epyheightratio}{0.85}
 
@@ -446,6 +459,27 @@ decreases.
   Bars denote energy consumption, with corresponding values in the left y-axis.
   The line denotes runtime, corresponding to the right y-axis.}
   \label{fig:matmul}
+\end{figure*}
+
+\begin{figure*}
+  \tiny
+  \captionsetup[subfigure]{font=scriptsize,labelformat=empty}
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{500 $\times$ 500}
+    \input{img/cn125_matmul_500.tex}%
+  \end{subfigure}%
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{1000 $\times$ 1000}
+    \input{img/cn125_matmul_1000.tex}%
+  \end{subfigure}%
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{1500 $\times$ 1500}
+    \input{img/cn125_matmul_1500.tex}%
+  \end{subfigure}%
+  \caption{Average energy consumption and runtime of 30 naive matrix multiplications in SaC.
+  Bars denote energy consumption, with corresponding values in the left y-axis.
+  The line denotes runtime, corresponding to the right y-axis.}%
+  \label{fig:matmulnew}
 \end{figure*}
 
 \subsection{Matrix multiplication}

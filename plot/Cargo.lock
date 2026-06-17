@@ -119,7 +119,7 @@ dependencies = [
 [[package]]
 name = "epy"
 version = "0.1.0"
-source = "git+https://github.com/JordyAaldering/epy.git#ab9597e1a89b4876f5c5e51ec63a518fe488e9ea"
+source = "git+https://github.com/JordyAaldering/epy.git#fdadc92719d7947d2b4235b27100a3cf414f9ea9"
 dependencies = [
  "csv",
  "derive_builder",
