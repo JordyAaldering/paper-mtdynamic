@@ -5,6 +5,10 @@ use StdIO: all;
 #define ITER 250
 #endif
 
+specialize double[ 500, 500] matmul(double[ 500, 500] a, double[ 500, 500] b);
+specialize double[1000,1000] matmul(double[1000,1000] a, double[1000,1000] b);
+specialize double[1500,1500] matmul(double[1500,1500] a, double[1500,1500] b);
+
 noinline
 double[u,w] matmul(double[u,v] a, double[v,w] b)
 {

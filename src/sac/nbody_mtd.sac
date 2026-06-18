@@ -29,6 +29,10 @@ struct Vector3d acc(struct Body b, struct Body b2)
     return dir * (b2.mass / pow3(EPSILON + l2norm(dir)));
 }
 
+specialize struct Body[10000] timestep(struct Body[10000] bs, double dt);
+specialize struct Body[25000] timestep(struct Body[25000] bs, double dt);
+specialize struct Body[40000] timestep(struct Body[40000] bs, double dt);
+
 noinline
 struct Body[n] timestep(struct Body[n] bs, double dt)
 {

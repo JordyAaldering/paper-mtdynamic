@@ -5,16 +5,20 @@ use StdIO: all;
 #define ITER 30
 #endif
 
+specialize double[10000,10000] stencil(double[10000,10000] a, double[3,3] w);
+specialize double[25000,25000] stencil(double[25000,25000] a, double[3,3] w);
+specialize double[40000,40000] stencil(double[40000,40000] a, double[3,3] w);
+
 noinline
-double[n,n] stencil(double[n,n] arr, double[3,3] weights)
+double[n,n] stencil(double[n,n] a, double[3,3] w)
 {
     ControlFlow::touch();
 
     return { [x,y] -> sum({ [i,j] ->
-                _mul_SxS_(_sel_VxA_([i,j], weights),
+                _mul_SxS_(_sel_VxA_([i,j], w),
                           _sel_VxA_([_mod_SxS_(_add_SxS_(_add_SxS_(n, x), _sub_SxS_(i, 1)), n),
                                      _mod_SxS_(_add_SxS_(_add_SxS_(n, y), _sub_SxS_(j, 1)), n)],
-                                    arr))
+                                    a))
                        })
            | [x,y] < [n,n] };
 }
@@ -24,8 +28,7 @@ int main()
     N = String::toi(CommandLine::argv(1));
 
     a = { [i,j] -> tod(i + j) | [i,j] < [N,N] };
-
-    weights = [
+    w = [
         [0.05, 0.15, 0.05],
         [0.15, 0.20, 0.15],
         [0.05, 0.15, 0.05]
@@ -33,14 +36,14 @@ int main()
 
     // Warmup runs
     for (i = 0; i < 3; i += 1) {
-        a = stencil(a, weights);
+        a = stencil(a, w);
     }
 
     for (i = 0; i < ITER; i += 1) {
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
-        a = stencil(a, weights);
+        a = stencil(a, w);
 
         sec2, nsec2 = MTClock::gettime();
         energy_uj = Rapl::raplStop(0, rapl);
