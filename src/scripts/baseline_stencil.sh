@@ -8,13 +8,12 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=baseline_stencil.out
 
-if [ "$#" -ne 2 ]; then
-    printf "Usage: %s <device> <max threads>\n" "$0" >&2
+if [ "$#" -ne 1 ]; then
+    printf "Usage: %s <device>\n" "$0" >&2
     exit 1
 fi
 
 device=$1
-max_threads=$2
 
 make bin/stencil
 
@@ -23,7 +22,7 @@ mkdir -p res/$device
 echo "size,threads,runtime,energy" > res/$device/stencil.csv
 
 for size in 10000 25000 40000; do
-    for threads in $(seq 1 $max_threads); do
-        SAC_PARALLEL=$threads ./bin/stencil $size >> res/$device/stencil.csv
+    for threads in $(seq 16); do
+        SAC_PARALLEL=$threads ./bin/stencil $size -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 >> res/$device/stencil.csv
     done
 done
