@@ -16,6 +16,6 @@ echo "size,threads,runtime,energy" > res/cn125/matmul.csv
 
 for size in 500 1000 1500; do
     for threads in $(seq 16); do
-        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/matmul $size >> res/cn125/matmul.csv
+        SAC_PARALLEL=$threads taskset -c $(seq -s, 0 2 $threads) ./bin/matmul $size >> res/cn125/matmul.csv
     done
 done
