@@ -2,7 +2,7 @@ use Array: all;
 use StdIO: all;
 
 #ifndef ITER
-#define ITER 30
+#define ITER 100
 #endif
 
 specialize double[ 500, 500] matmul(double[ 500, 500] a, double[ 500, 500] b);

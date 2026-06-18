@@ -8,14 +8,14 @@
   width={\epyfigurewidth-\epyrpad},
   height={\epyheightratio*\epyfigurewidth},
   xmin=-0.5,
-  xmax=15.5,
+  xmax=9.5,
   ymin=0,
   xlabel={Threads},
   ylabel={Energy (J)},
   scaled ticks=false,
-  xtick={0,3,6,9,12,15},
+  xtick={0,3,6,9},
   extra y ticks={\pgfkeysvalueof{/pgfplots/ymax}},
-  xticklabels={1,4,7,10,13,16},
+  xticklabels={1,4,7,10},
   extra y tick labels={\vphantom{Ag}},
   tick pos=left,
   tick align=outside,
@@ -32,39 +32,27 @@
   legend style={draw=black!20,draw opacity=1,fill opacity=0.9,text opacity=1,inner sep=0.2em},
 ]
 \addplot[ybar,bar width=0.7,area legend,draw=none,fill=energycolor] coordinates {
-  (0,71.0655554)
-  (1,48.948498)
-  (2,38.4465982)
-  (3,34.680763600000006)
-  (4,31.6356884)
-  (5,30.5221354)
-  (6,28.91173924)
-  (7,28.295037119999996)
-  (8,145.724884)
-  (9,127.00703240000001)
-  (10,118.604944)
-  (11,112.88650559999999)
-  (12,109.5440608)
-  (13,104.0469318)
-  (14,96.6305254)
-  (15,91.2586872)
+  (0,42.377527199999996)
+  (1,31.4773772)
+  (2,36.309465)
+  (3,32.8933516)
+  (4,29.0883684)
+  (5,27.5664942)
+  (6,25.271252959999998)
+  (7,98.8023774)
+  (8,89.65939700000001)
+  (9,81.37845659999999)
 };
-\draw[color=black!90,line width=0.9pt] (axis cs:0,70.49800566666667) -- (axis cs:0,72.78861963333333);
-\draw[color=black!90,line width=0.9pt] (axis cs:1,48.87153503333333) -- (axis cs:1,49.30992856666666);
-\draw[color=black!90,line width=0.9pt] (axis cs:2,38.40171686666667) -- (axis cs:2,38.700811933333334);
-\draw[color=black!90,line width=0.9pt] (axis cs:3,34.59350736666667) -- (axis cs:3,34.77236143333334);
-\draw[color=black!90,line width=0.9pt] (axis cs:4,31.583517533333332) -- (axis cs:4,31.734286366666666);
-\draw[color=black!90,line width=0.9pt] (axis cs:5,30.48294431) -- (axis cs:5,30.57483912666667);
-\draw[color=black!90,line width=0.9pt] (axis cs:6,28.84023965) -- (axis cs:6,29.06385077);
-\draw[color=black!90,line width=0.9pt] (axis cs:7,28.160295166666664) -- (axis cs:7,28.542549546666663);
-\draw[color=black!90,line width=0.9pt] (axis cs:8,141.39580826666668) -- (axis cs:8,146.08718033333332);
-\draw[color=black!90,line width=0.9pt] (axis cs:9,126.89950493333333) -- (axis cs:9,127.12852620000001);
-\draw[color=black!90,line width=0.9pt] (axis cs:10,118.56311170000001) -- (axis cs:10,118.85295383333334);
-\draw[color=black!90,line width=0.9pt] (axis cs:11,112.60482696666666) -- (axis cs:11,116.42497540000001);
-\draw[color=black!90,line width=0.9pt] (axis cs:12,109.34454330000001) -- (axis cs:12,109.66565786666666);
-\draw[color=black!90,line width=0.9pt] (axis cs:13,103.9703301) -- (axis cs:13,104.13056296666667);
-\draw[color=black!90,line width=0.9pt] (axis cs:14,96.51972509999999) -- (axis cs:14,96.70970393333333);
-\draw[color=black!90,line width=0.9pt] (axis cs:15,89.73363246666666) -- (axis cs:15,92.16237706666666);
+\draw[color=black!90,line width=0.9pt] (axis cs:0,42.21399453333333) -- (axis cs:0,43.153113133333335);
+\draw[color=black!90,line width=0.9pt] (axis cs:1,31.46391766666667) -- (axis cs:1,31.522158366666666);
+\draw[color=black!90,line width=0.9pt] (axis cs:2,34.40312446666666) -- (axis cs:2,38.58706993333333);
+\draw[color=black!90,line width=0.9pt] (axis cs:3,30.449122) -- (axis cs:3,33.8961635);
+\draw[color=black!90,line width=0.9pt] (axis cs:4,28.592943566666666) -- (axis cs:4,30.161871433333335);
+\draw[color=black!90,line width=0.9pt] (axis cs:5,27.277331099999998) -- (axis cs:5,27.836551333333333);
+\draw[color=black!90,line width=0.9pt] (axis cs:6,25.0234176) -- (axis cs:6,25.79851045);
+\draw[color=black!90,line width=0.9pt] (axis cs:7,83.90176826666666) -- (axis cs:7,99.64568276666668);
+\draw[color=black!90,line width=0.9pt] (axis cs:8,86.95021093333334) -- (axis cs:8,116.52614993333333);
+\draw[color=black!90,line width=0.9pt] (axis cs:9,81.09586896666666) -- (axis cs:9,83.19076569999999);
 \addlegendimage{fill=runtimecolor,line width=1pt,mark=*,mark size=2pt,mark options={draw=white,line width=-0.4pt,solid}}
 \end{axis}
 \begin{axis}[
@@ -73,7 +61,7 @@
   anchor=south west,
   at={(mainaxis.south west)},
   xmin=-0.5,
-  xmax=15.5,
+  xmax=9.5,
   ymin=0,
   ylabel={Runtime (s)},
   scaled ticks=false,
@@ -98,56 +86,38 @@
   legend style={draw=black!20,draw opacity=1,fill opacity=0.9,text opacity=1,inner sep=0.2em},
 ]
 \addplot[draw=none,fill=runtimecolor,fill opacity=0.3,forget plot] coordinates {
-  (0,5.16018100557382)
-  (1,2.7341803082446794)
-  (2,1.7558948199452613)
-  (3,1.296942001662041)
-  (4,1.016893733565793)
-  (5,0.8535723186162452)
-  (6,0.7590521466118035)
-  (7,0.6458300012992625)
-  (8,4.066425772713147)
-  (9,3.3969762286537373)
-  (10,3.1202569397979145)
-  (11,3.00986733510844)
-  (12,2.7932897566219097)
-  (13,2.6109390233999674)
-  (14,2.3859580514938394)
-  (15,2.2642288106658732)
-  (15,2.1787965226674606)
-  (14,2.3739679485061598)
-  (13,2.6023176432666997)
-  (12,2.78316824337809)
-  (11,2.9052273315582267)
-  (10,3.1148470602020852)
-  (9,3.3917337713462627)
-  (8,3.894430893953517)
-  (7,0.612432798700738)
-  (6,0.6992820533881968)
-  (5,0.8471873480504213)
-  (4,1.0119649331008738)
-  (3,1.2927833316712924)
-  (2,1.7354971800547385)
-  (1,2.7119356917553215)
-  (0,5.137011661092844)
+  (0,3.1366991408161558)
+  (1,1.7530508612244933)
+  (2,2.2212053021107008)
+  (3,1.628032636151642)
+  (4,1.371388514161734)
+  (5,1.1046431891059074)
+  (6,0.9904825834335099)
+  (7,4.842566577274387)
+  (8,5.270064642876227)
+  (9,4.500435337242412)
+  (9,2.8915573294242556)
+  (8,3.224495357123775)
+  (7,3.186428756058946)
+  (6,0.9487306832331569)
+  (5,1.0411561442274262)
+  (4,1.2837461525049323)
+  (3,1.368707363848358)
+  (2,1.877388031222632)
+  (1,1.7393944721088388)
+  (0,3.07377752585051)
 } \closedcycle;
 \addplot[color=runtimecolor,line width=1pt,mark=*,mark size=2pt,mark options={draw=white,line width=-0.4pt,solid},forget plot] coordinates {
-  (0,5.148596333333332)
-  (1,2.7230580000000004)
-  (2,1.745696)
-  (3,1.2948626666666667)
-  (4,1.0144293333333334)
-  (5,0.8503798333333332)
-  (6,0.7291671000000002)
-  (7,0.6291314000000002)
-  (8,3.9804283333333323)
-  (9,3.394355)
-  (10,3.117552)
-  (11,2.9575473333333333)
-  (12,2.788229)
-  (13,2.6066283333333335)
-  (14,2.3799629999999996)
-  (15,2.221512666666667)
+  (0,3.105238333333333)
+  (1,1.746222666666666)
+  (2,2.0492966666666663)
+  (3,1.49837)
+  (4,1.327567333333333)
+  (5,1.0728996666666668)
+  (6,0.9696066333333334)
+  (7,4.014497666666666)
+  (8,4.247280000000001)
+  (9,3.695996333333334)
 };
 \end{axis}
 \end{tikzpicture}

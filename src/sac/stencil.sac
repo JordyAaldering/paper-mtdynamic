@@ -2,7 +2,7 @@ use Array: all;
 use StdIO: all;
 
 #ifndef ITER
-#define ITER 30
+#define ITER 100
 #endif
 
 specialize double[10000,10000] stencil(double[10000,10000] a, double[3,3] w);
