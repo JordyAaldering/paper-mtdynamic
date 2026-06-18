@@ -8,7 +8,7 @@ pub fn read_csv(device: Device, baseline: Baseline) -> DataFrame<Record> {
     DataFrame::from_csv(Path::new(&path)).unwrap()
 }
 
-fn plot(df: &DataFrame<Record>) -> TikzPicture {
+fn plot(df: &DataFrame<Record>, title: String) -> TikzPicture {
     let (mut ax0, mut ax1) = TwinPlot::new(
             |r: &Record| r.threads as f64,
             "Threads",
@@ -28,6 +28,7 @@ fn plot(df: &DataFrame<Record>) -> TikzPicture {
             "runtimecolor",
         )
         .build_axes();
+    ax0.style.title = Some(title);
     ax0.style.ymin = Some(0.0);
     ax1.style.ymin = Some(0.0);
     remove_legend(&mut ax0);
@@ -38,7 +39,13 @@ fn plot(df: &DataFrame<Record>) -> TikzPicture {
 fn plot_baseline(device: Device, baseline: Baseline) {
     let df = read_csv(device, baseline);
     for size in unique_sizes(&df) {
-        let doc = plot(&df.clone().filter(|_, r| r.size == size));
+        let title = if matches!(baseline, Baseline::Nbody) {
+            format!("{} bodies", size)
+        } else {
+            format!("{} $\\times$ {}", size, size)
+        };
+
+        let doc = plot(&df.clone().filter(|_, r| r.size == size), title);
         let path = format!("../paper/img/{}_{}_{}.tex", device, baseline, size);
         doc.write(&path).unwrap();
     }

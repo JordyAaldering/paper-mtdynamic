@@ -1,28 +1,20 @@
-.PHONY: clean
+LOCAL ?= $(HOME)/.local
 
-bin/ecodynamic:
-	curl -L https://github.com/JordyAaldering/ecodynamic/releases/download/main/server > bin/ecodynamic
-	chmod +x bin/ecodynamic
+all: debug
 
-bin/matmul: sac/matmul.sac
-	sac2c -t mt_pth $< -o $@
+debug:
+	cargo build --lib --examples
 
-bin/matmul_mtd: sac/matmul_mtd.sac
-	sac2c -t mt_pth -mt_dynamic $< -o $@
+release:
+	cargo build --release --lib --examples
 
-bin/nbody: sac/nbody.sac
-	sac2c -t mt_pth $< -o $@
+install: release
+	cp target/release/mtdynamic.h $(LOCAL)/include/
+	cp target/release/libmtdynamic.so $(LOCAL)/lib/
 
-bin/nbody_mtd: sac/nbody_mtd.sac
-	sac2c -t mt_pth -mt_dynamic $< -o $@
-
-bin/stencil: sac/stencil.sac
-	sac2c -t mt_pth $< -o $@
-
-bin/stencil_mtd: sac/stencil_mtd.sac
-	sac2c -t mt_pth -mt_dynamic $< -o $@
+uninstall:
+	$(RM) $(LOCAL)/include/mtdynamic.h
+	$(RM) $(LOCAL)/lib/libmtdynamic.so
 
 clean:
-	$(RM) bin/*
-	$(RM) -r host/
-	$(RM) -r tree/
+	cargo clean

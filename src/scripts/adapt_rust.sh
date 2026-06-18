@@ -6,6 +6,6 @@
 #SBATCH --mem=0
 #SBATCH --cpus-per-task=16
 #SBATCH --time=10:00:00
-#SBATCH --output=overhead.out
+#SBATCH --output=adapt_rust.out
 
-cargo run --release --example overhead
+cargo run --release --example adapt 16

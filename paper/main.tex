@@ -30,7 +30,7 @@
 \definecolor{colorblind1}{RGB}{222,143,5}
 \definecolor{colorblind2}{RGB}{2,158,115}
 
-\newcommand{\epyfigurewidth}{\linewidth}
+\newcommand{\epyfigurewidth}{.333\linewidth}
 \newcommand{\epyheightratio}{0.85}
 
 \title{Energy-Aware Dynamic Adaptation of Runtime Systems}
@@ -295,19 +295,13 @@ clock of 2.60GHz. The CPU has 16MB of level three cache, and the system itself p
 
 \begin{figure*}
   \tiny
-  \captionsetup[subfigure]{font=scriptsize,labelformat=empty}
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{10000 bodies}
-    \input{img/cn125_nbody_10000.tex}%
-  \end{subfigure}%
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{25000 bodies}
-    \input{img/cn125_nbody_25000.tex}%
-  \end{subfigure}%
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{40000 bodies}
-    \input{img/cn125_nbody_40000.tex}%
-  \end{subfigure}%
+  \hfill
+  \input{img/cn125_nbody_10000.tex}%
+  \hfill
+  \input{img/cn125_nbody_25000.tex}%
+  \hfill
+  \input{img/cn125_nbody_40000.tex}%
+  \hfill\hfill
   \caption{...}%
   \label{fig:nbodynew}
 \end{figure*}
@@ -406,19 +400,13 @@ performance has diminishing returns for decreasing energy consumption.
 
 \begin{figure*}
   \tiny
-  \captionsetup[subfigure]{font=scriptsize,labelformat=empty}
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{10000 $\times$ 10000}
-    \input{img/cn125_stencil_10000.tex}%
-  \end{subfigure}%
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{25000 $\times$ 25000}
-    \input{img/cn125_stencil_25000.tex}%
-  \end{subfigure}%
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{40000 $\times$ 40000}
-    \input{img/cn125_stencil_40000.tex}%
-  \end{subfigure}%
+  \hfill
+  \input{img/cn125_stencil_10000.tex}%
+  \hfill
+  \input{img/cn125_stencil_25000.tex}%
+  \hfill
+  \input{img/cn125_stencil_40000.tex}%
+  \hfill\hfill
   \caption{...}%
   \label{fig:stencilnew}
 \end{figure*}
@@ -501,19 +489,13 @@ decreases.
 
 \begin{figure*}
   \tiny
-  \captionsetup[subfigure]{font=scriptsize,labelformat=empty}
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{500 $\times$ 500}
-    \input{img/cn125_matmul_500.tex}%
-  \end{subfigure}%
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{1000 $\times$ 1000}
-    \input{img/cn125_matmul_1000.tex}%
-  \end{subfigure}%
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{1500 $\times$ 1500}
-    \input{img/cn125_matmul_1500.tex}%
-  \end{subfigure}%
+  \hfill
+  \input{img/cn125_matmul_500.tex}%
+  \hfill
+  \input{img/cn125_matmul_1000.tex}%
+  \hfill
+  \input{img/cn125_matmul_1500.tex}%
+  \hfill\hfill
   \caption{Average energy consumption and runtime of 30 naive matrix multiplications in SaC.
   Bars denote energy consumption, with corresponding values in the left y-axis.
   The line denotes runtime, corresponding to the right y-axis.}%
@@ -602,19 +584,13 @@ even a single-threaded approach.
 
 \begin{figure*}
   \tiny
-  \captionsetup[subfigure]{font=scriptsize,labelformat=empty}
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{500 $\times$ 500}
-    \input{img/cn125_rust_500.tex}%
-  \end{subfigure}%
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{1000 $\times$ 1000}
-    \input{img/cn125_rust_1000.tex}%
-  \end{subfigure}%
-  \begin{subfigure}[b]{.333\linewidth}
-    \caption{1500 $\times$ 1500}
-    \input{img/cn125_rust_1500.tex}%
-  \end{subfigure}%
+  \hfill
+  \input{img/cn125_rust_500.tex}%
+  \hfill
+  \input{img/cn125_rust_1000.tex}%
+  \hfill
+  \input{img/cn125_rust_1500.tex}%
+  \hfill\hfill
   \caption{...}%
   \label{fig:rustnew}
 \end{figure*}
