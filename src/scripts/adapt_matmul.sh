@@ -12,7 +12,7 @@ printf "size,threads,runtime,runtimesd,energy,energysd\n"
 
 # Static approaches
 for size in 500 1000 1500; do
-    ../sac2c/build_r/sac2c_p -t mt_pth scripts/matmul.sac -o matmul -DP=$size
+    sac2c -t mt_pth scripts/matmul.sac -o matmul -DP=$size
 
     printf "$size,1,"
     ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt 1
@@ -26,7 +26,7 @@ done
 
 # Energy-based approach
 for size in 500 1000 1500; do
-    ../sac2c/build_r/sac2c_p -t mt_pth_rt scripts/matmul.sac -o matmul -DP=$size
+    sac2c -t mt_pth_rt scripts/matmul.sac -o matmul -DP=$size
 
     printf "$size,mt,"
     numactl --interleave all ./matmul -mt 16
@@ -34,7 +34,7 @@ done
 
 # Runtime-based approach
 for size in 500 1000 1500; do
-    ../sac2c/build_r/sac2c_p -t mt_pth_rt -domtdrt scripts/matmul.sac -o matmul -DP=$size
+    sac2c -t mt_pth_rt -domtdrt scripts/matmul.sac -o matmul -DP=$size
 
     printf "$size,rt,"
     numactl --interleave all ./matmul -mt 16

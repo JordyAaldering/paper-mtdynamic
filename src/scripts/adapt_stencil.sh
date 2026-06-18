@@ -12,7 +12,7 @@ printf "size,threads,runtime,runtimesd,energy,energysd\n"
 
 # Static approaches
 for size in 10000 25000 40000; do
-    ../sac2c/build_r/sac2c_p -t mt_pth scripts/stencil.sac -o stencil -DP=$size
+    sac2c -t mt_pth scripts/stencil.sac -o stencil -DP=$size
 
     printf "$size,1,"
     numactl --interleave all ./stencil -mt 1
@@ -28,7 +28,7 @@ done
 
 # Energy-based approach
 for size in 10000 25000 40000; do
-    ../sac2c/build_r/sac2c_p -t mt_pth_rt scripts/stencil.sac -o stencil -DP=$size
+    sac2c -t mt_pth_rt scripts/stencil.sac -o stencil -DP=$size
 
     printf "$size,mt,"
     numactl --interleave all ./stencil -mt 16
@@ -36,7 +36,7 @@ done
 
 # Runtime-based approach
 for size in 10000 25000 40000; do
-    ../sac2c/build_r/sac2c_p -t mt_pth_rt -domtdrt scripts/stencil.sac -o stencil -DP=$size
+    sac2c -t mt_pth_rt -domtdrt scripts/stencil.sac -o stencil -DP=$size
 
     printf "$size,rt,"
     numactl --interleave all ./stencil -mt 16

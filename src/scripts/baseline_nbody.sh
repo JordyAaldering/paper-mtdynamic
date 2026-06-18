@@ -11,15 +11,10 @@
 printf "size,threads,runtime,runtimesd,energy,energysd\n"
 
 for size in 10000 25000 40000; do
-    ../sac2c/build_r/sac2c_p -t mt_pth scripts/nbody.sac -o nbody -DP=$size
+    sac2c -t mt_pth scripts/nbody.sac -o nbody -DP=$size
 
     for threads in `seq 1 16`; do
         printf "$size,$threads,"
         numactl --interleave all ./nbody -mt $threads
     done
 done
-
-rm nbody
-rm nbody.c
-rm nbody.i
-rm nbody.o

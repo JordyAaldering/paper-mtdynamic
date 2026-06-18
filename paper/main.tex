@@ -8,6 +8,10 @@
 \usepackage{hyperref}
 \usepackage{orcidlink}
 \usepackage{subcaption}
+\usepackage{booktabs}
+
+\usepackage{siunitx}
+\sisetup{per-mode=symbol,range-units=single,range-phrase=--}
 
 \usepackage{pgfplots}
 \usetikzlibrary{patterns}
@@ -150,7 +154,7 @@ each dimension of the array. To express relations between shape components, thes
 be replaced by variables, where identical variable names require identical lengths in the
 corresponding positions. For example, an integer vector of length $100$ can be defined as
 \verb|int[100]|, and a square integer matrix of size $n \times n$ can be referred to as
-\verb|int[n,n]|. A multi-dimensional array of doubles with rank $d$ and shape vector $shp$ can be
+\verb|int[n,n]|. A multidimensional array of doubles with rank $d$ and shape vector $shp$ can be
 described by \verb|double[d:shp]|. This notation is referred to as type
 patterns~\cite{sac-typepattern}. It allows not only to express constraints within shapes but also
 between different function arguments and return types. Take for example the shape constraints of a
@@ -244,66 +248,24 @@ programming, these algorithms provide an interesting mix of CPU-bound and memory
 
 Benchmarks are conducted on an Intel Xeon E-2378 server, maintained by the Radboud University. The
 system is accessible through Slurm, and contains a single 8 core 16 thread CPU, running at a base
-clock of 2.60GHz. The CPU has 16MB of level three cache, and the system itself provides 32GB of RAM.
-
-\begin{figure*}[!ht]
-  \centering
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at two threads, and steadily
-      decreases until roughly eight threads, after which it plateaus and reaches a minimum at
-      16 threads. Runtime peaks at two threads, and gradually decreases until it reaches the
-      minimum at 16 threads.
-    }]{img/nbody_10000.png}%
-    \caption{$10000$ elements.}
-    \label{fig:nbody1}
-  \end{subfigure}%
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at one thread, and steadily
-      decreases until roughly eight threads, after which it plateaus and reaches a minimum at
-      14 threads. Runtime peaks at one thread, and gradually decreases until it plateaus
-      around 14 threads.
-    }]{img/nbody_25000.png}%
-    \caption{$25000$ elements.}
-    \label{fig:nbody2}
-  \end{subfigure}%
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at one thread, and steadily
-      decreases until roughly eight threads, after which it plateaus and reaches a minimum at
-      12 threads. Runtime peaks at one thread, and gradually decreases until it plateaus
-      around 12 threads.
-    }]{img/nbody_40000.png}%
-    \caption{$40000$ elements.}
-    \label{fig:nbody3}
-  \end{subfigure}%
-  \caption{Average energy consumption and runtime of 250 N-body simulation in SaC.
-  Bars denote energy consumption, with corresponding values in the left y-axis.
-  The line denotes runtime, corresponding to the right y-axis.}
-  \label{fig:nbody}
-\end{figure*}
+clock of \qty{2.60}{\giga\hertz}. The CPU has \qty{16}{\mega\byte} of L3 cache, and the system itself provides \qty{32}{\giga\byte} of RAM.
 
 \begin{figure*}
   \tiny
   \hfill
-  \input{img/cn125_nbody_10000.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at two threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 16 threads. Runtime peaks at two threads, and gradually decreases until it reaches the minimum at 16 threads.
+  \input{img_nbody_10000.tex}%
   \hfill
-  \input{img/cn125_nbody_25000.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at one thread, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 14 threads. Runtime peaks at one thread, and gradually decreases until it plateaus around 14 threads.
+  \input{img_nbody_25000.tex}%
   \hfill
-  \input{img/cn125_nbody_40000.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at one thread, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 12 threads. Runtime peaks at one thread, and gradually decreases until it plateaus around 12 threads.
+  \input{img_nbody_40000.tex}%
   \hfill\hfill
-  \caption{...}%
-  \label{fig:nbodynew}
+  \caption{Average energy consumption and runtime of 250 N-body simulation in SaC.
+  Bars denote energy consumption, with corresponding values in the left y-axis.
+  The line denotes runtime, corresponding to the right y-axis.}%
+  \label{fig:nbody}
 \end{figure*}
 
 \subsection{N-body simulation}
@@ -335,9 +297,9 @@ three input sizes are shown in Figure~\ref{fig:nbody}. Along the x-axis is the n
 ranging from one to sixteen. Bars denote the average energy consumption of a single time step, and
 the line denotes its average runtime.
 
-For an N-body simulation with $10000$ elements in Figure~\ref{fig:nbody1} we observe that although
+For an N-body simulation with $10000$ elements we observe that although
 increasing the thread-count strictly decreases the runtime, for simulations with $25000$ and $40000$
-elements in Figures~\ref{fig:nbody2} and \ref{fig:nbody3} respectively, the energy consumption
+elements, the energy consumption
 plateaus when using more than eight threads. It seems that any improvements in energy consumption
 gained by using hyper-threading are mitigated by the energy overhead it introduces. Consequently, on
 a system with shared resources and multiple running processes, it might be beneficial to select a
@@ -351,64 +313,22 @@ that the overhead caused by having to manage multiple threads has a stronger neg
 energy consumption of a program than on its runtime performance, and that optimizing for runtime
 performance has diminishing returns for decreasing energy consumption.
 
-\begin{figure*}[!ht]
-  \centering
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at two threads, and steadily
-      decreases until roughly eight threads, after which it plateaus and reaches a minimum at
-      16 threads. Runtime peaks at two threads, and gradually decreases until it reaches the
-      minimum at 16 threads.
-    }]{img/stencil_10000.png}%
-    \caption{$10000 \times 10000$ points.}
-    \label{fig:stencil1}
-  \end{subfigure}%
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at two threads, and steadily
-      decreases until roughly eight threads, after which it plateaus and reaches a minimum at
-      14 threads. Runtime peaks at two threads, and gradually decreases until it plateaus
-      around 14 threads.
-    }]{img/stencil_25000.png}%
-    \caption{$25000 \times 25000$ points.}
-    \label{fig:stencil2}
-  \end{subfigure}%
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at two threads, and steadily
-      decreases until roughly eight threads, after which it plateaus and reaches a minimum at
-      12 threads. Runtime peaks at two threads, and gradually decreases until it plateaus
-      around 12 threads.
-    }]{img/stencil_40000.png}%
-    \caption{$40000 \times 40000$ points.}
-    \label{fig:stencil3}
-  \end{subfigure}%
-  \caption{Average energy consumption and runtime of 250 nine-point stencil operations in SaC.
-  Bars denote energy consumption, with corresponding values in the left y-axis.
-  The line denotes runtime, corresponding to the right y-axis.}
-  \label{fig:stencil}
-\end{figure*}
-
 \begin{figure*}
   \tiny
   \hfill
-  \input{img/cn125_stencil_10000.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at two threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 16 threads. Runtime peaks at two threads, and gradually decreases until it reaches the minimum at 16 threads.
+  \input{img_stencil_10000.tex}%
   \hfill
-  \input{img/cn125_stencil_25000.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at two threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 14 threads. Runtime peaks at two threads, and gradually decreases until it plateaus around 14 threads.
+  \input{img_stencil_25000.tex}%
   \hfill
-  \input{img/cn125_stencil_40000.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at two threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 12 threads. Runtime peaks at two threads, and gradually decreases until it plateaus around 12 threads.
+  \input{img_stencil_40000.tex}%
   \hfill\hfill
-  \caption{...}%
-  \label{fig:stencilnew}
+  \caption{Average energy consumption and runtime of 250 nine-point stencil operations in SaC.
+  Bars denote energy consumption, with corresponding values in the left y-axis.
+  The line denotes runtime, corresponding to the right y-axis.}%
+  \label{fig:stencil}
 \end{figure*}
 
 \subsection{Nine-point stencil}\label{sec:stencil}
@@ -431,75 +351,28 @@ double[2:shp] stencil(double[2:shp] arr, double[3,3] w)
 }
 \end{verbatim}
 
-For a $10000 \times 10000$ input matrix in Figure~\ref{fig:stencil1} we observe that both the
+For a $10000 \times 10000$ input matrix we observe that both the
 runtime and energy consumption decrease as the number of threads increases. However, for $25000
 \times 25000$ and $40000 \times 40000$ inputs, using all available threads is no longer optimal for
-both the energy-efficiency and runtime performance. We see this in Figures~\ref{fig:stencil2} and
-\ref{fig:stencil3} respectively, whereas the input size increases, the optimum thread-count
+both the energy-efficiency and runtime performance. Whereas the input size increases, the optimum thread-count
 decreases.
-
-\begin{figure*}[!ht]
-  \centering
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at one threads and gradually
-      decreases from one to eight threads, after which it starts noticeably fluctuating.
-      Reaching a minimum at 14 threads, with an energy consumption roughly equal to that of
-      eight threads. Runtime follows a similar pattern, albeit being more pronounced.
-    }]{img/matmul_500.png}%
-    \caption{$500 \times 500$ matrix.}
-    \label{fig:matmul1}
-  \end{subfigure}%
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption gradually decreases from one to
-      eight threads, reaching a minimum at eight threads. Going to nine threads there is a
-      significant jump in energy consumption, peaking at nine threads and gradually decreasing
-      until 16 threads. The energy consumption of 16 threads is above that of one thread.
-      Runtime follows a similar pattern, albeit being more pronounced.
-    }]{img/matmul_1000.png}%
-    \caption{$1000 \times 1000$ matrix.}
-    \label{fig:matmul2}
-  \end{subfigure}%
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption gradually decreases from one to
-      eight threads, reaching a minimum at eight threads. Going to nine threads there is a
-      significant jump in energy consumption, peaking at nine threads and gradually decreasing
-      until 16 threads. The energy consumption of 16 threads is above that of one thread.
-      Runtime follows a similar pattern, albeit being more pronounced.
-    }]{img/matmul_1500.png}%
-    \caption{$1500 \times 1500$ matrix.}
-    \label{fig:matmul3}
-  \end{subfigure}%
-  \caption{Average energy consumption and runtime of 250 naive matrix multiplications in SaC.
-  Bars denote energy consumption, with corresponding values in the left y-axis.
-  The line denotes runtime, corresponding to the right y-axis.}
-  \label{fig:matmul}
-\end{figure*}
 
 \begin{figure*}
   \tiny
   \hfill
-  \input{img/cn125_matmul_500.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at one threads and gradually decreases from one to eight threads, after which it starts noticeably fluctuating. Reaching a minimum at 14 threads, with an energy consumption roughly equal to that of eight threads. Runtime follows a similar pattern, albeit being more pronounced.
+  \input{img_matmul_500.tex}%
   \hfill
-  \input{img/cn125_matmul_1000.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption gradually decreases from one to eight threads, reaching a minimum at eight threads. Going to nine threads there is a significant jump in energy consumption, peaking at nine threads and gradually decreasing until 16 threads. The energy consumption of 16 threads is above that of one thread. Runtime follows a similar pattern, albeit being more pronounced.
+  \input{img_matmul_1000.tex}%
   \hfill
-  \input{img/cn125_matmul_1500.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption gradually decreases from one to eight threads, reaching a minimum at eight threads. Going to nine threads there is a significant jump in energy consumption, peaking at nine threads and gradually decreasing until 16 threads. The energy consumption of 16 threads is above that of one thread. Runtime follows a similar pattern, albeit being more pronounced.
+  \input{img_matmul_1500.tex}%
   \hfill\hfill
-  \caption{Average energy consumption and runtime of 30 naive matrix multiplications in SaC.
+  \caption{Average energy consumption and runtime of 250 naive matrix multiplications in SaC.
   Bars denote energy consumption, with corresponding values in the left y-axis.
   The line denotes runtime, corresponding to the right y-axis.}%
-  \label{fig:matmulnew}
+  \label{fig:matmul}
 \end{figure*}
 
 \subsection{Matrix multiplication}
@@ -526,80 +399,40 @@ It should be noted that choosing a different thread pinning strategy leads to si
 different observations, and that choosing an efficient thread layout is crucial to the performance
 of this benchmark.
 
-The results of a $500 \times 500$ matrix multiplication in Figure~\ref{fig:matmul1} align with our
+The results of a $500 \times 500$ matrix multiplication in Figure~\ref{fig:matmul} align with our
 expectations; increasing the number of threads up to eight threads improves both the
 energy-efficiency and the runtime performance. Using more threads causes a decrease in performance,
 likely due to additional thread management overhead. This overhead is somewhat overcome by the
 increase in thread-count, making a thread-count of fourteen threads similar in performance to a
-thread-count of eight. However, as observed in Figures~\ref{fig:matmul2} and \ref{fig:matmul3},
-increasing the matrix size to $1000 \times 1000$ and $1500 \times 1500$ changes this energy
+thread-count of eight. However, increasing the matrix size to $1000 \times 1000$ and $1500 \times 1500$ changes this energy
 consumption pattern, resulting from the shift of being CPU-bound to being memory-bound. Even with an
 efficient thread pinning strategy, using more than eight threads causes a significant increase in
 both the energy consumption and runtime, making those approaches worse for energy-efficiency than
 even a single-threaded approach.
 
-\begin{figure*}[!ht]
-  \centering
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at one threads, and steadily
-      decreases until roughly eight threads, after which it plateaus and reaches a minimum at
-      16 threads. Runtime follows the same pattern.
-    }]{img/rust_500.png}%
-    \caption{$500 \times 500$ matrix.}
-    \label{fig:rust1}
-  \end{subfigure}%
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at one threads, and steadily
-      decreases until roughly eight threads, after which it plateaus and reaches a minimum at
-      15 threads. Runtime follows the same pattern.
-    }]{img/rust_1000.png}%
-    \caption{$1000 \times 1000$ matrix.}
-    \label{fig:rust2}
-  \end{subfigure}%
-  \begin{subfigure}{0.33\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Chart showing energy consumption and runtime across different numbers of threads. The
-      x-axis represents the number of threads from 1 to 16. The left y-axis shows bars
-      indicating energy consumption in joules. The right y-axis shows an orange line
-      indicating the runtime in seconds. Energy consumption peaks at one threads, and steadily
-      decreases until it reaches a minimum at eight threads, after which energy consumption
-      starts gradually increasing again. Runtime follows the same pattern.
-    }]{img/rust_1500.png}%
-    \caption{$1500 \times 1500$ matrix.}
-    \label{fig:rust3}
-  \end{subfigure}%
-  \caption{Average energy consumption and runtime of 250 naive matrix multiplications in Rust.
-  Bars denote energy consumption, with corresponding values in the left y-axis.
-  The line denotes runtime, corresponding to the right y-axis.}
-  \label{fig:rust}
-\end{figure*}
-
 \begin{figure*}
   \tiny
   \hfill
-  \input{img/cn125_rust_500.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at one threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 16 threads. Runtime follows the same pattern.
+  \input{img_rust_500.tex}%
   \hfill
-  \input{img/cn125_rust_1000.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at one threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 15 threads. Runtime follows the same pattern.
+  \input{img_rust_1000.tex}%
   \hfill
-  \input{img/cn125_rust_1500.tex}%
+  % Chart showing energy consumption and runtime across different numbers of threads. The x-axis represents the number of threads from 1 to 16. The left y-axis shows bars indicating energy consumption in joules. The right y-axis shows an orange line indicating the runtime in seconds. Energy consumption peaks at one threads, and steadily decreases until it reaches a minimum at eight threads, after which energy consumption starts gradually increasing again. Runtime follows the same pattern.
+  \input{img_rust_1500.tex}%
   \hfill\hfill
-  \caption{...}%
-  \label{fig:rustnew}
+  \caption{Average energy consumption and runtime of 250 naive matrix multiplications in Rust.
+  Bars denote energy consumption, with corresponding values in the left y-axis.
+  The line denotes runtime, corresponding to the right y-axis.}%
+  \label{fig:rust}
 \end{figure*}
 
 \subsection{Implementation language}
 To validate that these observations are not specific to SaC, we also evaluate a manually
 parallelized implementation of the matrix multiplication algorithm in Rust. We observe in
 Figure~\ref{fig:rust} that switching the implementation language from SaC to Rust produces a
-significantly different energy consumption pattern. In Figures~\ref{fig:rust1} and \ref{fig:rust2}
+significantly different energy consumption pattern. For the $500 \times 500$ and $1000 \times 1000$ cases,
 we observe that up until eight threads, increasing the thread-count improves both the
 energy-efficiency and runtime. When using more than eight threads, both the energy consumption and
 runtime plateau, suggesting that we gain no additional benefits by using hyper-threading. As the
@@ -777,38 +610,21 @@ Section~\ref{sec:observations}, and assessing how effectively the adaptation alg
 the thread-count with minimal energy consumption.
 
 \begin{figure}[t]
-  \centering
-  \begin{minipage}[c]{0.49\linewidth}
+  \tiny
+  \captionsetup{width=.45\linewidth}
+  \renewcommand{\epyfigurewidth}{\linewidth}
+  \begin{minipage}[c]{.5\linewidth}
     \centering
-    \captionsetup{width=0.9\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Line chart showing the number of threads used during program runtime against of the
-      N-body simulation. The x-axis represents the number of elements, labeled as $10000$,
-      $25000$, and $40000$. The y-axis shows the number of threads, ranging from 1 to 16. An
-      orange dashed line represents the optimal thread count, and a blue line indicates the
-      actual thread count. When the input size changes the blue line oscillates a lot for a few
-      iterations. Afterwards it oscillates by less than one thread around the optimum at the
-      orange line.
-    }]{img/adapt_nbody.png}%
-    \caption{Adaptation quality on the SaC implementation of the N-body simulation.}
+    % Line chart showing the number of threads used during program runtime against of the N-body simulation. The x-axis represents the number of elements, labeled as $10000$, $25000$, and $40000$. The y-axis shows the number of threads, ranging from 1 to 16. An orange dashed line represents the optimal thread count, and a blue line indicates the actual thread count. When the input size changes the blue line oscillates a lot for a few iterations. Afterwards it oscillates by less than one thread around the optimum at the orange line.
+    \input{img_adapt_nbody.tex}%
+    \caption{Adaptation quality on the SaC implementation of the N-body simulation.}%
     \label{fig:adapt-nbody}
   \end{minipage}%
-  \begin{minipage}[c]{0.49\linewidth}
+  \begin{minipage}[c]{.5\linewidth}
     \centering
-    \captionsetup{width=0.9\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Line chart showing the number of threads used during program runtime of the matrix
-      multiplication algorithm. The x-axis represents matrix size, labeled as $500 \times
-      500$, $1000 \times 1000$, and $1500 \times 1500$. The y-axis shows the number of
-      threads, ranging from 1 to 16. An orange dashed line represents the optimal thread
-      count, and a blue line indicates the actual thread count. When the input size changes
-      the blue line oscillates a lot for a few iterations. Afterwards, for the $500 \times 500$
-      input, it oscillates by less than one thread around the optimum at the orange line. For
-      the other two input sizes it converges to four threads, instead of the optimum at the
-      orange line at eight threads.
-    }]{img/adapt_matmul.png}%
-    \caption{Adaptation quality on the SaC implementation of the matrix multiplication
-    algorithm.}
+    % Line chart showing the number of threads used during program runtime of the matrix multiplication algorithm. The x-axis represents matrix size, labeled as $500 \times 500$, $1000 \times 1000$, and $1500 \times 1500$. The y-axis shows the number of threads, ranging from 1 to 16. An orange dashed line represents the optimal thread count, and a blue line indicates the actual thread count. When the input size changes the blue line oscillates a lot for a few iterations. Afterwards, for the $500 \times 500$ input, it oscillates by less than one thread around the optimum at the orange line. For the other two input sizes it converges to four threads, instead of the optimum at the orange line at eight threads.
+    \input{img_adapt_matmul.tex}%
+    \caption{Adaptation quality on the SaC implementation of the matrix multiplication algorithm.}%
     \label{fig:adapt-matmul}
   \end{minipage}%
 \end{figure}
@@ -841,37 +657,22 @@ the recommended thread-count around four threads, instead of eight. This happens
 algorithm disables threads in a contiguous order, resulting in a poor thread pinning strategy.
 
 \begin{figure}[t]
-  \centering
-  \begin{minipage}[c]{0.49\linewidth}
+  \tiny
+  \captionsetup{width=.45\linewidth}
+  \renewcommand{\epyfigurewidth}{\linewidth}
+  \begin{minipage}[c]{.5\linewidth}
     \centering
-    \captionsetup{width=0.9\linewidth}
-    \includegraphics[width=\linewidth,alt={
-      Line chart showing the number of threads used during program runtime of the nine-point
-      stencil operation. The x-axis represents matrix size, labeled as $10000 \times 10000$,
-      $25000 \times 25000$, and $40000 \times 40000$. The y-axis shows the number of threads,
-      ranging from 1 to 16. An orange dashed line represents the optimal thread count, and a
-      blue line indicates the actual thread count. When the input size changes the blue line
-      oscillates a lot for a few iterations. Afterwards it oscillates by less than one thread
-      around the optimum at the orange line. For the $40000 \times 4000$ input it converges to
-      ten threads, instead of the optimum at the orange line at twelve threads.
-    }]{img/adapt_stencil.png}%
-    \caption{Adaptation quality on the SaC implementation of the nine-point stencil operation.}
+    % Line chart showing the number of threads used during program runtime of the nine-point stencil operation. The x-axis represents matrix size, labeled as $10000 \times 10000$, $25000 \times 25000$, and $40000 \times 40000$. The y-axis shows the number of threads, ranging from 1 to 16. An orange dashed line represents the optimal thread count, and a blue line indicates the actual thread count. When the input size changes the blue line oscillates a lot for a few iterations. Afterwards it oscillates by less than one thread around the optimum at the orange line. For the $40000 \times 4000$ input it converges to ten threads, instead of the optimum at the orange line at twelve threads.
+    \input{img_adapt_stencil.tex}%
+    \caption{Adaptation quality on the SaC implementation of the nine-point stencil operation.}%
     \label{fig:adapt-stencil}
   \end{minipage}%
-  \begin{minipage}[c]{0.49\linewidth}
-      \centering
-      \captionsetup{width=0.9\linewidth}
-      \includegraphics[width=\linewidth,alt={
-        Line chart showing the number of threads used during program runtime of the Rust
-        implementation of the matrix multiplication algorithm. The x-axis represents matrix
-        size, labeled as $500 \times 500$, $1000 \times 1000$, and $1500 \times 1500$. The
-        y-axis shows the number of threads, ranging from 1 to 16. An orange dashed line
-        represents the optimal thread count, and a blue line indicates the actual thread count.
-        When the input size changes the blue line oscillates a lot for a few iterations.
-        Afterwards it oscillates by less than one thread around the optimum at the orange line.
-      }]{img/adapt_rust.png}%
-      \caption{Adaptation quality on the Rust implementation of the matrix multiplication algorithm.}
-      \label{fig:adapt-rust}
+  \begin{minipage}[c]{.5\linewidth}
+    \centering
+    % Line chart showing the number of threads used during program runtime of the Rust implementation of the matrix multiplication algorithm. The x-axis represents matrix size, labeled as $500 \times 500$, $1000 \times 1000$, and $1500 \times 1500$. The y-axis shows the number of threads, ranging from 1 to 16. An orange dashed line represents the optimal thread count, and a blue line indicates the actual thread count. When the input size changes the blue line oscillates a lot for a few iterations. Afterwards it oscillates by less than one thread around the optimum at the orange line.
+    \input{img_adapt_rust.tex}%
+    \caption{Adaptation quality on the Rust implementation of the matrix multiplication algorithm.}%
+    \label{fig:adapt-rust}
   \end{minipage}%
 \end{figure}
 
@@ -879,8 +680,7 @@ In Section~\ref{sec:observations} we observe for the nine-point stencil benchmar
 data size increases, the optimal thread-count gradually decreases. Applying the adaptation algorithm
 we see in Figure~\ref{fig:adapt-stencil} that it is able to converge to the optimal thread-count in
 these cases. Although for $40000 \times 40000$ inputs the algorithm suggests a thread-count of ten
-instead of twelve threads, Figure~\ref{fig:stencil3} shows that the energy consumption at these two
-thread-counts are within margin of error.
+instead of twelve threads, the energy consumption at these two thread-counts are within margin of error.
 
 Figure~\ref{fig:adapt-rust} shows the adaptation quality for the Rust implementation. The adaptation
 algorithm is able to quickly find the optimal thread-count after a change in the matrix size or
@@ -906,35 +706,35 @@ so any solution that closely approaches its performance can be considered highly
   \centering
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Input     & Energy & Runtime \\\hline
-      $10000^2$ &    5\% &     4\% \\
-      $25000^2$ &    5\% &     5\% \\
-      $40000^2$ &   15\% &    33\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Input     & Energy & Runtime \\\midrule
+      $10000^2$ & \qty{5}{\percent}  & \qty{4}{\percent} \\
+      $25000^2$ & \qty{5}{\percent}  & \qty{5}{\percent} \\
+      $40000^2$ & \qty{15}{\percent} & \qty{33}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Nine-point stencil.}
+    \caption{Nine-point stencil.}%
     \label{tab:oracle-stencil}
   \end{subtable}%
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Input    & Energy & Runtime \\\hline
-      $ 500^2$ &    8\% &     8\% \\
-      $1000^2$ &   46\% &    93\% \\
-      $1500^2$ &   68\% &   100\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Input    & Energy & Runtime \\\midrule
+      $ 500^2$ & \qty{8}{\percent} & \qty{8}{\percent} \\
+      $1000^2$ & \qty{46}{\percent} & \qty{93}{\percent} \\
+      $1500^2$ & \qty{68}{\percent} & \qty{100}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Matrix multiplication.}
+    \caption{Matrix multiplication.}%
     \label{tab:oracle-matmul}
   \end{subtable}%
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Input    & Energy & Runtime \\\hline
-      $ 500^2$ &    1\% &     1\% \\
-      $1000^2$ &    1\% &     0\% \\
-      $1500^2$ &   10\% &    16\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Input    & Energy & Runtime \\\midrule
+      $ 500^2$ & \qty{1}{\percent}  & \qty{1}{\percent} \\
+      $1000^2$ & \qty{1}{\percent}  & \qty{0}{\percent} \\
+      $1500^2$ & \qty{10}{\percent} & \qty{16}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Rust implementation.}
+    \caption{Rust implementation.}%
     \label{tab:oracle-rust}
   \end{subtable}%
   \caption{Energy and runtime difference of the energy-based approach compared to the theoretical
@@ -944,21 +744,21 @@ so any solution that closely approaches its performance can be considered highly
 
 The comparison to the nine-point stencil operation is shown in Table~\ref{tab:oracle-stencil}. It
 shows that, for $10000 \times 10000$ and $25000 \times 25000$ inputs, the dynamic approach provides
-a similar level of performance compared to the oracle, with only a 5\% increase in energy
-consumption. However, for $40000 \times 40000$ inputs the energy consumption is increased by 15\%
+a similar level of performance compared to the oracle, with only a \qty{5}{\percent} increase in energy
+consumption. However, for $40000 \times 40000$ inputs the energy consumption is increased by \qty{15}{\percent}
 compared to the oracle. In Figure~\ref{fig:adapt-stencil} we observed that for this input size the
 adaptation algorithm recommends ten threads, instead of the optimal thread-count of twelve threads.
 Although this thread-count has a similar energy consumption compared to running at twelve threads,
-it does have significantly worse runtime, leading to a 33\% increase in runtime. The decrease in
+it does have significantly worse runtime, leading to a \qty{33}{\percent} increase in runtime. The decrease in
 energy-efficiency can be attributed to the additional energy cost introduced by the operating
 system, as well as the power required to keep the hardware operational
 (Section~\ref{sec:defining-energy}), which increases as the runtime increases. Considering these
-additional energy requirements due to an increase in runtime, a 15\% increase in energy consumption
-compared to a 33\% increase in runtime seems reasonable.
+additional energy requirements due to an increase in runtime, a \qty{15}{\percent} increase in energy consumption
+compared to a \qty{33}{\percent} increase in runtime seems reasonable.
 
 Table~\ref{tab:oracle-matmul} shows how close the adaptive algorithm comes to the theoretical best
 performance on the matrix multiplication algorithm, provided by the oracle. For $500 \times 500$
-inputs we are within 8\% of the energy consumption and runtime of the oracle-based approach.
+inputs we are within \qty{8}{\percent} of the energy consumption and runtime of the oracle-based approach.
 However, for the larger input sizes the performance deteriorates. As discussed in
 Section~\ref{sec:evaluation-adaptation}, this decrease in performance is due to the inability of our
 controller to switch its pinning strategy. A more sophisticated method might be able to provide a
@@ -966,8 +766,8 @@ level of performance similar to the $500 \times 500$ input, and to the other thr
 
 For the Rust implementation of the matrix multiplication algorithm we see in
 Table~\ref{tab:oracle-rust} that the energy overhead of the dynamic approach is minimal. Even in the
-case where the dynamic approach has an 18\% longer runtime, the increase in energy consumption is
-only 8\%. In the other two cases, the energy-efficiency is within margin of error of the oracle.
+case where the dynamic approach has an \qty{18}{\percent} longer runtime, the increase in energy consumption is
+only \qty{8}{\percent}. In the other two cases, the energy-efficiency is within margin of error of the oracle.
 
 These results demonstrate that while this theoretical oracle requires a level of manual tuning that
 is not feasible in practise, our dynamic approach provides a practical solution for reasonably
@@ -982,35 +782,35 @@ runtime-optimising algorithm described by Gordon et~al.~\cite{sac-mtdynamic}.
   \centering
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Input     & Energy & Runtime \\\hline
-      $10000^2$ &   -2\% &    -8\% \\
-      $25000^2$ &   -4\% &    -3\% \\
-      $40000^2$ &    7\% &    25\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Input     & Energy & Runtime \\\midrule
+      $10000^2$ & \qty{-2}{\percent} & \qty{-8}{\percent} \\
+      $25000^2$ & \qty{-4}{\percent} & \qty{-3}{\percent} \\
+      $40000^2$ & \qty{7}{\percent}  & \qty{25}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Nine-point stencil.}
+    \caption{Nine-point stencil.}%
     \label{tab:rt-stencil}
   \end{subtable}%
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Input    & Energy & Runtime \\\hline
-      $ 500^2$ &   -7\% &   -13\% \\
-      $1000^2$ &   10\% &    41\% \\
-      $1500^2$ &   -3\% &    14\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Input    & Energy & Runtime \\\midrule
+      $ 500^2$ & \qty{-7}{\percent} & \qty{-13}{\percent} \\
+      $1000^2$ & \qty{10}{\percent} & \qty{41}{\percent} \\
+      $1500^2$ & \qty{-3}{\percent} & \qty{14}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Matrix multiplication.}
+    \caption{Matrix multiplication.}%
     \label{tab:rt-matmul}
   \end{subtable}%
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Input    & Energy & Runtime \\\hline
-      $ 500^2$ &   -2\% &    -3\% \\
-      $1000^2$ &   -1\% &    -1\% \\
-      $1500^2$ &    1\% &    -2\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Input    & Energy & Runtime \\\midrule
+      $ 500^2$ & \qty{-2}{\percent} & \qty{-3}{\percent} \\
+      $1000^2$ & \qty{-1}{\percent} & \qty{-1}{\percent} \\
+      $1500^2$ & \qty{1}{\percent}  & \qty{-2}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Rust implementation.}
+    \caption{Rust implementation.}%
     \label{tab:rt-rust}
   \end{subtable}%
   \caption{Energy and runtime difference of the energy-based approach compared to the
@@ -1020,13 +820,13 @@ runtime-optimising algorithm described by Gordon et~al.~\cite{sac-mtdynamic}.
 
 In Table~\ref{tab:rt-stencil} we see that for the two smaller input sizes the difference in energy
 consumption between the energy-optimising and runtime-optimising approach is within a few percent.
-However, the energy-optimising approach does have a 25\% greater runtime than the runtime-optimising
+However, the energy-optimising approach does have a \qty{25}{\percent} greater runtime than the runtime-optimising
 approach for a $40000 \times 40000$ input. As we discuss in the comparison to the oracle-based
 approach, this is likely due to the fact that the energy-aware algorithm recommends a threat-count
 of ten, which is similar to using twelve threads in terms of energy consumption, but is
 significantly worse in terms of runtime. Consequently, the increase in runtime introduces inherent
 additional energy consumption of the operating system and the hardware itself. Keeping this in mind,
-compared to the stark increase in runtime, a 7\% increase in energy consumption seems reasonable.
+compared to the stark increase in runtime, a \qty{7}{\percent} increase in energy consumption seems reasonable.
 
 In Table~\ref{tab:rt-matmul} we see that for the matrix multiplication benchmark our approach fares
 better against the runtime-based approach than compared to the oracle. This is due to the fact that
@@ -1058,38 +858,38 @@ leads to lower energy consumption.
   \centering
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Threads & Energy & Runtime \\\hline
-      1       &  -79\% &  -137\% \\
-      8       &  -10\% &   -39\% \\
-      12      &    4\% &     0\% \\
-      16      &   -5\% &     7\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Threads & Energy & Runtime \\\midrule
+      1  & \qty{-79}{\percent} & \qty{-137}{\percent} \\
+      8  & \qty{-10}{\percent} & \qty{-39}{\percent} \\
+      12 & \qty{4}{\percent}   & \qty{0}{\percent} \\
+      16 & \qty{-5}{\percent}  & \qty{7}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Nine-point stencil.}
+    \caption{Nine-point stencil.}%
     \label{tab:static-stencil}
   \end{subtable}%
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Threads & Energy & Runtime \\\hline
-      1       &  -55\% &  -110\% \\
-      8       &   41\% &    67\% \\
-      12      &  -58\% &   -40\% \\
-      16      &  -49\% &   -29\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Threads & Energy & Runtime \\\midrule
+      1  & \qty{-55}{\percent} & \qty{-110}{\percent} \\
+      8  & \qty{41}{\percent} & \qty{67}{\percent} \\
+      12 & \qty{-58}{\percent} & \qty{-40}{\percent} \\
+      16 & \qty{-49}{\percent} & \qty{-29}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Matrix multiplication.}
+    \caption{Matrix multiplication.}%
     \label{tab:static-matmul}
   \end{subtable}%
   \begin{subtable}{0.33\linewidth}
     \centering
-    \begin{tabular}{ccc}\hline
-      Threads & Energy & Runtime \\\hline
-      1       & -100\% &  -157\% \\
-      8       &    1\% &    -3\% \\
-      12      &   -2\% &    -4\% \\
-      16      &   -7\% &    -7\% \\\hline
+    \begin{tabular}{ccc}\toprule
+      Threads & Energy & Runtime \\\midrule
+      1  & \qty{-100}{\percent} & \qty{-157}{\percent} \\
+      8  & \qty{1}{\percent}    & \qty{-3}{\percent} \\
+      12 & \qty{-2}{\percent}   & \qty{-4}{\percent} \\
+      16 & \qty{-7}{\percent}   & \qty{-7}{\percent} \\\bottomrule
     \end{tabular}%
-    \caption{Rust implementation.}
+    \caption{Rust implementation.}%
     \label{tab:static-rust}
   \end{subtable}%
   \caption{Energy and runtime difference of the energy-based approach compared to four fixed
@@ -1099,18 +899,18 @@ leads to lower energy consumption.
 
 Table~\ref{tab:static-stencil} describes the difference in energy consumption and runtime between
 the dynamic adaptation algorithm and static thread-count methods. If a reasonable, but ineffective,
-choice in thread-count is made for the nine-point stencil operation we observe that 10\% of energy
+choice in thread-count is made for the nine-point stencil operation we observe that \qty{10}{\percent} of energy
 can be saved with our dynamic approach. Compared to the single-threaded case, our dynamic approach
-consumes 79\% less energy on average. Statically choosing twelve threads leads to a slightly lower
+consumes \qty{79}{\percent} less energy on average. Statically choosing twelve threads leads to a slightly lower
 energy consumption, however in practise this is not a thread-count that is typically chosen without
 an extensive analysis of the optimal thread-count for energy consumption, as we have performed in
 Section~\ref{sec:observations}.
 
 The results of the matrix multiplication example are shown in Table~\ref{tab:static-matmul}. If a
-poor choice is made for the static thread-count, we save around 50\% of energy, even without an
+poor choice is made for the static thread-count, we save around \qty{50}{\percent} of energy, even without an
 optimal pinning strategy. However, when a static thread-count of eight threads is chosen, which we
 observed in Section~\ref{sec:observations} is always optimal or near-optimal, our approach consumes
-41\% more energy.
+\qty{41}{\percent} more energy.
 
 For the Rust implementation of the matrix multiplication algorithm, Table~\ref{tab:static-rust}
 shows that we save a significant amount of energy compared to a single-threaded approach or when
@@ -1166,17 +966,17 @@ service.
 \paragraph{Static methods for optimizing energy.}
 Although there exists a myriad of compiler optimizations that aim to minimize the runtime of
 programs, not many optimizations exist that aim to specifically reduce energy
-consumption~\cite{compiler-energy-differences}. Pallister et~al. have provided several optimizations
+consumption~\cite{compiler-energy-differences}. Pallister et~al. provide several optimizations
 that aim to reduce the energy consumption of programs, in the context of embedded
-devices~\cite{compiler-energy-flash,compiler-energy-methods}. As have we, they have found that for
+devices~\cite{compiler-energy-flash,compiler-energy-methods}. They also find that for
 optimal energy-efficiency gains a vertical integration process that exploits hardware-specific
 energy characteristics is needed, to bridge the gap between hardware and software.
 
-Bangash et~al. have investigated byte-code transformations in the context of Android applications,
+Bangash et~al. investigate bytecode transformations in the context of Android applications,
 determining whether certain (combinations of) transformations lead to in increase or decrease in
-energy consumption~\cite{compiler-energy-android}. They found that certain combinations of byte-code
+energy consumption~\cite{compiler-energy-android}. They find that certain combinations of bytecode
 transformations can actually increase energy consumption, whereas choosing the right combination of
-transformation can lead to a reduction of up to $11\%$ in energy consumption.
+transformation can lead to a reduction of up to \qty{11}{\percent} in energy consumption.
 
 \paragraph{Energy visualization \& analysis.}
 One of the key requirements in allowing developers to increase the energy-efficiency of their
@@ -1198,12 +998,11 @@ feedback to programmers, which is great for improving the code, it does not fit 
 There is a handful of programming patterns that are known to improve the energy-efficiency of
 programs. These include applica\-tion-level techniques such as caching, buffering, and batching, but
 also system-wide techniques such as retention policies and data compression. The effectiveness and
-adoption of such techniques have been previously
-investigated~\cite{strategies-hpc,strategies-industry}.
+adoption of such techniques have been previously investigated~\cite{strategies-hpc,strategies-industry}.
 
 Another prominent example of a well-known pattern for reducing energy consumption is load balancing.
 Multiple approaches exist, however these make generalized assumptions about the energy-efficiency of
-the hardware. Kistowski et~al. have compared a variety of load distribution strategies, and propose
+the hardware. Kistowski et~al. compare a variety of load distribution strategies, and propose
 a new strategy that reduces a system's energy consumption even
 further~\cite{strategies-load-distribution}.
 
@@ -1216,15 +1015,15 @@ experiments show that such a non-intrusive method, in a functional context where
 of parallelism is straightforward, can be very effective while requiring no in-depth program
 analysis, involving no programmer effort at all and causing negligible overhead. Looking at four
 different use cases with dynamically changing behaviour, we can see that our adaptation approach in
-most cases gets within 15\% of a manually generated, ideally adapting runtime. The only remarkable
+most cases gets within \qty{15}{\percent} of a manually generated, ideally adapting runtime. The only remarkable
 outlier is the case of matrix multiplication where the ideal case depends on the thread pinning
 strategy, which our adaptation algorithm fails to find. However, we also find that optimizing these
 cases is highly context-dependent and that slight variations in configuration or implementation can
 introduce significant changes to the energy consumption characteristics of a program.
 
 Furthermore, we observe that the dynamic approach yields energy improvements over static approaches.
-Depending on the number of threads chosen, the gains are up to 79\% for any reasonable choice, and
-up to 100\% if a poor decision is made. We also notice that in many cases our energy-optimising
+Depending on the number of threads chosen, the gains are up to \qty{79}{\percent} for any reasonable choice, and
+up to \qty{100}{\percent} if a poor decision is made. We also notice that in many cases our energy-optimising
 algorithm improves slightly over the runtime-optimising approach. This is reflected by our static
 analyses, which show that, while there is a correlation between overall runtime and energy use, the
 energy minima usually are reached before runtime minima when increasing the number of threads.
@@ -1242,8 +1041,7 @@ dynamically in response to workload demands, web-servers could decrease their en
 potentially without compromising on responsiveness.
 
 \section*{Acknowledgements}
-We thank Thomas Koopman and the anonymous reviewers for proofreading
-the paper and providing helpful suggestions to improve it.
+We thank Thomas Koopman and the anonymous reviewers for proofreading the paper and providing helpful suggestions to improve it.
 
 \bibliographystyle{splncs04}
 \bibliography{main}

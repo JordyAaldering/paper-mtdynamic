@@ -4,6 +4,10 @@ version = "0.1.0"
 edition = "2024"
 
 [[bin]]
+name = "adapt"
+path = "src/adapt.rs"
+
+[[bin]]
 name = "baseline"
 path = "src/baseline.rs"
 
