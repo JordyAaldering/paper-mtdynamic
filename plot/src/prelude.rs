@@ -11,6 +11,7 @@ pub struct Record {
     energy: f64,
 }
 
+#[derive(Clone, Copy)]
 pub enum Device {
     CN125,
     Laptop,

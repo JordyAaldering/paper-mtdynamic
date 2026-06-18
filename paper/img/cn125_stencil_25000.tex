@@ -1,0 +1,153 @@
+\ifx\epyrpad\undefined\newlength{\epyrpad}\fi%
+\settowidth{\epyrpad}{\normalfont 0.0}%
+\begingroup\settoheight{\dimen0}{\normalfont Ag}\addtolength{\epyrpad}{\dimen0}\endgroup%
+\ifdefined\extrarpad\addtolength{\epyrpad}{\extrarpad}\fi%
+\begin{tikzpicture}
+\begin{axis}[
+  name=mainaxis,
+  width={\epyfigurewidth-\epyrpad},
+  height={\epyheightratio*\epyfigurewidth},
+  xmin=-0.5,
+  xmax=15.5,
+  ymin=0,
+  xlabel={Threads},
+  ylabel={Energy (J)},
+  scaled ticks=false,
+  xtick={0,3,6,9,12,15},
+  extra y ticks={\pgfkeysvalueof{/pgfplots/ymax}},
+  xticklabels={1,4,7,10,13,16},
+  extra y tick labels={\vphantom{Ag}},
+  tick pos=left,
+  tick align=outside,
+  ymajorgrids,
+  legend cell align=left,
+  major tick length=0.3em,
+  /pgf/number format/fixed,
+  axis line style={color=black!20},
+  y grid style={color=black!20,line width=0.4pt},
+  tick style={color=black!20,line width=0.4pt},
+  tick label style={inner sep=0.15em},
+  ylabel style={outer sep=-0.25em},
+  extra y tick style={grid=none,major tick length=0pt,yticklabel style={opacity=0,text opacity=0}},
+  legend style={draw=black!20,draw opacity=1,fill opacity=0.9,text opacity=1,inner sep=0.2em},
+]
+\addplot[ybar,bar width=0.7,area legend,draw=none,fill=energycolor] coordinates {
+  (0,93.0213778)
+  (1,58.2832044)
+  (2,45.5554362)
+  (3,40.319590399999996)
+  (4,36.5859486)
+  (5,34.599364800000004)
+  (6,33.3428316)
+  (7,32.33030108)
+  (8,55.879422399999996)
+  (9,50.646681799999996)
+  (10,46.4319586)
+  (11,43.0752234)
+  (12,40.2232048)
+  (13,37.8825236)
+  (14,35.48181788)
+  (15,33.88904806)
+};
+\draw[color=black!90,line width=0.9pt] (axis cs:0,91.1245915) -- (axis cs:0,94.99612536666667);
+\draw[color=black!90,line width=0.9pt] (axis cs:1,58.202565666666665) -- (axis cs:1,58.46031863333334);
+\draw[color=black!90,line width=0.9pt] (axis cs:2,45.4143804) -- (axis cs:2,45.7625275);
+\draw[color=black!90,line width=0.9pt] (axis cs:3,40.274171833333334) -- (axis cs:3,40.55266593333333);
+\draw[color=black!90,line width=0.9pt] (axis cs:4,36.43369306666666) -- (axis cs:4,36.7790289);
+\draw[color=black!90,line width=0.9pt] (axis cs:5,34.522131466666664) -- (axis cs:5,34.651340499999996);
+\draw[color=black!90,line width=0.9pt] (axis cs:6,33.3089279) -- (axis cs:6,33.70068716666667);
+\draw[color=black!90,line width=0.9pt] (axis cs:7,32.30785409333333) -- (axis cs:7,32.375006786666674);
+\draw[color=black!90,line width=0.9pt] (axis cs:8,55.767910199999996) -- (axis cs:8,56.00000583333333);
+\draw[color=black!90,line width=0.9pt] (axis cs:9,50.608211000000004) -- (axis cs:9,50.7218413);
+\draw[color=black!90,line width=0.9pt] (axis cs:10,46.35149526666667) -- (axis cs:10,46.52767463333333);
+\draw[color=black!90,line width=0.9pt] (axis cs:11,43.02726533333333) -- (axis cs:11,43.101518666666664);
+\draw[color=black!90,line width=0.9pt] (axis cs:12,40.186422033333336) -- (axis cs:12,40.287936933333334);
+\draw[color=black!90,line width=0.9pt] (axis cs:13,37.8486985) -- (axis cs:13,37.938340999999994);
+\draw[color=black!90,line width=0.9pt] (axis cs:14,35.45607645333333) -- (axis cs:14,35.500749596666665);
+\draw[color=black!90,line width=0.9pt] (axis cs:15,33.81329825) -- (axis cs:15,34.06414667333333);
+\addlegendimage{fill=runtimecolor,line width=1pt,mark=*,mark size=2pt,mark options={draw=white,line width=-0.4pt,solid}}
+\end{axis}
+\begin{axis}[
+  width={\epyfigurewidth-\epyrpad},
+  height={\epyheightratio*\epyfigurewidth},
+  anchor=south west,
+  at={(mainaxis.south west)},
+  xmin=-0.5,
+  xmax=15.5,
+  ymin=0,
+  ylabel={Runtime (s)},
+  scaled ticks=false,
+  xtick=\empty,
+  extra y ticks={\pgfkeysvalueof{/pgfplots/ymax}},
+  xticklabels=\empty,
+  extra y tick labels={\vphantom{Ag}},
+  xtick pos=left,
+  ytick pos=right,
+  tick align=outside,
+  grid=none,
+  legend cell align=left,
+  axis x line=none,
+  axis y line*=right,
+  major tick length=0.3em,
+  /pgf/number format/fixed,
+  axis line style={color=black!20},
+  tick style={color=black!20,line width=0.4pt},
+  tick label style={inner sep=0.15em},
+  ylabel style={outer sep=-0.25em},
+  extra y tick style={grid=none,major tick length=0pt,yticklabel style={opacity=0,text opacity=0}},
+  legend style={draw=black!20,draw opacity=1,fill opacity=0.9,text opacity=1,inner sep=0.2em},
+]
+\addplot[draw=none,fill=runtimecolor,fill opacity=0.3,forget plot] coordinates {
+  (0,7.588024282508757)
+  (1,3.7978074023281914)
+  (2,2.5312963297933164)
+  (3,1.8995679070241176)
+  (4,1.5209780591544813)
+  (5,1.2686911096711349)
+  (6,1.1153943797343122)
+  (7,0.9753334678313537)
+  (8,1.6590266294671678)
+  (9,1.49353266599053)
+  (10,1.3591421800484882)
+  (11,1.2464954659443386)
+  (12,1.1509554914822635)
+  (13,1.0689680324221251)
+  (14,1.0005011069077494)
+  (15,0.9661681557643178)
+  (15,0.9195470442356819)
+  (14,0.9963480930922507)
+  (13,1.0684319675778748)
+  (12,1.1508631751844036)
+  (11,1.2458725340556613)
+  (10,1.3579898199515117)
+  (9,1.4934193340094697)
+  (8,1.6589133705328318)
+  (7,0.9387937988353128)
+  (6,1.074741620265688)
+  (5,1.267024890328866)
+  (4,1.5201059408455189)
+  (3,1.8992634263092156)
+  (2,2.530494336873349)
+  (1,3.7927459310051446)
+  (0,7.586698384157909)
+} \closedcycle;
+\addplot[color=runtimecolor,line width=1pt,mark=*,mark size=2pt,mark options={draw=white,line width=-0.4pt,solid},forget plot] coordinates {
+  (0,7.587361333333333)
+  (1,3.795276666666668)
+  (2,2.5308953333333326)
+  (3,1.8994156666666666)
+  (4,1.520542)
+  (5,1.2678580000000004)
+  (6,1.0950680000000002)
+  (7,0.9570636333333332)
+  (8,1.6589699999999998)
+  (9,1.4934759999999998)
+  (10,1.358566)
+  (11,1.246184)
+  (12,1.1509093333333336)
+  (13,1.0687)
+  (14,0.9984246000000001)
+  (15,0.9428575999999999)
+};
+\end{axis}
+\end{tikzpicture}

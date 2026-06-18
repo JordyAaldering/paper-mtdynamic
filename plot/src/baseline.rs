@@ -35,11 +35,18 @@ fn plot(df: &DataFrame<Record>) -> TikzPicture {
     TikzPicture::from_twin(ax0, ax1)
 }
 
-fn main() {
-    let df = read_csv(Device::CN125, Baseline::Matmul);
+fn plot_baseline(device: Device, baseline: Baseline) {
+    let df = read_csv(device, baseline);
     for size in unique_sizes(&df) {
         let doc = plot(&df.clone().filter(|_, r| r.size == size));
-        let path = format!("../paper/img/{}_{}_{}.tex", Device::CN125, Baseline::Matmul, size);
+        let path = format!("../paper/img/{}_{}_{}.tex", device, baseline, size);
         doc.write(&path).unwrap();
     }
+}
+
+fn main() {
+    plot_baseline(Device::CN125, Baseline::Stencil);
+    plot_baseline(Device::CN125, Baseline::Matmul);
+    plot_baseline(Device::CN125, Baseline::Nbody);
+    plot_baseline(Device::CN125, Baseline::Rust);
 }

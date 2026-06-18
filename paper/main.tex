@@ -293,6 +293,25 @@ clock of 2.60GHz. The CPU has 16MB of level three cache, and the system itself p
   \label{fig:nbody}
 \end{figure*}
 
+\begin{figure*}
+  \tiny
+  \captionsetup[subfigure]{font=scriptsize,labelformat=empty}
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{10000 bodies}
+    \input{img/cn125_nbody_10000.tex}%
+  \end{subfigure}%
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{25000 bodies}
+    \input{img/cn125_nbody_25000.tex}%
+  \end{subfigure}%
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{40000 bodies}
+    \input{img/cn125_nbody_40000.tex}%
+  \end{subfigure}%
+  \caption{...}%
+  \label{fig:nbodynew}
+\end{figure*}
+
 \subsection{N-body simulation}
 As our first benchmark we measure the energy consumption and runtime of a SaC implementation of
 the N-body algorithm, given three different problem input sizes. The N-body algorithm is typically
@@ -383,6 +402,25 @@ performance has diminishing returns for decreasing energy consumption.
   Bars denote energy consumption, with corresponding values in the left y-axis.
   The line denotes runtime, corresponding to the right y-axis.}
   \label{fig:stencil}
+\end{figure*}
+
+\begin{figure*}
+  \tiny
+  \captionsetup[subfigure]{font=scriptsize,labelformat=empty}
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{10000 $\times$ 10000}
+    \input{img/cn125_stencil_10000.tex}%
+  \end{subfigure}%
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{25000 $\times$ 25000}
+    \input{img/cn125_stencil_25000.tex}%
+  \end{subfigure}%
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{40000 $\times$ 40000}
+    \input{img/cn125_stencil_40000.tex}%
+  \end{subfigure}%
+  \caption{...}%
+  \label{fig:stencilnew}
 \end{figure*}
 
 \subsection{Nine-point stencil}\label{sec:stencil}
@@ -560,6 +598,25 @@ even a single-threaded approach.
   Bars denote energy consumption, with corresponding values in the left y-axis.
   The line denotes runtime, corresponding to the right y-axis.}
   \label{fig:rust}
+\end{figure*}
+
+\begin{figure*}
+  \tiny
+  \captionsetup[subfigure]{font=scriptsize,labelformat=empty}
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{500 $\times$ 500}
+    \input{img/cn125_rust_500.tex}%
+  \end{subfigure}%
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{1000 $\times$ 1000}
+    \input{img/cn125_rust_1000.tex}%
+  \end{subfigure}%
+  \begin{subfigure}[b]{.333\linewidth}
+    \caption{1500 $\times$ 1500}
+    \input{img/cn125_rust_1500.tex}%
+  \end{subfigure}%
+  \caption{...}%
+  \label{fig:rustnew}
 \end{figure*}
 
 \subsection{Implementation language}
