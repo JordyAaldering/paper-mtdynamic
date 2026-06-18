@@ -28,14 +28,14 @@ int main()
 
     // Warmup runs
     for (i = 0; i < 3; i += 1) {
-        a = matmul(a, b);
+        _ = matmul(a, b);
     }
 
     for (i = 0; i < ITER; i += 1) {
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
-        a = matmul(a, b);
+        _ = matmul(a, b);
 
         sec2, nsec2 = MTClock::gettime();
         energy_uj = Rapl::raplStop(0, rapl);

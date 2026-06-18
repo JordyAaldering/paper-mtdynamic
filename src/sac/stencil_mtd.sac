@@ -5,22 +5,18 @@ use StdIO: all;
 #define ITER 250
 #endif
 
-specialize double[10000,10000] stencil(double[10000,10000] a, double[3,3] w);
-specialize double[25000,25000] stencil(double[25000,25000] a, double[3,3] w);
-specialize double[40000,40000] stencil(double[40000,40000] a, double[3,3] w);
-
 noinline
-double[n,n] stencil(double[n,n] arr, double[3,3] weights)
+double[n,n] stencil(double[n,n] a, double[3,3] w, int size)
 {
     ControlFlow::touch();
 
     return { [x,y] -> sum({ [i,j] ->
-                _mul_SxS_(_sel_VxA_([i,j], weights),
+                _mul_SxS_(_sel_VxA_([i,j], w),
                           _sel_VxA_([_mod_SxS_(_add_SxS_(_add_SxS_(n, x), _sub_SxS_(i, 1)), n),
                                      _mod_SxS_(_add_SxS_(_add_SxS_(n, y), _sub_SxS_(j, 1)), n)],
-                                    arr))
+                                    a))
                        })
-           | [x,y] < [n,n] };
+           | [x,y] < [size,size] };
 }
 
 int main()
@@ -29,30 +25,20 @@ int main()
     N2 = String::toi(CommandLine::argv(2));
     N3 = String::toi(CommandLine::argv(3));
 
-    a1 = { [i,j] -> tod(i + j) | [i,j] < [N1,N1] };
-    a2 = { [i,j] -> tod(i + j) | [i,j] < [N2,N2] };
-    a3 = { [i,j] -> tod(i + j) | [i,j] < [N3,N3] };
-
-    weights = [
+    a = { [i,j] -> tod(i + j) | [i,j] < [N3,N3] };
+    w = [
         [0.05, 0.15, 0.05],
         [0.15, 0.20, 0.15],
         [0.05, 0.15, 0.05]
     ];
 
     for (i = 0; i < ITER * 3; i += 1) {
+        n = i < ITER ? N1 : (i < ITER * 2 ? N2 : N3);
+
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
-        if (i < ITER) {
-            n = N1;
-            a1 = stencil(a1, weights);
-        } else if (i < ITER * 2) {
-            n = N2;
-            a2 = stencil(a2, weights);
-        } else {
-            n = N3;
-            a3 = stencil(a3, weights);
-        }
+        _ = stencil(a, w, n);
 
         sec2, nsec2 = MTClock::gettime();
         energy_uj = Rapl::raplStop(0, rapl);

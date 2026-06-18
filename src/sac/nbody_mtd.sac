@@ -29,25 +29,21 @@ struct Vector3d acc(struct Body b, struct Body b2)
     return dir * (b2.mass / pow3(EPSILON + l2norm(dir)));
 }
 
-specialize struct Body[10000] timestep(struct Body[10000] bs, double dt);
-specialize struct Body[25000] timestep(struct Body[25000] bs, double dt);
-specialize struct Body[40000] timestep(struct Body[40000] bs, double dt);
-
 noinline
-struct Body[n] timestep(struct Body[n] bs, double dt)
+struct Vector3d[n] timestep(struct Body[n] bs, double dt, int size)
 {
     ControlFlow::touch();
 
     acc = with {
-        ([0] <= [i] < [n]): with {
-            ([0] <= [j] < [n]):
+        ([0] <= [i] < [size]): with {
+            ([0] <= [j] < [size]):
                 acc(_sel_VxA_([i], bs), _sel_VxA_([j], bs));
         }: fold(+, Vector3d{});
-    }: genarray([n], Vector3d{});
+    }: genarray([size], Vector3d{});
 
-    bs.vel += acc * dt;
-    bs.pos += bs.vel * dt;
-    return bs;
+    // bs.vel += acc * dt;
+    // bs.pos += bs.vel * dt;
+    return acc;
 }
 
 int main()
@@ -56,36 +52,19 @@ int main()
     N2 = String::toi(CommandLine::argv(2));
     N3 = String::toi(CommandLine::argv(3));
 
-    bodies1 = { [i] -> Body {
-            Vector3d{ tod(i), tod(i), tod(i) },
-            Vector3d{ },
-            tod(i)
-        } | [i] < [N1] };
-    bodies2 = { [i] -> Body {
-            Vector3d{ tod(i), tod(i), tod(i) },
-            Vector3d{ },
-            tod(i)
-        } | [i] < [N2] };
-    bodies3 = { [i] -> Body {
+    bodies = { [i] -> Body {
             Vector3d{ tod(i), tod(i), tod(i) },
             Vector3d{ },
             tod(i)
         } | [i] < [N3] };
 
     for (i = 0; i < ITER * 3; i += 1) {
+        n = i < ITER ? N1 : (i < ITER * 2 ? N2 : N3);
+
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
-        if (i < ITER) {
-            n = N1;
-            bodies1 = timestep(bodies1, 0.01);
-        } else if (i < ITER * 2) {
-            n = N2;
-            bodies2 = timestep(bodies2, 0.01);
-        } else {
-            n = N3;
-            bodies3 = timestep(bodies3, 0.01);
-        }
+        _ = timestep(bodies, 0.01, n);
 
         sec2, nsec2 = MTClock::gettime();
         energy_uj = Rapl::raplStop(0, rapl);

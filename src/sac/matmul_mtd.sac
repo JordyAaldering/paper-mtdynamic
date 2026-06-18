@@ -5,18 +5,14 @@ use StdIO: all;
 #define ITER 250
 #endif
 
-specialize double[ 500, 500] matmul(double[ 500, 500] a, double[ 500, 500] b);
-specialize double[1000,1000] matmul(double[1000,1000] a, double[1000,1000] b);
-specialize double[1500,1500] matmul(double[1500,1500] a, double[1500,1500] b);
-
 noinline
-double[u,w] matmul(double[u,v] a, double[v,w] b)
+double[n,n] matmul(double[n,n] a, double[n,n] b, int size)
 {
     ControlFlow::touch();
 
     return { [i,j] -> sum(
-                { [k] -> a[i,k] * b[k,j] | [k] < [v] }
-            ) | [i,j] < [u,w] };
+                { [k] -> a[i,k] * b[k,j] | [k] < [size] }
+            ) | [i,j] < [size,size] };
 }
 
 int main()
@@ -25,27 +21,16 @@ int main()
     N2 = String::toi(CommandLine::argv(2));
     N3 = String::toi(CommandLine::argv(3));
 
-    a1 = { [i,j] -> tod(i) | [i,j] < [N1,N1] };
-    b1 = { [i,j] -> tod(j) | [i,j] < [N1,N1] };
-    a2 = { [i,j] -> tod(i) | [i,j] < [N2,N2] };
-    b3 = { [i,j] -> tod(j) | [i,j] < [N2,N2] };
-    b2 = { [i,j] -> tod(j) | [i,j] < [N3,N3] };
-    a3 = { [i,j] -> tod(i) | [i,j] < [N3,N3] };
+    a = { [i,j] -> tod(i) | [i,j] < [N3,N3] };
+    b = { [i,j] -> tod(j) | [i,j] < [N3,N3] };
 
     for (i = 0; i < ITER * 3; i += 1) {
+        n = i < ITER ? N1 : (i < ITER * 2 ? N2 : N3);
+
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
-        if (i < ITER) {
-            n = N1;
-            a1 = matmul(a1, b1);
-        } else if (i < ITER * 2) {
-            n = N2;
-            a2 = matmul(a2, b2);
-        } else {
-            n = N3;
-            a3 = matmul(a3, b3);
-        }
+        _ = matmul(a, b, n);
 
         sec2, nsec2 = MTClock::gettime();
         energy_uj = Rapl::raplStop(0, rapl);

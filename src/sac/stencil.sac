@@ -36,14 +36,14 @@ int main()
 
     // Warmup runs
     for (i = 0; i < 3; i += 1) {
-        a = stencil(a, w);
+        _ = stencil(a, w);
     }
 
     for (i = 0; i < ITER; i += 1) {
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
-        a = stencil(a, w);
+        _ = stencil(a, w);
 
         sec2, nsec2 = MTClock::gettime();
         energy_uj = Rapl::raplStop(0, rapl);
