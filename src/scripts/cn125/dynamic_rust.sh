@@ -16,9 +16,9 @@ mkdir -p res/cn125
 # Energy-based (delta) approach
 echo "size,threads,runtime,energy" > res/cn125/delta_rust.csv
 ./bin/ecodynamic --once -w 3.08 delta --energy-preference 1 &
-RAYON_NUM_THREADS=16 taskset -c 0-15 ./target/release/dynamic 500 1000 1500 >> res/cn125/delta_rust.csv
+RAYON_NUM_THREADS=16 ./target/release/dynamic 500 1000 1500 >> res/cn125/delta_rust.csv
 
 # Runtime-based (corridor) approach
 echo "size,threads,runtime,energy" > res/cn125/corridor_rust.csv
 ./bin/ecodynamic --once -w 3.08 corridor --energy-preference 0 &
-RAYON_NUM_THREADS=16 taskset -c 0-15 ./target/release/dynamic 500 1000 1500 >> res/cn125/corridor_rust.csv
+RAYON_NUM_THREADS=16 ./target/release/dynamic 500 1000 1500 >> res/cn125/corridor_rust.csv

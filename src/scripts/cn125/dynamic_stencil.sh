@@ -16,9 +16,9 @@ mkdir -p res/cn125
 # Energy-based (delta) approach
 echo "size,threads,runtime,energy" > res/cn125/delta_stencil.csv
 ./bin/ecodynamic --once -w 3.08 delta --energy-preference 1 &
-SAC_PARALLEL=16 taskset -c 0-15 ./bin/stencil_mtd 10000 25000 40000 >> res/cn125/delta_stencil.csv
+SAC_PARALLEL=16 ./bin/stencil_mtd 10000 25000 40000 >> res/cn125/delta_stencil.csv
 
 # Runtime-based (corridor) approach
 echo "size,threads,runtime,energy" > res/cn125/corridor_stencil.csv
 ./bin/ecodynamic --once -w 3.08 corridor --energy-preference 0 &
-SAC_PARALLEL=16 taskset -c 0-15 ./bin/stencil_mtd 10000 25000 40000 >> res/cn125/corridor_stencil.csv
+SAC_PARALLEL=16 ./bin/stencil_mtd 10000 25000 40000 >> res/cn125/corridor_stencil.csv

@@ -16,6 +16,6 @@ echo "size,threads,runtime,energy" > res/cn125/nbody.csv
 
 for size in 10000 25000 40000; do
     for threads in $(seq 16); do
-        SAC_PARALLEL=$threads taskset -c $(seq -s, 0 2 $threads) ./bin/nbody $size >> res/cn125/nbody.csv
+        SAC_PARALLEL=$threads ./bin/nbody $size >> res/cn125/nbody.csv
     done
 done

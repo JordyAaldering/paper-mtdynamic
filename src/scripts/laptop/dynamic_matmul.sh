@@ -14,9 +14,9 @@ mkdir -p res/laptop
 # Energy-based (delta) approach
 echo "size,threads,runtime,energy" > res/laptop/delta_matmul.csv
 ./bin/ecodynamic --once -w 2.4 delta --energy-preference 1 &
-SAC_PARALLEL=16 taskset -c 0-15 ./bin/matmul_mtd 500 1000 1500 >> res/laptop/delta_matmul.csv
+SAC_PARALLEL=16 ./bin/matmul_mtd 500 1000 1500 >> res/laptop/delta_matmul.csv
 
 # Runtime-based (corridor) approach
 echo "size,threads,runtime,energy" > res/laptop/corridor_matmul.csv
 ./bin/ecodynamic --once -w 2.4 corridor --energy-preference 0 &
-SAC_PARALLEL=16 taskset -c 0-15 ./bin/matmul_mtd 500 1000 1500 >> res/laptop/corridor_matmul.csv
+SAC_PARALLEL=16 ./bin/matmul_mtd 500 1000 1500 >> res/laptop/corridor_matmul.csv
