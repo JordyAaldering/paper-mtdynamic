@@ -504,8 +504,8 @@ To evaluate how close the adaptation algorithm comes to the performance of a the
 To investigate whether there are differences between our energy-optimising approach and a runtime-optimising approach, we similarly compare our solution to the runtime-based adaptation algorithm described by Gordon et~al.~\cite{gordon2015dynamic}.
 We investigate whether the adaptation algorithm introduces significant energy overhead, and finally we measure how much energy the adaptation algorithm saves compared to multiple static approaches.
 
-Both the energy-based and runtime-based dynamic adaptation algorithms, the benchmark scripts, and the benchmark results are publicly available on GitHub~\cite{repo-mt}.
-The implementation of the thread-switching beehive system and adaptation algorithm in SaC are available on the SaC GitLab project~\cite{repo-sac}.
+Both the energy-based and runtime-based dynamic adaptation algorithms, the benchmark scripts, and the benchmark results are publicly available on GitHub~\cite{mtdynamic2024artefact}.
+The implementation of the thread-switching beehive system and adaptation algorithm in SaC are available on the SaC GitLab project~\cite{mtdynamic2024repository}.
 
 \subsection{Thread-management in Single assignment C}\label{sec:implementation-sac}
 We hook into SaC's beehive system, explained in Section~\ref{sec:parallelism}, to control the number of threads of SaC programs dynamically.
