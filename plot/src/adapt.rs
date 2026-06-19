@@ -18,7 +18,7 @@ fn plot(benchmark: Benchmark, ymin: f64, ymax: f64) -> Axis {
         .build_axis()
         .line(Cs::Axis(250.0, ymin), Cs::Axis(250.0, ymax), None)
         .line(Cs::Axis(500.0, ymin), Cs::Axis(500.0, ymax), None);
-    ax.style.title = Some(benchmark.to_string());
+    ax.style.title = Some(format!("{:?}", benchmark));
     ax.style.xmin = Some(-30.0);
     ax.style.xmax = Some(780.0);
     ax.style.ymin = Some(ymin);

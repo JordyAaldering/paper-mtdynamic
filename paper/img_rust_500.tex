@@ -12,7 +12,7 @@
   xmax=15.5,
   ymin=0,
   xlabel={Threads},
-  ylabel={Energy (J)},
+  ylabel={Energy (\si{\joule})},
   scaled ticks=false,
   xtick={0,3,6,9,12,15},
   extra y ticks={\pgfkeysvalueof{/pgfplots/ymax}},
@@ -67,6 +67,7 @@
 \draw[color=black!90,line width=0.9pt] (axis cs:14,1.9992437133333336) -- (axis cs:14,2.059819246666667);
 \draw[color=black!90,line width=0.9pt] (axis cs:15,2.0198421683333336) -- (axis cs:15,2.038758251666667);
 \addlegendimage{fill=runtimecolor,line width=1pt,mark=*,mark size=2pt,mark options={draw=white,line width=-0.4pt,solid}}
+\draw[draw=gray,dashed] (axis cs:7.5,0) -- (axis cs:7.5,8);
 \end{axis}
 \begin{axis}[
   width={\epyfigurewidth-\epyrpad},
@@ -76,7 +77,7 @@
   xmin=-0.5,
   xmax=15.5,
   ymin=0,
-  ylabel={Runtime (s)},
+  ylabel={Runtime (\si{\second})},
   scaled ticks=false,
   xtick=\empty,
   extra y ticks={\pgfkeysvalueof{/pgfplots/ymax}},

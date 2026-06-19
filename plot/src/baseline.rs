@@ -54,6 +54,10 @@ fn plot(df: &DataFrame<Record>, title: String) -> TikzPicture {
             "runtimecolor",
         )
         .build_axes();
+
+    let max = df.fold(0f64, |acc, r| acc.max(r.energy));
+    ax0 = ax0.line(Cs::Axis(7.5, 0.0), Cs::Axis(7.5, (max * 1.1).ceil()), None);
+
     ax0.style.title = Some(title);
     ax0.style.ymin = Some(0.0);
     ax1.style.ymin = Some(0.0);

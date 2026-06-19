@@ -31,6 +31,18 @@ impl fmt::Display for Benchmark {
     }
 }
 
+impl fmt::Debug for Benchmark {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        use Benchmark::*;
+        match self {
+            Nbody => write!(f, "N-body simulation"),
+            Stencil => write!(f, "Nine-point stencil"),
+            Matmul => write!(f, "Matrix multiplication"),
+            Rust => write!(f, "Rust implementation"),
+        }
+    }
+}
+
 pub fn unique_sizes(df: &DataFrame<Record>) -> Vec<usize> {
     let mut t = df.rows()
         .iter()
