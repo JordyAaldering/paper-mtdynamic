@@ -18,14 +18,6 @@
 \pgfplotsset{
   compat=newest,
   every axis legend/.append style={font=\tiny},
-  legend image code/.code={
-    \path[#1] (0pt,0pt) -- (10pt,0pt) plot coordinates {(5pt,0pt)};
-  },
-  area legend/.append style={
-    legend image code/.code={
-      \draw[#1,draw=none] (0pt,-0.5ex) rectangle (10pt,0.5ex);
-    }
-  },
 }
 
 \definecolor{energycolor}{RGB}{2,158,115}
@@ -197,7 +189,7 @@ The CPU has \qty{16}{\mega\byte} of L3 cache, and the system itself provides \qt
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at two threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 16 threads.
     % Runtime peaks at two threads, and gradually decreases until it reaches the minimum at 16 threads.
-    \input{img_nbody_10000.tex}%
+    \input{fig_nbody_10000.tex}%
   \end{subfigure}%
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -206,7 +198,7 @@ The CPU has \qty{16}{\mega\byte} of L3 cache, and the system itself provides \qt
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at one thread, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 14 threads.
     % Runtime peaks at one thread, and gradually decreases until it plateaus around 14 threads.
-    \input{img_nbody_25000.tex}%
+    \input{fig_nbody_25000.tex}%
   \end{subfigure}%
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -215,7 +207,7 @@ The CPU has \qty{16}{\mega\byte} of L3 cache, and the system itself provides \qt
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at one thread, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 12 threads.
     % Runtime peaks at one thread, and gradually decreases until it plateaus around 12 threads.
-    \input{img_nbody_40000.tex}%
+    \input{fig_nbody_40000.tex}%
   \end{subfigure}%
   \caption{Average energy consumption and runtime of 250 N-body simulation in SaC.
   Bars denote energy consumption, with corresponding values in the left y-axis.
@@ -264,7 +256,7 @@ This suggests that the overhead caused by having to manage multiple threads has 
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at two threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 16 threads.
     % Runtime peaks at two threads, and gradually decreases until it reaches the minimum at 16 threads.
-    \input{img_stencil_10000.tex}%
+    \input{fig_stencil_10000.tex}%
   \end{subfigure}%
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -273,7 +265,7 @@ This suggests that the overhead caused by having to manage multiple threads has 
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at two threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 14 threads.
     % Runtime peaks at two threads, and gradually decreases until it plateaus around 14 threads.
-    \input{img_stencil_25000.tex}%
+    \input{fig_stencil_25000.tex}%
   \end{subfigure}%
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -282,7 +274,7 @@ This suggests that the overhead caused by having to manage multiple threads has 
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at two threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 12 threads.
     % Runtime peaks at two threads, and gradually decreases until it plateaus around 12 threads.
-    \input{img_stencil_40000.tex}%
+    \input{fig_stencil_40000.tex}%
   \end{subfigure}%
   \caption{Average energy consumption and runtime of 250 nine-point stencil operations in SaC.
   Bars denote energy consumption, with corresponding values in the left y-axis.
@@ -320,7 +312,7 @@ Whereas the input size increases, the optimum thread-count decreases.
     % Energy consumption peaks at one threads and gradually decreases from one to eight threads, after which it starts noticeably fluctuating.
     % Reaching a minimum at 14 threads, with an energy consumption roughly equal to that of eight threads.
     % Runtime follows a similar pattern, albeit being more pronounced.
-    \input{img_matmul_500.tex}%
+    \input{fig_matmul_500.tex}%
   \end{subfigure}%
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -331,7 +323,7 @@ Whereas the input size increases, the optimum thread-count decreases.
     % Going to nine threads there is a significant jump in energy consumption, peaking at nine threads and gradually decreasing until 16 threads.
     % The energy consumption of 16 threads is above that of one thread.
     % Runtime follows a similar pattern, albeit being more pronounced.
-    \input{img_matmul_1000.tex}%
+    \input{fig_matmul_1000.tex}%
   \end{subfigure}%
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -342,7 +334,7 @@ Whereas the input size increases, the optimum thread-count decreases.
     % Going to nine threads there is a significant jump in energy consumption, peaking at nine threads and gradually decreasing until 16 threads.
     % The energy consumption of 16 threads is above that of one thread.
     % Runtime follows a similar pattern, albeit being more pronounced.
-    \input{img_matmul_1500.tex}%
+    \input{fig_matmul_1500.tex}%
   \end{subfigure}%
   \caption{Average energy consumption and runtime of 250 naive matrix multiplications in SaC.
   Bars denote energy consumption, with corresponding values in the left y-axis.
@@ -384,7 +376,7 @@ Even with an efficient thread pinning strategy, using more than eight threads ca
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at one threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 16 threads.
     % Runtime follows the same pattern.
-    \input{img_rust_500.tex}%
+    \input{fig_rust_500.tex}%
   \end{subfigure}%
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -393,7 +385,7 @@ Even with an efficient thread pinning strategy, using more than eight threads ca
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at one threads, and steadily decreases until roughly eight threads, after which it plateaus and reaches a minimum at 15 threads.
     % Runtime follows the same pattern.
-    \input{img_rust_1000.tex}%
+    \input{fig_rust_1000.tex}%
   \end{subfigure}%
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -402,7 +394,7 @@ Even with an efficient thread pinning strategy, using more than eight threads ca
     % The right y-axis shows an orange line indicating the runtime in seconds.
     % Energy consumption peaks at one threads, and steadily decreases until it reaches a minimum at eight threads, after which energy consumption starts gradually increasing again.
     % Runtime follows the same pattern.
-    \input{img_rust_1500.tex}%
+    \input{fig_rust_1500.tex}%
   \end{subfigure}%
   \caption{Average energy consumption and runtime of 250 naive matrix multiplications in Rust.
   Bars denote energy consumption, with corresponding values in the left y-axis.
@@ -549,7 +541,7 @@ We evaluate the adaptation quality of the algorithm by gradually changing the in
     % An orange dashed line represents the optimal thread count, and a blue line indicates the actual thread count.
     % When the input size changes the blue line oscillates a lot for a few iterations.
     % Afterwards it oscillates by less than one thread around the optimum at the orange line.
-    \input{img_adapt_nbody.tex}%
+    \input{fig_adapt_nbody.tex}%
     \caption{Adaptation quality on the SaC implementation of the N-body simulation.}%
     \label{fig:adapt-nbody}
   \end{minipage}%
@@ -562,7 +554,7 @@ We evaluate the adaptation quality of the algorithm by gradually changing the in
     % When the input size changes the blue line oscillates a lot for a few iterations.
     % Afterwards, for the 500 by 500 input, it oscillates by less than one thread around the optimum at the orange line.
     % For the other two input sizes it converges to four threads, instead of the optimum at the orange line at eight threads.
-    \input{img_adapt_matmul.tex}%
+    \input{fig_adapt_matmul.tex}%
     \caption{Adaptation quality on the SaC implementation of the matrix multiplication algorithm.}%
     \label{fig:adapt-matmul}
   \end{minipage}%
@@ -598,7 +590,7 @@ This happens because the dynamic algorithm disables threads in a contiguous orde
     % When the input size changes the blue line oscillates a lot for a few iterations.
     % Afterwards it oscillates by less than one thread around the optimum at the orange line.
     % For the 40000 by 4000 input it converges to ten threads, instead of the optimum at the orange line at twelve threads.
-    \input{img_adapt_stencil.tex}%
+    \input{fig_adapt_stencil.tex}%
     \caption{Adaptation quality on the SaC implementation of the nine-point stencil operation.}%
     \label{fig:adapt-stencil}
   \end{minipage}%
@@ -610,7 +602,7 @@ This happens because the dynamic algorithm disables threads in a contiguous orde
     % An orange dashed line represents the optimal thread count, and a blue line indicates the actual thread count.
     % When the input size changes the blue line oscillates a lot for a few iterations.
     % Afterwards it oscillates by less than one thread around the optimum at the orange line.
-    \input{img_adapt_rust.tex}%
+    \input{fig_adapt_rust.tex}%
     \caption{Adaptation quality on the Rust implementation of the matrix multiplication algorithm.}%
     \label{fig:adapt-rust}
   \end{minipage}%

@@ -76,7 +76,7 @@ fn plot_baseline(benchmark: Benchmark) {
         };
 
         let tikz = plot(&df.clone().filter(|_, r| r.size == size), title);
-        let path = format!("../paper/img_{}_{}.tex", benchmark, size);
+        let path = format!("../paper/fig_{}_{}.tex", benchmark, size);
         tikz.write(&path).unwrap();
     }
 }

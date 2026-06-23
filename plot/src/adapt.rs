@@ -43,7 +43,7 @@ fn nbody() {
         .line(Cs::Axis(250.0, 14.0), Cs::Axis(500.0, 14.0), "colorblind1".into())
         .line(Cs::Axis(500.0, 12.0), Cs::Axis(750.0, 12.0), "colorblind1".into());
     let tikz = TikzPicture::from_axis(ax);
-    tikz.write("../paper/img_adapt_nbody.tex").unwrap();
+    tikz.write("../paper/fig_adapt_nbody.tex").unwrap();
 }
 
 fn stencil() {
@@ -52,7 +52,7 @@ fn stencil() {
         .line(Cs::Axis(250.0, 14.0), Cs::Axis(500.0, 14.0), "colorblind1".into())
         .line(Cs::Axis(500.0, 12.0), Cs::Axis(750.0, 12.0), "colorblind1".into());
     let tikz = TikzPicture::from_axis(ax);
-    tikz.write("../paper/img_adapt_stencil.tex").unwrap();
+    tikz.write("../paper/fig_adapt_stencil.tex").unwrap();
 }
 
 fn matmul() {
@@ -60,7 +60,7 @@ fn matmul() {
         .line(Cs::Axis(0.0, 14.0), Cs::Axis(250.0, 14.0), "colorblind1".into())
         .line(Cs::Axis(250.0, 8.0), Cs::Axis(750.0, 8.0), "colorblind1".into());
     let tikz = TikzPicture::from_axis(ax);
-    tikz.write("../paper/img_adapt_matmul.tex").unwrap();
+    tikz.write("../paper/fig_adapt_matmul.tex").unwrap();
 }
 
 fn rust() {
@@ -68,7 +68,7 @@ fn rust() {
         .line(Cs::Axis(0.0, 16.0), Cs::Axis(250.0, 16.0), "colorblind1".into())
         .line(Cs::Axis(250.0, 8.0), Cs::Axis(750.0, 8.0), "colorblind1".into());
     let tikz = TikzPicture::from_axis(ax);
-    tikz.write("../paper/img_adapt_rust.tex").unwrap();
+    tikz.write("../paper/fig_adapt_rust.tex").unwrap();
 }
 
 fn main() {
