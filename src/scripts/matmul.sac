@@ -6,7 +6,7 @@ use StdIO: all;
 #endif
 
 #ifndef ITER
-#define ITER 250
+#define ITER 50
 #endif
 
 inline
