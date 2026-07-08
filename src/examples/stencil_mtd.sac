@@ -1,0 +1,69 @@
+use Array: all;
+use StdIO: all;
+
+noinline
+double[2:shp] stencil(double[2:shp] a, double[3,3] w)
+{
+    ControlFlow::touch();
+
+    return { iv -> sum({ jv -> w[jv] * a[mod(iv+jv-1, shp)] })
+           | iv < shp };
+}
+
+int main()
+{
+    size0 = String::toi(CommandLine::argv(1));
+    size1 = String::toi(CommandLine::argv(2));
+    size2 = String::toi(CommandLine::argv(3));
+
+    a0 = { [i,j] -> tod(i+j) | [i,j] < [size,size] };
+    a1 = { [i,j] -> tod(i+j) | [i,j] < [size,size] };
+    a2 = { [i,j] -> tod(i+j) | [i,j] < [size,size] };
+    w = [[0.05, 0.15, 0.05],
+         [0.15, 0.20, 0.15],
+         [0.05, 0.15, 0.05]];
+
+    for (i = 0; i < 250; i += 1) {
+        rapl = Rapl::raplStart(0);
+        sec1, nsec1 = MTClock::gettime();
+
+        a0 = stencil(a0, w);
+
+        // The call results in a thread count change; so read its value after, not before
+        threads = Rapl::numThreads();
+
+        sec2, nsec2 = MTClock::gettime();
+        energy_uj = Rapl::raplStop(0, rapl);
+        printf("%d,%d,%g,%g\n", size0, threads, MTClock::timediff(sec1, nsec1, sec2, nsec2), Rapl::tod(energy_uj));
+    }
+
+    for (i = 0; i < 250; i += 1) {
+        rapl = Rapl::raplStart(0);
+        sec1, nsec1 = MTClock::gettime();
+
+        a1 = stencil(a1, w);
+
+        // The call results in a thread count change; so read its value after, not before
+        threads = Rapl::numThreads();
+
+        sec2, nsec2 = MTClock::gettime();
+        energy_uj = Rapl::raplStop(0, rapl);
+        printf("%d,%d,%g,%g\n", size1, threads, MTClock::timediff(sec1, nsec1, sec2, nsec2), Rapl::tod(energy_uj));
+    }
+
+    for (i = 0; i < 250; i += 1) {
+        rapl = Rapl::raplStart(0);
+        sec1, nsec1 = MTClock::gettime();
+
+        a2 = stencil(a2, w);
+
+        // The call results in a thread count change; so read its value after, not before
+        threads = Rapl::numThreads();
+
+        sec2, nsec2 = MTClock::gettime();
+        energy_uj = Rapl::raplStop(0, rapl);
+        printf("%d,%d,%g,%g\n", size2, threads, MTClock::timediff(sec1, nsec1, sec2, nsec2), Rapl::tod(energy_uj));
+    }
+
+    return 0;
+}

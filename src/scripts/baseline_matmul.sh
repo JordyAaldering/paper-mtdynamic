@@ -8,13 +8,13 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=baseline_matmul.out
 
+make bin/matmul_mt
+
 echo "size,threads,runtime,energy" > res/baseline_matmul.csv
 
 for size in 500 1000 1500; do
-    sac2c -t mt_pth scripts/matmul.sac -o matmul -DP=$size
-
     for threads in $(seq 1 16); do
-        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./matmul \
+        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/matmul_mt $size \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_matmul.csv

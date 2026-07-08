@@ -1,0 +1,75 @@
+use Array: all except { +,-,* };
+import Array: { +,-,* };
+use Vector3d: all except { +,-,*,/,==,!= };
+import Vector3d: { +,-,* };
+use StdIO: all;
+
+#define EPSILON 0x1p-53
+
+#ifndef ITER
+#define ITER 50
+#endif
+
+struct Body {
+   struct Vector3d pos;
+   struct Vector3d vel;
+   double mass;
+};
+
+inline
+double pow3(double x)
+{
+    return x * x * x;
+}
+
+inline
+struct Vector3d acc(struct Body b, struct Body b2)
+{
+   dir = b2.pos - b.pos;
+   return dir * (b2.mass / pow3(EPSILON + l2norm(dir)));
+}
+
+noinline
+struct Body[n] timestep(struct Body[n] bs, double dt)
+{
+    ControlFlow::touch();
+
+    acc = with {
+        ([0] <= [i] < [n]): with {
+            ([0] <= [j] < [n]):
+                acc(_sel_VxA_([i], bs), _sel_VxA_([j], bs));
+        }: fold(+, Vector3d{});
+    }: genarray([n], Vector3d{});
+
+    bs.vel += acc * dt;
+    bs.pos += bs.vel * dt;
+    return bs;
+}
+
+int main()
+{
+    size = String::toi(CommandLine::argv(1));
+
+    bodies = { [i] -> Body { .pos = Vector3d{ tod(i), tod(2 * i), tod(3 * i) },
+                             .vel = Vector3d{},
+                             .mass = 1d }
+             | [i] < [size] };
+
+    // Warmup runs
+    for (i = 0; i < 5; i += 1) {
+        bodies = timestep(bodies, 0.01);
+    }
+
+    for (i = 0; i < 50; i += 1) {
+        rapl = Rapl::raplStart(0);
+        sec1, nsec1 = MTClock::gettime();
+
+        bodies = timestep(bodies, 0.01);
+
+        sec2, nsec2 = MTClock::gettime();
+        energy_uj = Rapl::raplStop(0, rapl);
+        printf("%g,%g\n", MTClock::timediff(sec1, nsec1, sec2, nsec2), Rapl::tod(energy_uj));
+    }
+
+    return 0;
+}

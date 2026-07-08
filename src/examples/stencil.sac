@@ -1,0 +1,39 @@
+use Array: all;
+use StdIO: all;
+
+noinline
+double[2:shp] stencil(double[2:shp] a, double[3,3] w)
+{
+    ControlFlow::touch();
+
+    return { iv -> sum({ jv -> w[jv] * a[mod(iv+jv-1, shp)] })
+           | iv < shp };
+}
+
+int main()
+{
+    size = String::toi(CommandLine::argv(1));
+
+    a = { [i,j] -> tod(i+j) | [i,j] < [size,size] };
+    w = [[0.05, 0.15, 0.05],
+         [0.15, 0.20, 0.15],
+         [0.05, 0.15, 0.05]];
+
+    // Warmup runs
+    for (i = 0; i < 5; i += 1) {
+        a = stencil(a, w);
+    }
+
+    for (i = 0; i < 50; i += 1) {
+        rapl = Rapl::raplStart(0);
+        sec1, nsec1 = MTClock::gettime();
+
+        a = stencil(a, w);
+
+        sec2, nsec2 = MTClock::gettime();
+        energy_uj = Rapl::raplStop(0, rapl);
+        printf("%g,%g\n", MTClock::timediff(sec1, nsec1, sec2, nsec2), Rapl::tod(energy_uj));
+    }
+
+    return 0;
+}

@@ -1,32 +1,31 @@
 use Array: all;
-use Perf: all;
 use StdIO: all;
 
-#ifndef P
-#define P 10000
-#endif
-
 noinline
-double[P,P] stencil(double[P,P] a, double[3,3] w)
+double[u,w] matmul(double[u,v] a, double[v,w] b)
 {
     ControlFlow::touch();
 
-    return { iv -> sum({ jv -> w[jv] * arr[mod(iv+jv-1, [P,P])] })
-           | iv < [P,P] };
+    return { [i,j] -> sum({ [k] -> a[i,k] * b[k,j] }) };
 }
 
 int main()
 {
-    a = { [i,j] -> tod(i+j) | [i,j] < [P,P] };
-    w = [[0.05, 0.15, 0.05],
-         [0.15, 0.20, 0.15],
-         [0.05, 0.15, 0.05]];
+    size = String::toi(CommandLine::argv(1));
+
+    a = { [i,j] -> tod(i) | [i,j] < [size,size] };
+    b = { [i,j] -> tod(j) | [i,j] < [size,size] };
+
+    // Warmup runs
+    for (i = 0; i < 5; i += 1) {
+        a = matmul(a, b);
+    }
 
     for (i = 0; i < 50; i += 1) {
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
-        a = stencil(a, w);
+        a = matmul(a, b);
 
         sec2, nsec2 = MTClock::gettime();
         energy_uj = Rapl::raplStop(0, rapl);
