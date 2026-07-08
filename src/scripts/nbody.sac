@@ -5,10 +5,6 @@ use StdIO: all;
 #define P 10000
 #endif
 
-#ifndef ITER
-#define ITER 50
-#endif
-
 struct Vector3 {
     double x;
     double y;
@@ -85,17 +81,6 @@ struct Vector3[P] acc_v(struct Body[P] bodies)
            | [i] < [P] };
 }
 
-inline
-struct Body body(int i)
-{
-    d = _tod_S_(i);
-    return Body {
-        Vector3 { d, d, d },
-        Vector3 { d, d, d },
-        d
-    };
-}
-
 noinline
 struct Body[P] timestep(struct Body[P] bodies, double dt)
 {
@@ -107,11 +92,22 @@ struct Body[P] timestep(struct Body[P] bodies, double dt)
     return bodies;
 }
 
+inline
+struct Body body(int i)
+{
+    d = _tod_S_(i);
+    return Body {
+        Vector3 { d, d, d },
+        Vector3 { d, d, d },
+        d
+    };
+}
+
 int main()
 {
     bodies = { [i] -> body(i) | [i] < [P] };
 
-    for (i = 0; _lt_SxS_(i, ITER); i = _add_SxS_(i, 1)) {
+    for (i = 0; _lt_SxS_(i, 50); i = _add_SxS_(i, 1)) {
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
