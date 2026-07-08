@@ -13,8 +13,8 @@ MAX_THREADS=16
 # Build CPU ordering: evens first, then odds.
 CPU_STRING=$(
     {
-        for ((i=0; i<MAX_THREADS; i+=2)); do echo "$i"; done
-        for ((i=1; i<MAX_THREADS; i+=2)); do echo "$i"; done
+        for ((i=0; i<$MAX_THREADS; i+=2)); do echo "$i"; done
+        for ((i=1; i<$MAX_THREADS; i+=2)); do echo "$i"; done
     } | paste -sd,
 )
 
