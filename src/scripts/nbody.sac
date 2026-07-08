@@ -80,7 +80,7 @@ inline
 struct Vector3[P] acc_v(struct Body[P] bodies)
 {
     return { [i] -> with {
-                        ([0] <= [j] < [P]) : acc(bodies[[i]], bodies[[j]]);
+                        ([0] <= [j] < [P]) : acc(_sel_VxA_([i], bodies), _sel_VxA_([j], bodies));
                     }: fold(+, Vector3 { 0.0, 0.0, 0.0 })
            | [i] < [P] };
 }
