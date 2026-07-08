@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #SBATCH --account=csmpi
 #SBATCH --partition=csmpi_long
