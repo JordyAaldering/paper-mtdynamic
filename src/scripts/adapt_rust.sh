@@ -8,4 +8,6 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=adapt_rust.out
 
-cargo run --release --example adapt 16
+echo "size,threads,runtime,energy" > res/adapt_rust.sh
+
+cargo run --release --example adapt 16 >> res/adapt_rust.sh

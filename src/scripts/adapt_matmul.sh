@@ -8,39 +8,36 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=adapt_matmul.out
 
-printf "size,threads,runtime,runtimesd,energy,energysd\n"
+echo "size,threads,runtime,energy" > res/adapt_matmul.csv
 
 # Static approaches
 for size in 500 1000 1500; do
     sac2c -t mt_pth scripts/matmul.sac -o matmul -DP=$size
 
-    printf "$size,1,"
-    ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt 1
-    printf "$size,8,"
-    ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt 8
-    printf "$size,12,"
-    ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt 12
-    printf "$size,16,"
-    ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt 16
+    for threads in 1 8 12 14 16; do
+        ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt $threads \
+            | awk -v size=$size -v threads=$threads '{
+                printf "%f,%f,%s\n", size, threads, $0;
+            }' >> res/adapt_matmul.csv
+    done
 done
 
 # Energy-based approach
 for size in 500 1000 1500; do
     sac2c -t mt_pth_rt scripts/matmul.sac -o matmul -DP=$size
 
-    printf "$size,mt,"
-    numactl --interleave all ./matmul -mt 16
+    numactl --interleave all ./matmul -mt 16 \
+        | awk -v size=$size '{
+            printf "%f,mt,%s\n", size, $0;
+        }' >> res/adapt_matmul.csv
 done
 
 # Runtime-based approach
 for size in 500 1000 1500; do
     sac2c -t mt_pth_rt -domtdrt scripts/matmul.sac -o matmul -DP=$size
 
-    printf "$size,rt,"
-    numactl --interleave all ./matmul -mt 16
+    numactl --interleave all ./matmul -mt 16 \
+        | awk -v size=$size '{
+            printf "%f,rt,%s\n", size, $0;
+        }' >> res/adapt_matmul.csv
 done
-
-rm matmul
-rm matmul.c
-rm matmul.i
-rm matmul.o

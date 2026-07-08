@@ -15,7 +15,7 @@ for size in 10000 25000 40000; do
 
     for threads in `seq 1 16`; do
         numactl --interleave all ./stencil -mt $threads \
-            | awk -v size=$size awk -v threads=$threads '{
+            | awk -v size=$size -v threads=$threads '{
                 printf "%f,%f,%s\n", size, threads, $0;
             }' >> res/baseline_stencil.csv
     done

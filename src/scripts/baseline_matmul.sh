@@ -15,7 +15,7 @@ for size in 500 1000 1500; do
 
     for threads in `seq 1 16`; do
         ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt $threads \
-            | awk -v size=$size awk -v threads=$threads '{
+            | awk -v size=$size -v threads=$threads '{
                 printf "%f,%f,%s\n", size, threads, $0;
             }' >> res/baseline_matmul.csv
     done

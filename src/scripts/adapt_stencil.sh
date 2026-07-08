@@ -8,41 +8,36 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=adapt_stencil.out
 
-printf "size,threads,runtime,runtimesd,energy,energysd\n"
+echo "size,threads,runtime,energy" > res/adapt_stencil.csv
 
 # Static approaches
 for size in 10000 25000 40000; do
     sac2c -t mt_pth scripts/stencil.sac -o stencil -DP=$size
 
-    printf "$size,1,"
-    numactl --interleave all ./stencil -mt 1
-    printf "$size,8,"
-    numactl --interleave all ./stencil -mt 8
-    printf "$size,12,"
-    numactl --interleave all ./stencil -mt 12
-    printf "$size,14,"
-    numactl --interleave all ./stencil -mt 14
-    printf "$size,16,"
-    numactl --interleave all ./stencil -mt 16
+    for threads in 1 8 12 14 16; do
+        numactl --interleave all ./stencil -mt $threads \
+            | awk -v size=$size -v threads=$threads '{
+                printf "%f,%f,%s\n", size, threads, $0;
+            }' >> res/adapt_stencil.csv
+    done
 done
 
 # Energy-based approach
 for size in 10000 25000 40000; do
     sac2c -t mt_pth_rt scripts/stencil.sac -o stencil -DP=$size
 
-    printf "$size,mt,"
-    numactl --interleave all ./stencil -mt 16
+    numactl --interleave all ./stencil -mt 16 \
+        | awk -v size=$size '{
+            printf "%f,mt,%s\n", size, $0;
+        }' >> res/adapt_stencil.csv
 done
 
 # Runtime-based approach
 for size in 10000 25000 40000; do
     sac2c -t mt_pth_rt -domtdrt scripts/stencil.sac -o stencil -DP=$size
 
-    printf "$size,rt,"
-    numactl --interleave all ./stencil -mt 16
+    numactl --interleave all ./stencil -mt 16 \
+        | awk -v size=$size '{
+            printf "%f,rt,%s\n", size, $0;
+        }' >> res/adapt_stencil.csv
 done
-
-rm stencil
-rm stencil.c
-rm stencil.i
-rm stencil.o

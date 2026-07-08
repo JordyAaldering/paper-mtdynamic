@@ -8,41 +8,36 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=adapt_nbody.out
 
-printf "size,threads,runtime,runtimesd,energy,energysd\n"
+echo "size,threads,runtime,energy" > res/adapt_nbody.csv
 
 # Static approaches
 for size in 10000 25000 40000; do
     sac2c -t mt_pth scripts/nbody.sac -o nbody -DP=$size
 
-    printf "$size,1,"
-    numactl --interleave all ./nbody -mt 1
-    printf "$size,8,"
-    numactl --interleave all ./nbody -mt 8
-    printf "$size,12,"
-    numactl --interleave all ./nbody -mt 12
-    printf "$size,14,"
-    numactl --interleave all ./nbody -mt 14
-    printf "$size,16,"
-    numactl --interleave all ./nbody -mt 16
+    for threads in 1 8 12 14 16; do
+        numactl --interleave all ./nbody -mt $threads \
+            | awk -v size=$size -v threads=$threads '{
+                printf "%f,%f,%s\n", size, threads, $0;
+            }' >> res/adapt_nbody.csv
+    done
 done
 
 # Energy-based approach
 for size in 10000 25000 40000; do
     sac2c -t mt_pth_rt scripts/nbody.sac -o nbody -DP=$size
 
-    printf "$size,mt,"
-    numactl --interleave all ./nbody -mt 16
+    numactl --interleave all ./nbody -mt 16 \
+        | awk -v size=$size '{
+            printf "%f,mt,%s\n", size, $0;
+        }' >> res/adapt_nbody.csv
 done
 
 # Runtime-based approach
 for size in 10000 25000 40000; do
     sac2c -t mt_pth_rt -domtdrt scripts/nbody.sac -o nbody -DP=$size
 
-    printf "$size,rt,"
-    numactl --interleave all ./nbody -mt 16
+    numactl --interleave all ./nbody -mt 16 \
+        | awk -v size=$size '{
+            printf "%f,er,%s\n", size, $0;
+        }' >> res/adapt_nbody.csv
 done
-
-rm nbody
-rm nbody.c
-rm nbody.i
-rm nbody.o

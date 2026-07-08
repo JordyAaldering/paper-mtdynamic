@@ -1,4 +1,5 @@
 use Perf: all;
+use StdIO: all;
 
 #ifndef P
 #define P 10000

@@ -14,8 +14,6 @@ fn main() {
     let mut mtd = Mtd::energy_controller(max_threads, 10);
     let mut rapl = Rapl::now(false).unwrap();
 
-    println!("threads,size,pin,runtime,energy");
-
     for size in [500, 1000, 1500] {
         let x = black_box(Matrix::random(size, size));
         let y = black_box(Matrix::random(size, size));
@@ -31,10 +29,8 @@ fn main() {
 
             let runtime = instant.elapsed();
             let energy = rapl.elapsed();
-
-            let runtime = runtime.as_secs_f32();
-            let energy = energy.values().sum::<f32>();
-            println!("{},{},{},{}", mtd.num_threads, size, runtime, energy);
+            println!("{},{},{},{}", size, mtd.num_threads,
+                runtime.as_secs_f32(), energy.values().sum::<f32>());
         }
     }
 }
