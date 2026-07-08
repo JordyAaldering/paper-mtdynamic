@@ -16,10 +16,10 @@ for size in 10000 25000 40000; do
     sac2c -t mt_pth scripts/stencil.sac -o stencil -DP=$size
 
     for threads in $(seq 1 16); do
+        echo "Running with $threads threads"
         cpus=$(echo "$CPU_STRING" | tr ',' '\n' | head -n "$threads" | paste -sd,)
-        echo "Running with $threads threads on cores: $cpus"
 
-        numactl -C $cpus ./stencil -mt $threads \
+        taskset -c $cpus ./stencil -mt $threads \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_stencil.csv

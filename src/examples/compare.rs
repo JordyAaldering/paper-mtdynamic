@@ -31,7 +31,10 @@ fn main() {
 
     for _ in 0..250 {
         let num_threads = mtd.num_threads() as usize;
-        let pool = threadpool(num_threads);
+            let pool = rayon::ThreadPoolBuilder::new()
+                .num_threads(num_threads)
+                .build()
+                .unwrap();
 
         rapl.reset();
         let instant = Instant::now();

@@ -36,14 +36,3 @@ impl Matrix {
         Matrix::new(res)
     }
 }
-
-pub fn threadpool(num_threads: usize) -> rayon::ThreadPool {
-    let cores = core_affinity::get_core_ids().unwrap();
-    rayon::ThreadPoolBuilder::new()
-        .num_threads(num_threads)
-        .start_handler(move |idx| {
-            assert!(core_affinity::set_for_current(cores[idx]));
-        })
-        .build()
-        .unwrap()
-}

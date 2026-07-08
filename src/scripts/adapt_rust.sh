@@ -10,4 +10,4 @@
 
 echo "size,threads,runtime,energy" > res/adapt_rust.sh
 
-cargo run --release --example adapt 16 >> res/adapt_rust.sh
+taskset -c 0-15 cargo run --release --example adapt 16 >> res/adapt_rust.sh

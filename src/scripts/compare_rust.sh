@@ -13,10 +13,10 @@ cargo build --release --example compare
 printf "threads,size,pin,runtime,energy\n"
 
 for size in 500 1000 1500; do
-    numactl --interleave all ./target/release/examples/compare $size 1  s
-    numactl --interleave all ./target/release/examples/compare $size 8  s
-    numactl --interleave all ./target/release/examples/compare $size 12 s
-    numactl --interleave all ./target/release/examples/compare $size 16 s
-    numactl --interleave all ./target/release/examples/compare $size 16 e
-    numactl --interleave all ./target/release/examples/compare $size 16 r
+    taskset -c 0-15 ./target/release/examples/compare $size 1  s
+    taskset -c 0-15 ./target/release/examples/compare $size 8  s
+    taskset -c 0-15 ./target/release/examples/compare $size 12 s
+    taskset -c 0-15 ./target/release/examples/compare $size 16 s
+    taskset -c 0-15 ./target/release/examples/compare $size 16 e
+    taskset -c 0-15 ./target/release/examples/compare $size 16 r
 done
