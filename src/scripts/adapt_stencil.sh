@@ -17,9 +17,7 @@ for size in 10000 25000 40000; do
     sac2c -t mt_pth scripts/stencil.sac -o stencil -DP=$size
 
     for threads in 1 8 12 14 16; do
-        echo "Running with $threads threads"
         cpus=$(echo "$CPU_STRING" | tr ',' '\n' | head -n "$threads" | paste -sd,)
-
         SAC_PARALLEL=$threads taskset -c $cpus ./stencil \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
@@ -31,8 +29,6 @@ done
 for size in 10000 25000 40000; do
     sac2c -t mt_pth_rt scripts/stencil.sac -o stencil -DP=$size
 
-    echo "Running energy-based"
-
     SAC_PARALLEL=16 taskset -c $CPU_STRING ./stencil \
         | awk -v size=$size '{
             printf "%d,mt,%s\n", size, $0;
@@ -42,8 +38,6 @@ done
 # Runtime-based approach
 for size in 10000 25000 40000; do
     sac2c -t mt_pth_rt -domtdrt scripts/stencil.sac -o stencil -DP=$size
-
-    echo "Running runtime-based"
 
     SAC_PARALLEL=16 taskset -c $CPU_STRING ./stencil \
         | awk -v size=$size '{
