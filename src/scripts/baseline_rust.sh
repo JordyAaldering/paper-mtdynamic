@@ -13,7 +13,7 @@ cargo build --release --example matmul
 echo "size,threads,runtime,energy" > res/baseline_rust.csv
 
 for size in 500 1000 1500; do
-    for threads in $(seq 1 16); do
+    for threads in $(seq 16); do
         RAYON_NUM_THREADS=$threads taskset -c 0-$(($threads-1)) ./target/release/examples/matmul $size \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;

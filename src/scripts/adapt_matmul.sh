@@ -8,36 +8,25 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=adapt_matmul.out
 
-echo "size,threads,runtime,energy" > res/adapt_matmul.csv
-
-# Static approaches
-for size in 500 1000 1500; do
-    sac2c -t mt_pth scripts/matmul.sac -o matmul -DP=$size
-
-    for threads in 1 8 12 14 16; do
-        SAC_PARALLEL=$threads ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 \
-            | awk -v size=$size -v threads=$threads '{
-                printf "%d,%d,%s\n", size, threads, $0;
-            }' >> res/adapt_matmul.csv
-    done
-done
+make bin/ecodynamic
+make bin/matmul_mtd
 
 # Energy-based approach
-for size in 500 1000 1500; do
-    sac2c -t mt_pth_rt scripts/matmul.sac -o matmul -DP=$size
+{
+    ./bin/ecodynamic --once -w 3.0 delta --energy-preference 1.0 &
+    sleep 1  # Wait a bit for the server to start
 
-    SAC_PARALLEL=16 numactl --interleave all ./matmul \
-        | awk -v size=$size '{
-            printf "%d,mt,%s\n", size, $0;
-        }' >> res/adapt_matmul.csv
-done
+    echo "size,threads,runtime,energy" > res/delta_matmul.csv
+    SAC_PARALLEL=16 numactl --interleave all ./bin/matmul_mtd 500 1000 1500 \
+        >> res/delta_matmul.csv
+}
 
 # Runtime-based approach
-for size in 500 1000 1500; do
-    sac2c -t mt_pth_rt -domtdrt scripts/matmul.sac -o matmul -DP=$size
+{
+    ./bin/ecodynamic --once -w 3.0 corridor --energy-preference 0.0 &
+    sleep 1  # Wait a bit for the server to start
 
-    SAC_PARALLEL=16 numactl --interleave all ./matmul \
-        | awk -v size=$size '{
-            printf "%d,rt,%s\n", size, $0;
-        }' >> res/adapt_matmul.csv
-done
+    echo "size,threads,runtime,energy" > res/corridor_matmul.csv
+    SAC_PARALLEL=16 numactl --interleave all ./bin/matmul_mtd 500 1000 1500 \
+        >> res/corridor_matmul.csv
+}

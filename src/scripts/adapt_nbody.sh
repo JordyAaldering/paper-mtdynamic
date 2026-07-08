@@ -8,39 +8,27 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=adapt_nbody.out
 
+make bin/ecodynamic
+make bin/nbody_mtd
+
 CPU_STRING="0,8,1,9,2,10,3,11,4,12,5,13,6,14,7,15"
 
-echo "size,threads,runtime,energy" > res/adapt_nbody.csv
-
-# Static approaches
-for size in 10000 25000 40000; do
-    sac2c -t mt_pth scripts/nbody.sac -o nbody -DP=$size
-
-    for threads in 1 8 12 14 16; do
-        cpus=$(echo "$CPU_STRING" | tr ',' '\n' | head -n "$threads" | paste -sd,)
-        SAC_PARALLEL=$threads taskset -c $cpus ./nbody \
-            | awk -v size=$size -v threads=$threads '{
-                printf "%d,%d,%s\n", size, threads, $0;
-            }' >> res/adapt_nbody.csv
-    done
-done
-
 # Energy-based approach
-for size in 10000 25000 40000; do
-    sac2c -t mt_pth_rt scripts/nbody.sac -o nbody -DP=$size
+{
+    ./bin/ecodynamic --once -w 3.0 delta --energy-preference 1.0 &
+    sleep 1  # Wait a bit for the server to start
 
-    SAC_PARALLEL=16 taskset -c $CPU_STRING ./nbody \
-        | awk -v size=$size '{
-            printf "%d,mt,%s\n", size, $0;
-        }' >> res/adapt_nbody.csv
-done
+    echo "size,threads,runtime,energy" > res/delta_nbody.csv
+    SAC_PARALLEL=16 taskset -c $CPU_STRING ./bin/nbody_mtd 10000 25000 40000 \
+        >> res/delta_nbody.csv
+}
 
 # Runtime-based approach
-for size in 10000 25000 40000; do
-    sac2c -t mt_pth_rt -domtdrt scripts/nbody.sac -o nbody -DP=$size
+{
+    ./bin/ecodynamic --once -w 3.0 corridor --energy-preference 0.0 &
+    sleep 1  # Wait a bit for the server to start
 
-    SAC_PARALLEL=16 taskset -c $CPU_STRING ./nbody \
-        | awk -v size=$size '{
-            printf "%d,rt,%s\n", size, $0;
-        }' >> res/adapt_nbody.csv
-done
+    echo "size,threads,runtime,energy" > res/corridor_nbody.csv
+    SAC_PARALLEL=16 taskset -c $CPU_STRING ./bin/nbody_mtd 10000 25000 40000 \
+        >> res/corridor_nbody.csv
+}
