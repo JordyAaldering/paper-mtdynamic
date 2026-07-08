@@ -2,13 +2,13 @@
 
 #SBATCH --account=csmpi
 #SBATCH --partition=csmpi_long
-#SBATCH --nodelist=cn128
+#SBATCH --nodelist=cn125
 #SBATCH --mem=0
 #SBATCH --cpus-per-task=16
 #SBATCH --time=10:00:00
 #SBATCH --output=baseline_nbody.out
 
-CPU_STRING="0,2,4,6,8,10,12,14,1,3,5,7,9,11,13,15"
+CPU_STRING="0,8,1,9,2,10,3,11,4,12,5,13,6,14,7,15"
 
 echo "size,threads,runtime,energy" > res/baseline_nbody.csv
 
