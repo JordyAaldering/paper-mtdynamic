@@ -8,6 +8,8 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=baseline_matmul.out
 
+# Original: https://github.com/JordyAaldering/paper-mtdynamic/blob/3360d7280d371aae0f2d5991da932a3ec7911ca9/src/scripts/threads_matmul.sh
+
 CPU_STRING="0,8,1,9,2,10,3,11,4,12,5,13,6,14,7,15"
 
 echo "size,threads,runtime,energy" > res/baseline_matmul.csv

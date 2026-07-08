@@ -19,7 +19,7 @@ for size in 500 1000 1500; do
         cpus=$(echo "$CPU_STRING" | tr ',' '\n' | head -n "$threads" | paste -sd,)
         echo "Running with $threads threads on cores: $cpus"
 
-        ./target/release/examples/matmul $size $threads \
+        RAYON_NUM_THREADS=$threads taskset -c 0-$(($threads-1)) ./target/release/examples/matmul $size \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_rust.csv

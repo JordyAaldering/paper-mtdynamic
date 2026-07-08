@@ -18,13 +18,13 @@ fn plot(df: &DataFrame<Record>, title: String) -> TikzPicture {
         .ax0_bar(df,
             |r| r.energy(),
             AggregationMode::Quartiles,
-            "Energy (\\si{\\joule})",
+            "Energy",
             "energycolor",
         )
         .ax1_line(df,
             |r| r.runtime(),
             AggregationMode::Quartiles,
-            "Runtime (\\si{\\second})",
+            "Runtime",
             "runtimecolor",
         )
         .build_axes();
@@ -59,6 +59,6 @@ fn plot_baseline(benchmark: Benchmark) {
 fn main() {
     plot_baseline(Benchmark::Nbody);
     plot_baseline(Benchmark::Stencil);
-    // plot_baseline(Benchmark::Matmul);
-    // plot_baseline(Benchmark::Rust);
+    plot_baseline(Benchmark::Matmul);
+    plot_baseline(Benchmark::Rust);
 }
