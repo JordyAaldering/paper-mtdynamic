@@ -23,7 +23,5 @@ for size in 10000 25000 40000; do
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_nbody.csv
-
-        exit
     done
 done
