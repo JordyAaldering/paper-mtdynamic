@@ -11,15 +11,13 @@
 make bin/ecodynamic
 make bin/stencil_mtd
 
-CPU_STRING="0,8,1,9,2,10,3,11,4,12,5,13,6,14,7,15"
-
 # Energy-based approach
 {
     ./bin/ecodynamic --once -w 3.0 delta --energy-preference 1.0 &
     sleep 1  # Wait a bit for the server to start
 
     echo "size,threads,runtime,energy" > res/delta_stencil.csv
-    SAC_PARALLEL=16 taskset -c $CPU_STRING ./bin/stencil_mtd 10000 25000 40000 \
+    SAC_PARALLEL=16 numactl --interleave all ./bin/stencil_mtd 10000 25000 40000 \
         >> res/delta_stencil.csv
 }
 
@@ -29,6 +27,6 @@ CPU_STRING="0,8,1,9,2,10,3,11,4,12,5,13,6,14,7,15"
     sleep 1  # Wait a bit for the server to start
 
     echo "size,threads,runtime,energy" > res/corridor_stencil.csv
-    SAC_PARALLEL=16 taskset -c $CPU_STRING ./bin/stencil_mtd 10000 25000 40000 \
+    SAC_PARALLEL=16 numactl --interleave all ./bin/stencil_mtd 10000 25000 40000 \
         >> res/corridor_stencil.csv
 }

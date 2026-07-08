@@ -10,13 +10,12 @@
 
 cargo build --release --example compare
 
-printf "threads,size,pin,runtime,energy\n"
+printf "size,threads,runtime,energy\n"
 
 for size in 500 1000 1500; do
-    taskset -c 0-15 ./target/release/examples/compare $size 1  s
-    taskset -c 0-15 ./target/release/examples/compare $size 8  s
-    taskset -c 0-15 ./target/release/examples/compare $size 12 s
-    taskset -c 0-15 ./target/release/examples/compare $size 16 s
+    for threads in 1 8 12 16; do
+        taskset -c 0-$(($threads-1)) ./target/release/examples/compare $size $threads s
+    done
     taskset -c 0-15 ./target/release/examples/compare $size 16 e
     taskset -c 0-15 ./target/release/examples/compare $size 16 r
 done
