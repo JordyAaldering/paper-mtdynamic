@@ -30,7 +30,7 @@ struct Vector3 *(double a, struct Vector3 b)
 inline
 struct Vector3[P] *(double a, struct Vector3[P] b)
 {
-    return { iv -> a * b[iv] | iv < [P] };
+    return { iv -> a * _sel_VxA_(iv, b) | iv < [P] };
 }
 
 inline
@@ -42,7 +42,7 @@ struct Vector3 +(struct Vector3 a, struct Vector3 b)
 inline
 struct Vector3[P] +(struct Vector3[P] a, struct Vector3[P] b)
 {
-    return { iv -> a[iv] + b[iv] | iv < [P] };
+    return { iv -> _sel_VxA_(iv, a) + _sel_VxA_(iv, b) | iv < [P] };
 }
 
 inline
