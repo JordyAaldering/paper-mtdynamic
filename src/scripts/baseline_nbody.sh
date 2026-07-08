@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #SBATCH --account=csmpi
 #SBATCH --partition=csmpi_long
@@ -8,13 +8,7 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=baseline_nbody.out
 
-# Build CPU ordering: evens first, then odds
-CPU_STRING=$(
-    {
-        for ((i=0; i<16; i+=2)); do echo "$i"; done
-        for ((i=1; i<16; i+=2)); do echo "$i"; done
-    } | paste -sd,
-)
+CPU_STRING="0,2,4,6,8,10,12,14,1,3,5,7,9,11,13,15"
 
 echo "size,threads,runtime,energy" > res/baseline_nbody.csv
 
