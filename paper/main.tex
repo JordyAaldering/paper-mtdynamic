@@ -35,7 +35,7 @@
   \and Bernard van Gastel\orcidlink{0000-0002-0974-4634}
   \and Sven-Bodo Scholz\orcidlink{0000-0002-8663-1043}}
 \institute{Radboud University, Nijmegen, Netherlands \\
-  \email{\{Jordy.Aaldering,Bernard.vanGastel,SvenBodo.Scholz\}@ru.nl}}
+  \email{\{jordy.aaldering,bernard.vangastel,svenbodo.scholz\}@ru.nl}}
 
 \begin{document}
 
@@ -180,7 +180,8 @@ Benchmarks are conducted on an Intel Xeon E-2378 server, maintained by the Radbo
 The system is accessible through Slurm, and contains a single 8 core 16 thread CPU, running at a base clock of \qty{2.60}{\giga\hertz}.
 The CPU has \qty{16}{\mega\byte} of L3 cache, and the system itself provides \qty{32}{\giga\byte} of RAM.
 
-\begin{figure*}
+\begin{figure}[!t]
+  \centering
   \tiny
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -209,11 +210,11 @@ The CPU has \qty{16}{\mega\byte} of L3 cache, and the system itself provides \qt
     % Runtime peaks at one thread, and gradually decreases until it plateaus around 12 threads.
     \input{fig_nbody_40000.tex}%
   \end{subfigure}%
-  \caption{Average energy consumption and runtime of 250 N-body simulation in SaC.
-  Bars denote energy consumption, with corresponding values in the left y-axis.
-  The line denotes runtime, corresponding to the right y-axis.}%
+  \caption{Median energy consumption and runtime of 50 N-body simulation in SaC.
+  Bars denote energy consumption, lines denote runtime.
+  Errors are reported as the interquartile range.}%
   \label{fig:nbody}
-\end{figure*}
+\end{figure}
 
 \subsection{N-body simulation}
 As our first benchmark we measure the energy consumption and runtime of a SaC implementation of the N-body algorithm, given three different problem input sizes.
@@ -236,7 +237,7 @@ For these case studies only the relevant parallel codes are measured, namely the
 The runtime and energy measurements start right before those parallel regions, and stop immediately after their synchronization.
 The average runtime and energy consumption for the three input sizes are shown in Figure~\ref{fig:nbody}.
 Along the x-axis is the number of threads, ranging from one to sixteen.
-Bars denote the average energy consumption of a single time step, and the line denotes its average runtime.
+For each thread count, bars denote the median energy consumption of a single time step and the line denotes the median runtime.
 
 For an N-body simulation with $10000$ elements we observe that although increasing the thread-count strictly decreases the runtime, for simulations with $25000$ and $40000$ elements, the energy consumption plateaus when using more than eight threads.
 It seems that any improvements in energy consumption gained by using hyper-threading are mitigated by the energy overhead it introduces.
@@ -247,7 +248,8 @@ Although this increases the total runtime, it can conversely lead to energy savi
 An interesting observation, seen in the following benchmarks as well, is that increasing the thread-count has a greater effect on runtime performance than on energy-efficiency.
 This suggests that the overhead caused by having to manage multiple threads has a stronger negative effect on the energy consumption of a program than on its runtime performance, and that optimizing for runtime performance has diminishing returns for decreasing energy consumption.
 
-\begin{figure*}
+\begin{figure}[!t]
+  \centering
   \tiny
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -276,11 +278,11 @@ This suggests that the overhead caused by having to manage multiple threads has 
     % Runtime peaks at two threads, and gradually decreases until it plateaus around 12 threads.
     \input{fig_stencil_40000.tex}%
   \end{subfigure}%
-  \caption{Average energy consumption and runtime of 250 nine-point stencil operations in SaC.
-  Bars denote energy consumption, with corresponding values in the left y-axis.
-  The line denotes runtime, corresponding to the right y-axis.}%
+  \caption{Median energy consumption and runtime of 50 nine-point stencil operations in SaC.
+  Bars denote energy consumption, lines denote runtime.
+  Errors are reported as the interquartile range.}%
   \label{fig:stencil}
-\end{figure*}
+\end{figure}
 
 \subsection{Nine-point stencil}\label{sec:stencil}
 The nine-point stencil operation is used for image processing, computer simulations, and for solving partial differential equations.
@@ -302,7 +304,8 @@ For a $10000 \times 10000$ input matrix we observe that both the runtime and ene
 However, for $25000 \times 25000$ and $40000 \times 40000$ inputs, using all available threads is no longer optimal for both the energy-efficiency and runtime performance.
 Whereas the input size increases, the optimum thread-count decreases.
 
-\begin{figure*}
+\begin{figure}[!t]
+  \centering
   \tiny
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -336,11 +339,11 @@ Whereas the input size increases, the optimum thread-count decreases.
     % Runtime follows a similar pattern, albeit being more pronounced.
     \input{fig_matmul_1500.tex}%
   \end{subfigure}%
-  \caption{Average energy consumption and runtime of 250 naive matrix multiplications in SaC.
-  Bars denote energy consumption, with corresponding values in the left y-axis.
-  The line denotes runtime, corresponding to the right y-axis.}%
+  \caption{Median energy consumption and runtime of 50 naive matrix multiplications in SaC.
+  Bars denote energy consumption, lines denote runtime.
+  Errors are reported as the interquartile range.}%
   \label{fig:matmul}
-\end{figure*}
+\end{figure}
 
 \subsection{Matrix multiplication}
 The matrix multiplication algorithm is used across a variety of domains, from solving linear equations, to machine learning, to computer graphics.
@@ -367,7 +370,8 @@ This overhead is somewhat overcome by the increase in thread-count, making a thr
 However, increasing the matrix size to $1000 \times 1000$ and $1500 \times 1500$ changes this energy consumption pattern, resulting from the shift of being CPU-bound to being memory-bound.
 Even with an efficient thread pinning strategy, using more than eight threads causes a significant increase in both the energy consumption and runtime, making those approaches worse for energy-efficiency than even a single-threaded approach.
 
-\begin{figure*}
+\begin{figure}[!t]
+  \centering
   \tiny
   \begin{subfigure}{.333\linewidth}
     % Chart showing energy consumption and runtime across different numbers of threads.
@@ -396,11 +400,11 @@ Even with an efficient thread pinning strategy, using more than eight threads ca
     % Runtime follows the same pattern.
     \input{fig_rust_1500.tex}%
   \end{subfigure}%
-  \caption{Average energy consumption and runtime of 250 naive matrix multiplications in Rust.
-  Bars denote energy consumption, with corresponding values in the left y-axis.
-  The line denotes runtime, corresponding to the right y-axis.}%
+  \caption{Median energy consumption and runtime of 50 naive matrix multiplications in Rust.
+  Bars denote energy consumption, lines denote runtime.
+  Errors are reported as the interquartile range.}%
   \label{fig:rust}
-\end{figure*}
+\end{figure}
 
 \subsection{Implementation language}
 To validate that these observations are not specific to SaC, we also evaluate a manually parallelized implementation of the matrix multiplication algorithm in Rust.
@@ -455,7 +459,7 @@ Given our choice for $\beta$, a value of $0.155$ for $\gamma$ works well for our
 
 A formal definition of this algorithm is described in Algorithm~\ref{alg:controller}.
 
-\begin{algorithm}[!ht]
+\begin{algorithm}
   \begin{algorithmic}[1]
     \State $\hat{d} \gets -1$
     \State $\Delta t \gets m_t\, /\, 2$
@@ -530,7 +534,8 @@ A key requirement for the adaptation algorithm is its ability to adjust to those
 The objective is to dynamically converge towards the optimal thread-count under changing workload behaviours and system configurations.
 We evaluate the adaptation quality of the algorithm by gradually changing the input data size to the examples from Section~\ref{sec:observations}, and assessing how effectively the adaptation algorithm converges to the thread-count with minimal energy consumption.
 
-\begin{figure}[t]
+\begin{figure}[!t]
+  \centering
   \tiny
   \captionsetup{width=.45\linewidth}
   \begin{minipage}{.5\linewidth}
@@ -578,7 +583,8 @@ In Figure~\ref{fig:adapt-matmul} we see that for $500 \times 500$ inputs we conv
 However, for the other two input sizes the recommended thread-count around four threads, instead of eight.
 This happens because the dynamic algorithm disables threads in a contiguous order, resulting in a poor thread pinning strategy.
 
-\begin{figure}[t]
+\begin{figure}[!t]
+  \centering
   \tiny
   \captionsetup{width=.45\linewidth}
   \begin{minipage}{.5\linewidth}
