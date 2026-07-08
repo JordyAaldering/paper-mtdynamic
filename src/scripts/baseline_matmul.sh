@@ -19,8 +19,7 @@ for size in 500 1000 1500; do
         cpus=$(echo "$CPU_STRING" | tr ',' '\n' | head -n "$threads" | paste -sd,)
         echo "Running with $threads threads on cores: $cpus"
 
-        # -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16
-        numactl -C $cpus ./matmul -mt $threads \
+        ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt $threads \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_matmul.csv
