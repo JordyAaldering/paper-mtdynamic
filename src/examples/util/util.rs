@@ -1,4 +1,4 @@
-use rand::Rng;
+use rand::RngExt;
 use rayon::prelude::*;
 
 pub struct Matrix {
@@ -13,18 +13,19 @@ impl Matrix {
     }
 
     pub fn random(x: usize, y: usize) -> Self {
-        let mut rng = rand::thread_rng();
-        let data = (0..y).map(|_| {
-            let mut row = vec![0.0; x];
-            rng.fill(row.as_mut_slice());
-            row
-        }).collect();
+        let mut rng = rand::rng();
+        let data = (0..y)
+            .map(|_| {
+                (0..x)
+                    .map(|_| rng.random::<f64>())
+                    .collect::<Vec<f64>>()
+            })
+            .collect();
         Self::new(data)
     }
 
     pub fn mul(&self, other: &Matrix) -> Matrix {
         let mut res = vec![vec![0.0; other.cols]; self.rows];
-
         res.par_iter_mut().enumerate().for_each(|(row_a, data)| {
             for col_b in 0..other.cols {
                 for i in 0..self.cols {
@@ -32,7 +33,6 @@ impl Matrix {
                 }
             }
         });
-
         Matrix::new(res)
     }
 }
@@ -46,12 +46,4 @@ pub fn threadpool(num_threads: usize) -> rayon::ThreadPool {
         })
         .build()
         .unwrap()
-}
-
-#[allow(unused)]
-pub fn stddev(xs: &Vec<f32>) -> f32 {
-    let n = xs.len() as f32;
-    let mean = xs.iter().sum::<f32>() / n;
-    let variance = xs.iter().map(|x| (x - mean).powi(2)).sum::<f32>() / n;
-    variance.sqrt()
 }

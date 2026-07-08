@@ -1,11 +1,9 @@
 #[path = "util/util.rs"]
 mod util;
 use util::*;
-
-use std::{hint::black_box, time::Instant};
-
 use mtdynamic::Mtd;
-use rapl_energy::{EnergyProbe, Rapl};
+use rapl_energy::Rapl;
+use std::{hint::black_box, time::Instant};
 
 fn main() {
     let args: Vec<_> = std::env::args().collect();
@@ -26,10 +24,10 @@ fn main() {
         s => unreachable!("{}", s),
     };
 
-    let mut rapl = Rapl::now(false).unwrap();
+    let mut rapl = Rapl::new(false).unwrap();
 
-    let x = black_box(Matrix::random(size, size));
-    let y = black_box(Matrix::random(size, size));
+    let x = Matrix::random(size, size);
+    let y = Matrix::random(size, size);
 
     for _ in 0..250 {
         let num_threads = mtd.num_threads() as usize;
@@ -38,7 +36,7 @@ fn main() {
         rapl.reset();
         let instant = Instant::now();
 
-        let _ = black_box(mtd.install(|| pool.install(|| x.mul(&y))));
+        let _ = mtd.install(|| pool.install(|| black_box(x.mul(&y))));
 
         let runtime = instant.elapsed();
         let energy = rapl.elapsed();

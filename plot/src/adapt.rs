@@ -3,30 +3,30 @@ use prelude::*;
 use epy::prelude::*;
 use std::path::Path;
 
-pub fn read_csv(benchmark: Benchmark) -> DataFrame<Record> {
+fn read_csv(benchmark: Benchmark) -> DataFrame<Record> {
     let path = format!("../src/res/adapt_{}.csv", benchmark);
     DataFrame::from_csv(Path::new(&path)).unwrap()
 }
 
 fn plot(benchmark: Benchmark, ymin: f64, ymax: f64) -> Axis {
     let df = read_csv(benchmark);
+    let n = df.len();
 
     let xlabel = if matches!(benchmark, Benchmark::Nbody) { "Bodies" } else { "Size" };
-
     let mut ax = TimeSeries::new(xlabel, "Threads")
         .series(&df, |r| r.threads as f64, "Threads", "colorblind0")
         .build_axis()
         .line(Cs::Axis(250.0, ymin), Cs::Axis(250.0, ymax), None)
         .line(Cs::Axis(500.0, ymin), Cs::Axis(500.0, ymax), None);
     ax.style.title = Some(format!("{:?}", benchmark));
-    ax.style.xmin = Some(-30.0);
-    ax.style.xmax = Some(780.0);
+    ax.style.xmin = Some(-25.0);
+    ax.style.xmax = Some((n + 25) as f64);
     ax.style.ymin = Some(ymin);
     ax.style.ymax = Some(ymax);
     remove_legend(&mut ax);
 
     ax.style.xticks = vec![125.0, 375.0, 625.0].into();
-    let sizes = unique_sizes(&df).into_iter().map(|size| {
+    let sizes = df.unique(|r| r.size).into_iter().map(|size| {
         if matches!(benchmark, Benchmark::Nbody) {
             format!("{}", size)
         } else {

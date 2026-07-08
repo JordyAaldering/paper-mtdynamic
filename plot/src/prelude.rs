@@ -7,8 +7,19 @@ use std::{collections::HashSet, fmt};
 pub struct Record {
     pub size: usize,
     pub threads: f64,
-    pub runtime: f64,
-    pub energy: f64,
+    runtime: f64,
+    energy: f64,
+}
+
+impl Record {
+    pub fn runtime(&self) -> f64 {
+        self.runtime
+    }
+
+    /// Subtract cn125 idle
+    pub fn energy(&self) -> f64 {
+        self.energy - 3.0822675 * self.runtime
+    }
 }
 
 #[derive(Clone, Copy)]
@@ -43,15 +54,8 @@ impl fmt::Debug for Benchmark {
     }
 }
 
-pub fn unique_sizes(df: &DataFrame<Record>) -> Vec<usize> {
-    let mut t = df.rows()
-        .iter()
-        .map(|r| r.size)
-        .collect::<HashSet<_>>()
-        .into_iter()
-        .collect::<Vec<_>>();
-    t.sort_unstable();
-    t
+pub fn filter_xticks(ax: &mut Axis) {
+    ax.style.filter_xticks(|i| (i == 0) || ((i + 1) % 4 == 0));
 }
 
 pub fn remove_legend(ax: &mut Axis) {
