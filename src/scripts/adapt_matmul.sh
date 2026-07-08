@@ -17,7 +17,7 @@ for size in 500 1000 1500; do
     for threads in 1 8 12 14 16; do
         ./matmul -mt_bind env -DSAC_NUM_SOCKETS=1 -DSAC_NUM_CORES=8 -DSAC_NUM_PUS=16 -mt $threads \
             | awk -v size=$size -v threads=$threads '{
-                printf "%f,%f,%s\n", size, threads, $0;
+                printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/adapt_matmul.csv
     done
 done
@@ -28,7 +28,7 @@ for size in 500 1000 1500; do
 
     numactl --interleave all ./matmul -mt 16 \
         | awk -v size=$size '{
-            printf "%f,mt,%s\n", size, $0;
+            printf "%d,mt,%s\n", size, $0;
         }' >> res/adapt_matmul.csv
 done
 
@@ -38,6 +38,6 @@ for size in 500 1000 1500; do
 
     numactl --interleave all ./matmul -mt 16 \
         | awk -v size=$size '{
-            printf "%f,rt,%s\n", size, $0;
+            printf "%d,rt,%s\n", size, $0;
         }' >> res/adapt_matmul.csv
 done

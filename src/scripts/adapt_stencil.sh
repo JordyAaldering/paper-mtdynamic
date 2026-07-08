@@ -17,7 +17,7 @@ for size in 10000 25000 40000; do
     for threads in 1 8 12 14 16; do
         numactl --interleave all ./stencil -mt $threads \
             | awk -v size=$size -v threads=$threads '{
-                printf "%f,%f,%s\n", size, threads, $0;
+                printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/adapt_stencil.csv
     done
 done
@@ -28,7 +28,7 @@ for size in 10000 25000 40000; do
 
     numactl --interleave all ./stencil -mt 16 \
         | awk -v size=$size '{
-            printf "%f,mt,%s\n", size, $0;
+            printf "%d,mt,%s\n", size, $0;
         }' >> res/adapt_stencil.csv
 done
 
@@ -38,6 +38,6 @@ for size in 10000 25000 40000; do
 
     numactl --interleave all ./stencil -mt 16 \
         | awk -v size=$size '{
-            printf "%f,rt,%s\n", size, $0;
+            printf "%d,rt,%s\n", size, $0;
         }' >> res/adapt_stencil.csv
 done

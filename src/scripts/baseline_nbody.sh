@@ -6,7 +6,7 @@
 #SBATCH --mem=0
 #SBATCH --cpus-per-task=16
 #SBATCH --time=10:00:00
-#SBATCH --output=threads_nbody.out
+#SBATCH --output=baseline_nbody.out
 
 echo "size,threads,runtime,energy" > res/baseline_nbody.csv
 
@@ -16,7 +16,7 @@ for size in 10000 25000 40000; do
     for threads in `seq 1 16`; do
         numactl --interleave all ./nbody -mt $threads \
             | awk -v size=$size -v threads=$threads '{
-                printf "%f,%f,%s\n", size, threads, $0;
+                printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_nbody.csv
     done
 done
