@@ -10,7 +10,7 @@
 
 cargo build --release --example compare
 
-printf "threads,size,pin,runtime,runtimesd,energy,energysd\n"
+printf "threads,size,pin,runtime,energy\n"
 
 for size in 500 1000 1500; do
     numactl --interleave all ./target/release/examples/compare $size 1  s

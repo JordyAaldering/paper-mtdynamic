@@ -1,3 +1,5 @@
+use Perf: all;
+
 #ifndef P
 #define P 10000
 #endif
@@ -96,6 +98,8 @@ struct Body body(int i)
 noinline
 struct Body[P] timestep(struct Body[P] bodies, double dt)
 {
+    ControlFlow::touch();
+
     acceleration = acc_v(bodies);
     bodies.pos += dt * bodies.vel;
     bodies.vel += dt * acceleration;
@@ -106,11 +110,16 @@ int main()
 {
     bodies = { [i] -> body(i) | [i] < [P] };
 
-    i = 0;
-    while (_lt_SxS_(i, _hideValue_SxA_(0, ITER))) {
+    for (i = 0; _lt_SxS_(i, ITER); i = _add_SxS_(i, 1)) {
+        rapl = Rapl::raplStart(0);
+        sec1, nsec1 = MTClock::gettime();
+
         bodies = timestep(bodies, 0.01);
-        i = _add_SxS_(i, 1);
+
+        sec2, nsec2 = MTClock::gettime();
+        energy_uj = Rapl::raplStop(0, rapl);
+        printf("%g,%g\n", MTClock::timediff(sec1, nsec1, sec2, nsec2), Rapl::tod(energy_uj));
     }
 
-    return _toi_S_(_add_SxS_(bodies[[0]].pos.x, bodies[[0]].vel.y));
+    return 0;
 }

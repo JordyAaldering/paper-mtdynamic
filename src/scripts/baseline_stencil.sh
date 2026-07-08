@@ -8,13 +8,15 @@
 #SBATCH --time=10:00:00
 #SBATCH --output=threads_stencil.out
 
-printf "size,threads,runtime,runtimesd,energy,energysd\n"
+echo "size,threads,runtime,energy" > res/baseline_stencil.csv
 
 for size in 10000 25000 40000; do
     sac2c -t mt_pth scripts/stencil.sac -o stencil -DP=$size
 
     for threads in `seq 1 16`; do
-        printf "$size,$threads,"
-        numactl --interleave all ./stencil -mt $threads
+        numactl --interleave all ./stencil -mt $threads \
+            | awk -v size=$size awk -v threads=$threads '{
+                printf "%f,%f,%s\n", size, threads, $0;
+            }' >> res/baseline_stencil.csv
     done
 done
