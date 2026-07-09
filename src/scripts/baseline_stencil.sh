@@ -14,7 +14,9 @@ for size in 10000 25000 40000; do
     make bin/stencil_$size
 
     for threads in $(seq 16); do
-        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/stencil_$size \
+        cpus=$(seq 0 $(($threads-1)) | awk -v n=8 '{printf "%s%d", NR>1?",":"", int($1/2) + ($1%2)*n}')
+
+        SAC_PARALLEL=$threads taskset -c $cpus ./bin/stencil_$size \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_stencil.csv
