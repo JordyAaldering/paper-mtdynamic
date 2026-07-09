@@ -17,7 +17,7 @@ make bin/stencil_mtd
     sleep 1  # Wait a bit for the server to start
 
     echo "size,threads,runtime,energy" > res/delta_stencil.csv
-    SAC_PARALLEL=16 numactl --interleave all ./bin/stencil_mtd 10000 25000 40000 \
+    SAC_PARALLEL=16 taskset -c 0-15 ./bin/stencil_mtd 10000 25000 40000 \
         >> res/delta_stencil.csv
 }
 
@@ -27,6 +27,6 @@ make bin/stencil_mtd
     sleep 1  # Wait a bit for the server to start
 
     echo "size,threads,runtime,energy" > res/corridor_stencil.csv
-    SAC_PARALLEL=16 numactl --interleave all ./bin/stencil_mtd 10000 25000 40000 \
+    SAC_PARALLEL=16 taskset -c 0-15 ./bin/stencil_mtd 10000 25000 40000 \
         >> res/corridor_stencil.csv
 }

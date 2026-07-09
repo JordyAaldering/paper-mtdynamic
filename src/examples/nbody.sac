@@ -6,10 +6,6 @@ use StdIO: all;
 
 #define EPSILON 0x1p-53
 
-#ifndef ITER
-#define ITER 50
-#endif
-
 struct Body {
    struct Vector3d pos;
    struct Vector3d vel;
@@ -29,22 +25,17 @@ struct Vector3d acc(struct Body b, struct Body b2)
    return dir * (b2.mass / pow3(EPSILON + l2norm(dir)));
 }
 
-// specialize struct Body[10000] timestep(struct Body[10000] a, double dt);
-// specialize struct Body[25000] timestep(struct Body[25000] a, double dt);
-// specialize struct Body[40000] timestep(struct Body[40000] a, double dt);
-
 noinline
-struct Body[n] timestep(struct Body[n] bs, double dt)
+struct Body[N] timestep(struct Body[N] bs, double dt)
 {
     ControlFlow::touch();
 
     acc = with {
-        ([0] <= [i] < [n]): with {
-            ([0] <= [j] < [n]):
+        ([0] <= [i] < [N]): with {
+            ([0] <= [j] < [N]):
                 acc(_sel_VxA_([i], bs), _sel_VxA_([j], bs));
         }: fold(+, Vector3d{});
-    }: genarray([n], Vector3d{});
-
+    }: genarray([N], Vector3d{});
     bs.vel += acc * dt;
     bs.pos += bs.vel * dt;
     return bs;
@@ -52,12 +43,14 @@ struct Body[n] timestep(struct Body[n] bs, double dt)
 
 int main()
 {
-    size = String::toi(CommandLine::argv(1));
+    #ifndef N
+    N = String::toi(CommandLine::argv(1));
+    #endif
 
     bodies = { [i] -> Body { .pos = Vector3d{ tod(i), tod(2 * i), tod(3 * i) },
                              .vel = Vector3d{},
                              .mass = 1d }
-             | [i] < [size] };
+             | [i] < [N] };
 
     // Warmup runs
     for (i = 0; i < 5; i += 1) {

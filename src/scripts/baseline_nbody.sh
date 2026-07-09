@@ -14,7 +14,7 @@ echo "size,threads,runtime,energy" > res/baseline_nbody.csv
 
 for size in 10000 25000 40000; do
     for threads in $(seq 16); do
-        SAC_PARALLEL=$threads numactl --interleave all ./bin/nbody_mt $size \
+        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/nbody_mt $size \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_nbody.csv

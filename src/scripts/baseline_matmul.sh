@@ -14,7 +14,7 @@ echo "size,threads,runtime,energy" > res/baseline_matmul.csv
 
 for size in 500 1000 1500; do
     for threads in $(seq 16); do
-      SAC_PARALLEL=$threads numactl --interleave all ./bin/matmul_mt $size \
+      SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/matmul_mt $size \
         | awk -v size=$size -v threads=$threads '{
             printf "%d,%d,%s\n", size, threads, $0;
         }' >> res/baseline_matmul.csv

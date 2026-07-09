@@ -17,7 +17,7 @@ make bin/nbody_mtd
     sleep 1  # Wait a bit for the server to start
 
     echo "size,threads,runtime,energy" > res/delta_nbody.csv
-    SAC_PARALLEL=16 numactl --interleave all ./bin/nbody_mtd 10000 25000 40000 \
+    SAC_PARALLEL=16 taskset -c 0-15 ./bin/nbody_mtd 10000 25000 40000 \
         >> res/delta_nbody.csv
 }
 
@@ -27,6 +27,6 @@ make bin/nbody_mtd
     sleep 1  # Wait a bit for the server to start
 
     echo "size,threads,runtime,energy" > res/corridor_nbody.csv
-    SAC_PARALLEL=16 numactl --interleave all ./bin/nbody_mtd 10000 25000 40000 \
+    SAC_PARALLEL=16 taskset -c 0-15 ./bin/nbody_mtd 10000 25000 40000 \
         >> res/corridor_nbody.csv
 }

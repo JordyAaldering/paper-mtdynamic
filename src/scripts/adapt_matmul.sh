@@ -17,7 +17,7 @@ make bin/matmul_mtd
     sleep 1  # Wait a bit for the server to start
 
     echo "size,threads,runtime,energy" > res/delta_matmul.csv
-    SAC_PARALLEL=16 numactl --interleave all ./bin/matmul_mtd 500 1000 1500 \
+    SAC_PARALLEL=16 taskset -c 0-15 ./bin/matmul_mtd 500 1000 1500 \
         >> res/delta_matmul.csv
 }
 
@@ -27,6 +27,6 @@ make bin/matmul_mtd
     sleep 1  # Wait a bit for the server to start
 
     echo "size,threads,runtime,energy" > res/corridor_matmul.csv
-    SAC_PARALLEL=16 numactl --interleave all ./bin/matmul_mtd 500 1000 1500 \
+    SAC_PARALLEL=16 taskset -c 0-15 ./bin/matmul_mtd 500 1000 1500 \
         >> res/corridor_matmul.csv
 }

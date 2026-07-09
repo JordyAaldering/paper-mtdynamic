@@ -1,24 +1,23 @@
 use Array: all;
 use StdIO: all;
 
-specialize double[10000,10000] stencil(double[10000,10000] a, double[3,3] w);
-specialize double[25000,25000] stencil(double[25000,25000] a, double[3,3] w);
-specialize double[40000,40000] stencil(double[40000,40000] a, double[3,3] w);
-
 noinline
-double[2:shp] stencil(double[2:shp] a, double[3,3] w)
+double[N,N] stencil(double[N,N] a, double[3,3] w)
 {
     ControlFlow::touch();
 
-    return { iv -> sum({ jv -> w[jv] * a[mod(iv+jv-1, shp)] })
-           | iv < shp };
+    return { [x,y] -> sum({ [i,j] ->
+                w[i,j] * a[_mod_SxS_(x+i-1, N), _mod_SxS_(y+j-1, N)]})
+           | [x,y] < [N,N] };
 }
 
 int main()
 {
-    size = String::toi(CommandLine::argv(1));
+    #ifndef N
+    N = String::toi(CommandLine::argv(1));
+    #endif
 
-    a = { [i,j] -> tod(i+j) | [i,j] < [size,size] };
+    a = { [i,j] -> tod(i+j) | [i,j] < [N,N] };
     w = [[0.05, 0.15, 0.05],
          [0.15, 0.20, 0.15],
          [0.05, 0.15, 0.05]];
