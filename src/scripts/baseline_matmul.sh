@@ -14,9 +14,9 @@ for size in 500 1000 1500; do
     make bin/matmul_$size
 
     for threads in $(seq 16); do
-      SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/matmul_$size \
-        | awk -v size=$size -v threads=$threads '{
-            printf "%d,%d,%s\n", size, threads, $0;
-        }' >> res/baseline_matmul.csv
+        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/matmul_$size \
+            | awk -v size=$size -v threads=$threads '{
+                printf "%d,%d,%s\n", size, threads, $0;
+            }' >> res/baseline_matmul.csv
     done
 done
