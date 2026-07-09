@@ -32,8 +32,7 @@ struct Body[N] timestep(struct Body[N] bs, double dt)
 
     acc = with {
         ([0] <= [i] < [N]): with {
-            ([0] <= [j] < [N]):
-                acc(_sel_VxA_([i], bs), _sel_VxA_([j], bs));
+            ([0] <= [j] < [N]): acc(_sel_VxA_([i], bs), _sel_VxA_([j], bs));
         }: fold(+, Vector3d{});
     }: genarray([N], Vector3d{});
     bs.vel += acc * dt;

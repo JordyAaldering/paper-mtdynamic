@@ -1,10 +1,6 @@
 use Array: all;
 use StdIO: all;
 
-specialize double[10000,10000] stencil(double[10000,10000] a, double[3,3] w);
-specialize double[25000,25000] stencil(double[25000,25000] a, double[3,3] w);
-specialize double[40000,40000] stencil(double[40000,40000] a, double[3,3] w);
-
 noinline
 double[2:shp] stencil(double[2:shp] a, double[3,3] w)
 {

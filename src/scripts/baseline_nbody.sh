@@ -14,7 +14,9 @@ for size in 10000 25000 40000; do
     make bin/nbody_$size
 
     for threads in $(seq 16); do
-        SAC_PARALLEL=$threads taskset -c 0-$(($threads-1)) ./bin/nbody_$size \
+        cpus=$(seq 0 $(($threads-1)) | awk -v n="$ncores" 'NR>1 {printf ","} {printf "%d", int($1/2)+($1%2)*n}')
+
+        SAC_PARALLEL=$threads taskset -c $cpus ./bin/nbody_$size \
             | awk -v size=$size -v threads=$threads '{
                 printf "%d,%d,%s\n", size, threads, $0;
             }' >> res/baseline_nbody.csv
