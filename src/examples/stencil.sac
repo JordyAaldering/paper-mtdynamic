@@ -6,8 +6,9 @@ double[N,N] stencil(double[N,N] a, double[3,3] w)
 {
     ControlFlow::touch();
 
-    return { iv -> sum({ jv -> w[jv] * a[mod(iv+jv-1, [N,N])]})
-           | iv < [N,N] };
+    return { [x,y] -> sum({ [i,j] ->
+                w[i,j] * a[_mod_SxS_(x+i-1, N), _mod_SxS_(y+j-1, N)]})
+           | [x,y] < [N,N] };
 }
 
 int main()
