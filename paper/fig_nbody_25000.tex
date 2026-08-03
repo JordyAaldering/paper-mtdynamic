@@ -1,5 +1,5 @@
 \ifx\epyrpad\undefined\newlength{\epyrpad}\fi%
-\settowidth{\epyrpad}{\normalfont 0.0}%
+\settowidth{\epyrpad}{\normalfont 0}%
 \begingroup\settoheight{\dimen0}{\normalfont Ag}\addtolength{\epyrpad}{\dimen0}\endgroup%
 \ifdefined\extrarpad\addtolength{\epyrpad}{\extrarpad}\fi%
 \begin{tikzpicture}
@@ -70,7 +70,7 @@
 \draw[color=black!90,line width=0.9pt] (axis cs:15,10.914814488333334) -- (axis cs:15,11.927653771666668);
 \addlegendimage{fill=runtimecolor,line width=1pt,mark=*,mark size=2pt,mark options={draw=white,line width=-0.4pt,solid}}
 \draw[draw=gray,dashed] (axis cs:7.5,0) -- (axis cs:7.5,31);
-\end{axis}
+\end{axis}%
 \begin{axis}[
   width={\epyfigurewidth-\epyrpad},
   height={\epyheightratio*\epyfigurewidth},
@@ -153,5 +153,5 @@
   (14,0.21737343)
   (15,0.215225)
 };
-\end{axis}
-\end{tikzpicture}
+\end{axis}%
+\end{tikzpicture}%

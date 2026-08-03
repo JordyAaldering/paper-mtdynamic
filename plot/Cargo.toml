@@ -14,4 +14,4 @@ path = "src/baseline.rs"
 [dependencies]
 csv = "1.4.0"
 epy = { git = "https://github.com/JordyAaldering/epy.git" }
-serde = { version = "1.0.228", features = ["derive"] }
+serde = { version = "1.0.229", features = ["derive"] }
