@@ -70,9 +70,9 @@ fn plot_baseline(benchmark: Benchmark) {
     let df = read_csv(benchmark);
     for size in unique_sizes(&df) {
         let title = if matches!(benchmark, Benchmark::Nbody) {
-            format!("{} bodies", size)
+            format!("\\num{{{}}} bodies", size)
         } else {
-            format!("${} \\times {}$", size, size)
+            format!("$\\num{{{}}} \\times \\num{{{}}}$", size, size)
         };
 
         let tikz = plot(&df.clone().filter(|_, r| r.size == size), title);
