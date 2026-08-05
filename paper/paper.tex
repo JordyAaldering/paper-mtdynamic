@@ -63,7 +63,7 @@ For each index vector in this range, the result is a selection into the array \c
 All array types in SaC consist of an element type followed by a shape specification in square brackets.
 In simple cases, such shape specifications are lists of numbers describing the length of each dimension of the array.
 To express relations between shape components, these shape lengths can be replaced by variables, where identical variable names require identical lengths in the corresponding positions.
-For example, an integer vector of length \qty{100} can be defined as \code{int[100]}, and a square integer matrix of size $n \times n$ can be referred to as \code{int[n,n]}.
+For example, an integer vector of length \num{100} can be defined as \code{int[100]}, and a square integer matrix of size $n \times n$ can be referred to as \code{int[n,n]}.
 A multidimensional array of doubles with rank $d$ and shape vector $shp$ can be described by \code{double[d:shp]}.
 This notation is referred to as type patterns~\cite{aaldering2024type}.
 It allows not only to express constraints within shapes but also between different function arguments and return types.
@@ -129,7 +129,7 @@ To illustrate this we investigate the effect these factors have on the energy co
 Within the context of data\-/parallel programming, these algorithms provide an interesting mix of CPU\-/bound and memory\-/bound applications.
 
 Benchmarks are conducted on an Intel Xeon E-2378 server, maintained by the Radboud University.
-The system is accessible through Slurm, and contains a single \qty{8} core \qty{16} thread CPU, running at a base clock of \qty{2.60}{\giga\hertz}.
+The system is accessible through Slurm, and contains a single \num{8} core \num{16} thread CPU, running at a base clock of \qty{2.60}{\giga\hertz}.
 The CPU has \qty{16}{\mega\byte} of L3 cache, and the system itself provides \qty{32}{\giga\byte} of RAM.
 
 \begin{figure}[ht]
@@ -177,7 +177,7 @@ The average runtime and energy consumption for the three input sizes are shown i
 Along the x\-/axis is the number of threads, ranging from one to sixteen.
 Bars denote the average energy consumption of a single time step, and the line denotes its average runtime.
 
-For an N-body simulation with \qty{10000} elements we observe that although increasing the thread count strictly decreases the runtime, for simulations with \qty{25000} and \qty{40000} elements, the energy consumption plateaus when using more than eight threads.
+For an N-body simulation with \num{10000} elements we observe that although increasing the thread count strictly decreases the runtime, for simulations with \num{25000} and \num{40000} elements, the energy consumption plateaus when using more than eight threads.
 It seems that any improvements in energy consumption gained by using multithreading are mitigated by the energy overhead it introduces.
 Consequently, on a system with shared resources and multiple running processes, it might be beneficial to select a lower thread count for the N-body simulation.
 This frees up the remaining threads to be used by other processes, without incurring a significant negative energy consumption impact on the N-body simulation.
@@ -202,7 +202,7 @@ This suggests that the overhead caused by having to manage multiple threads has 
     \centering
     \input{fig_stencil_40000.tex}%
   \end{subfigure}%
-  \caption{Average energy consumption and runtime of \qty{250} nine\-/point stencil operations in SaC.
+  \caption{Average energy consumption and runtime of \num{250} nine\-/point stencil operations in SaC.
   Bars denote energy consumption, with corresponding values in the left y\-/axis.
   The line denotes runtime, corresponding to the right y\-/axis.}%
   \label{fig:stencil}
