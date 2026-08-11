@@ -9,10 +9,8 @@ pub struct IntermediateRecord {
     size: usize,
     threads: usize,
     runtime: f64,
-    #[serde(default)]
     runtimesd: f64,
     energy: f64,
-    #[serde(default)]
     energysd: f64,
 }
 
@@ -20,23 +18,23 @@ pub struct IntermediateRecord {
 /// For every row, we keep that row and add two new rows, adjusted for the standard deviation.
 /// Then, we use the Quartiles aggregation mode, which will select these two standard-deviation-adjusted rows.
 /// (Thus, even though it is named Quartiles, in actuality it selects the inserted standard deviations.)
-pub fn read_csv(benchmark: Benchmark) -> DataFrame<Record> {
+pub fn read_csv(benchmark: Benchmark) -> DataFrame<Record<usize>> {
     let path = format!("../src/res/baseline_{}.csv", benchmark);
     let intermediate_df = DataFrame::<IntermediateRecord>::from_csv(Path::new(&path)).unwrap();
     let adjusted_rows = intermediate_df.rows()
         .into_iter()
         .flat_map(|r| vec![
-            Record { size: r.size, threads: r.threads as f64, runtime: r.runtime, energy: r.energy },
-            Record { size: r.size, threads: r.threads as f64, runtime: r.runtime - r.runtimesd, energy: r.energy - r.energysd },
-            Record { size: r.size, threads: r.threads as f64, runtime: r.runtime + r.runtimesd, energy: r.energy + r.energysd },
+            Record { size: r.size, threads: r.threads, runtime: r.runtime, energy: r.energy },
+            Record { size: r.size, threads: r.threads, runtime: r.runtime - r.runtimesd, energy: r.energy - r.energysd },
+            Record { size: r.size, threads: r.threads, runtime: r.runtime + r.runtimesd, energy: r.energy + r.energysd },
         ])
         .collect();
     DataFrame::from_vec(adjusted_rows)
 }
 
-fn plot(df: &DataFrame<Record>, title: String) -> TikzPicture {
+fn plot(df: &DataFrame<Record<usize>>, title: String) -> TikzPicture {
     let (mut ax0, mut ax1) = TwinPlot::new(
-            |r: &Record| r.threads as f64,
+            |r: &Record<usize>| r.threads,
             "Threads",
             "Energy (\\si{\\joule})",
             "Runtime (\\si{\\second})",
@@ -63,6 +61,7 @@ fn plot(df: &DataFrame<Record>, title: String) -> TikzPicture {
     ax1.style.ymin = Some(0.0);
     remove_legend(&mut ax0);
     ax0.style.filter_xticks(|i| filter_every(i, 3));
+
     TikzPicture::from_twin(ax0, ax1)
 }
 

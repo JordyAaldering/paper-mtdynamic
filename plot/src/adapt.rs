@@ -3,7 +3,7 @@ use prelude::*;
 use epy::prelude::*;
 use std::path::Path;
 
-pub fn read_csv(benchmark: Benchmark) -> DataFrame<Record> {
+pub fn read_csv(benchmark: Benchmark) -> DataFrame<Record<f64>> {
     let path = format!("../src/res/adapt_{}.csv", benchmark);
     DataFrame::from_csv(Path::new(&path)).unwrap()
 }
@@ -14,10 +14,15 @@ fn plot(benchmark: Benchmark, ymin: f64, ymax: f64) -> Axis {
     let xlabel = if matches!(benchmark, Benchmark::Nbody) { "Bodies" } else { "Size" };
 
     let mut ax = TimeSeries::new(xlabel, "Threads")
-        .series(&df, |r| r.threads as f64, "Threads", "colorblind0")
+        .series(&df,
+            |r| r.threads,
+            "Threads",
+            "colorblind0",
+        )
         .build_axis()
         .line(Cs::Axis(250.0, ymin), Cs::Axis(250.0, ymax), None)
         .line(Cs::Axis(500.0, ymin), Cs::Axis(500.0, ymax), None);
+
     ax.style.title = Some(format!("{:?}", benchmark));
     ax.style.xmin = Some(-30.0);
     ax.style.xmax = Some(780.0);
@@ -34,6 +39,7 @@ fn plot(benchmark: Benchmark, ymin: f64, ymax: f64) -> Axis {
         }
     }).collect::<Vec<_>>();
     ax.style.xtick_labels = Some(sizes.into());
+
     ax
 }
 

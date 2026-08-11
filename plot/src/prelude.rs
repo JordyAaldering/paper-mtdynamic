@@ -4,9 +4,9 @@ use serde::Deserialize;
 use std::{collections::HashSet, fmt};
 
 #[derive(Clone, Deserialize)]
-pub struct Record {
+pub struct Record<T> {
     pub size: usize,
-    pub threads: f64,
+    pub threads: T,
     pub runtime: f64,
     pub energy: f64,
 }
@@ -21,29 +21,27 @@ pub enum Benchmark {
 
 impl fmt::Display for Benchmark {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        use Benchmark::*;
         match self {
-            Nbody => write!(f, "nbody"),
-            Stencil => write!(f, "stencil"),
-            Matmul => write!(f, "matmul"),
-            Rust => write!(f, "rust"),
+            Self::Nbody => write!(f, "nbody"),
+            Self::Stencil => write!(f, "stencil"),
+            Self::Matmul => write!(f, "matmul"),
+            Self::Rust => write!(f, "rust"),
         }
     }
 }
 
 impl fmt::Debug for Benchmark {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        use Benchmark::*;
         match self {
-            Nbody => write!(f, "N-body simulation"),
-            Stencil => write!(f, "Nine-point stencil"),
-            Matmul => write!(f, "Matrix multiplication"),
-            Rust => write!(f, "Rust implementation"),
+            Self::Nbody => write!(f, "N-body simulation"),
+            Self::Stencil => write!(f, "Nine-point stencil"),
+            Self::Matmul => write!(f, "Matrix multiplication"),
+            Self::Rust => write!(f, "Rust implementation"),
         }
     }
 }
 
-pub fn unique_sizes(df: &DataFrame<Record>) -> Vec<usize> {
+pub fn unique_sizes<T>(df: &DataFrame<Record<T>>) -> Vec<usize> {
     let mut t = df.rows()
         .iter()
         .map(|r| r.size)
