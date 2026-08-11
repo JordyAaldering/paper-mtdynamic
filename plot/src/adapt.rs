@@ -13,7 +13,10 @@ fn plot(benchmark: Benchmark, ymin: f64, ymax: f64) -> Axis {
 
     let xlabel = if matches!(benchmark, Benchmark::Nbody) { "Bodies" } else { "Size" };
 
-    let mut ax = TimeSeries::new(xlabel, "Threads")
+    let mut ax = TimeSeries::<Record<f64>, usize>::new(
+            xlabel,
+            "Threads",
+        )
         .series(&df,
             |r| r.threads,
             "Threads",

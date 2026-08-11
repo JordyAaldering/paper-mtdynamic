@@ -33,8 +33,8 @@ pub fn read_csv(benchmark: Benchmark) -> DataFrame<Record<usize>> {
 }
 
 fn plot(df: &DataFrame<Record<usize>>, title: String) -> TikzPicture {
-    let (mut ax0, mut ax1) = TwinPlot::new(
-            |r: &Record<usize>| r.threads,
+    let (mut ax0, mut ax1) = TwinPlot::<Record<usize>, usize>::new(
+            |r| r.threads,
             "Threads",
             "Energy (\\si{\\joule})",
             "Runtime (\\si{\\second})",
