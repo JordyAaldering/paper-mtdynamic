@@ -34,6 +34,9 @@
   area legend/.append style={legend image code/.code={\draw[#1,draw=none] (0em,-0.5ex) rectangle (1.4em,0.5ex);}},
   legend image code/.code={\path[#1] (0em,0pt) -- (1.4em,0pt) plot coordinates {(0.7em,0pt)};},
 ]
+\addplot[ybar,bar width=0.7,area legend,draw=none,fill=energycolor!50!yellow] coordinates {
+  (15,2.02930021)
+};
 \addplot[ybar,bar width=0.7,area legend,draw=none,fill=energycolor] coordinates {
   (0,6.46522713)
   (1,4.02305031)
@@ -50,7 +53,6 @@
   (12,2.05044389)
   (13,2.04843187)
   (14,2.02953148)
-  (15,2.02930021)
 };
 \draw[color=black!90,line width=0.9pt] (axis cs:0,6.370652229999999) -- (axis cs:0,6.55980203);
 \draw[color=black!90,line width=0.9pt] (axis cs:1,3.822361876666667) -- (axis cs:1,4.223738743333334);
