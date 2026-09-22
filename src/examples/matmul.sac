@@ -31,7 +31,7 @@ int main()
     a = { [i,j] -> tod(i) | [i,j] < [N,N] };
     b = { [i,j] -> tod(j) | [i,j] < [N,N] };
 
-    for (i = 0; i < 250; i += 1) {
+    for (i = 0; _lt_SxS_(i, 250); i = _add_SxS_(i, 1)) {
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 
