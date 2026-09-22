@@ -6,7 +6,7 @@ use std::{collections::HashSet, fmt};
 #[derive(Clone, Deserialize)]
 pub struct Record {
     pub size: usize,
-    pub threads: f64,
+    pub threads: usize,
     runtime: f64,
     energy: f64,
 }

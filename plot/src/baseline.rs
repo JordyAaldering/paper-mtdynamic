@@ -10,7 +10,7 @@ fn read_csv(benchmark: Benchmark) -> DataFrame<Record> {
 
 fn plot(df: &DataFrame<Record>, title: String) -> TikzPicture {
     let (mut ax0, mut ax1) = TwinPlot::new(
-            |r: &Record| r.threads as f64,
+            |r: &Record| r.threads,
             "Threads",
             "Energy (\\si{\\joule})",
             "Runtime (\\si{\\second})",
@@ -42,7 +42,7 @@ fn plot(df: &DataFrame<Record>, title: String) -> TikzPicture {
 fn plot_baseline(benchmark: Benchmark) {
     let df = read_csv(benchmark);
 
-    for by_size in df.split_by(|r| r.size as f64) {
+    for by_size in df.split_by(|r| r.size) {
         let size = by_size.rows()[0].size;
         let title = if matches!(benchmark, Benchmark::Nbody) {
             format!("{} bodies", size)
