@@ -51,12 +51,7 @@ int main()
                              .mass = 1d }
              | [i] < [N] };
 
-    // Warmup runs
-    for (i = 0; i < 5; i += 1) {
-        bodies = timestep(bodies, 0.01);
-    }
-
-    for (i = 0; i < 50; i += 1) {
+    for (i = 0; i < 250; i += 1) {
         rapl = Rapl::raplStart(0);
         sec1, nsec1 = MTClock::gettime();
 

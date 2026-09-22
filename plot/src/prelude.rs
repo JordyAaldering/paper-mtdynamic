@@ -16,7 +16,7 @@ impl Record {
         self.runtime
     }
 
-    /// Subtract cn125 idle
+    /// Subtract cn128 idle
     pub fn energy(&self) -> f64 {
         self.energy - 3.08 * self.runtime
     }

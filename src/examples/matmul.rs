@@ -13,7 +13,7 @@ fn main() {
     let x = Matrix::random(size, size);
     let y = Matrix::random(size, size);
 
-    for _ in 0..50 {
+    for _ in 0..250 {
         rapl.reset();
         let instant = Instant::now();
 
