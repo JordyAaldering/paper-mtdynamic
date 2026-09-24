@@ -43,7 +43,7 @@ fn highlight_best_bar(ax: &mut Axis) {
 
 fn plot(df: &DataFrame<Record>, title: String) -> TikzPicture {
     let (mut ax0, mut ax1) = TwinPlot::new(
-            |r: &Record| r.threads,
+            |r: &Record| r.threads as usize,
             "Threads",
             "Energy (\\si{\\joule})",
             "Runtime (\\si{\\second})",

@@ -212,7 +212,7 @@ The CPU has \qty{16}{\mega\byte} of L3 cache, and the system itself provides \qt
     % Runtime peaks at one thread, and gradually decreases until it plateaus around 12 threads.
     \input{fig_nbody_40000.tex}%
   \end{subfigure}%
-  \caption{Median energy consumption and runtime of 50 N-body simulation in SaC.
+  \caption{Median energy consumption and runtime of 250 N-body simulation in SaC.
   Bars denote energy consumption, lines denote runtime.
   Errors are reported as the interquartile range.}%
   \label{fig:nbody}
@@ -280,7 +280,7 @@ This suggests that the overhead caused by having to manage multiple threads has 
     % Runtime peaks at two threads, and gradually decreases until it plateaus around 12 threads.
     \input{fig_stencil_40000.tex}%
   \end{subfigure}%
-  \caption{Median energy consumption and runtime of 50 nine-point stencil operations in SaC.
+  \caption{Median energy consumption and runtime of 250 nine-point stencil operations in SaC.
   Bars denote energy consumption, lines denote runtime.
   Errors are reported as the interquartile range.}%
   \label{fig:stencil}
@@ -341,7 +341,7 @@ Whereas the input size increases, the optimum thread-count decreases.
     % Runtime follows a similar pattern, albeit being more pronounced.
     \input{fig_matmul_1500.tex}%
   \end{subfigure}%
-  \caption{Median energy consumption and runtime of 50 naive matrix multiplications in SaC.
+  \caption{Median energy consumption and runtime of 250 naive matrix multiplications in SaC.
   Bars denote energy consumption, lines denote runtime.
   Errors are reported as the interquartile range.}%
   \label{fig:matmul}
@@ -402,7 +402,7 @@ Even with an efficient thread pinning strategy, using more than eight threads ca
     % Runtime follows the same pattern.
     \input{fig_rust_1500.tex}%
   \end{subfigure}%
-  \caption{Median energy consumption and runtime of 50 naive matrix multiplications in Rust.
+  \caption{Median energy consumption and runtime of 250 naive matrix multiplications in Rust.
   Bars denote energy consumption, lines denote runtime.
   Errors are reported as the interquartile range.}%
   \label{fig:rust}

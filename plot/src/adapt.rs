@@ -14,7 +14,7 @@ fn plot(benchmark: Benchmark, ymin: f64, ymax: f64) -> Axis {
 
     let xlabel = if matches!(benchmark, Benchmark::Nbody) { "Bodies" } else { "Size" };
     let mut ax = TimeSeries::<Record, usize>::new(xlabel, "Threads")
-        .series(&df, |r| r.threads as f64, "Threads", "colorblind0")
+        .series(&df, |r| r.threads, "Threads", "colorblind0")
         .build_axis()
         .line(Cs::Axis(250.0, ymin), Cs::Axis(250.0, ymax), None)
         .line(Cs::Axis(500.0, ymin), Cs::Axis(500.0, ymax), None);
@@ -66,8 +66,8 @@ fn matmul() {
 
 fn rust() {
     let ax = plot(Benchmark::Rust, 0.0, 17.0)
-        .line(Cs::Axis(0.0, 16.0), Cs::Axis(250.0, 16.0), "colorblind1".into())
-        .line(Cs::Axis(250.0, 8.0), Cs::Axis(750.0, 8.0), "colorblind1".into());
+        .line(Cs::Axis(0.0, 16.0), Cs::Axis(500.0, 16.0), "colorblind1".into())
+        .line(Cs::Axis(500.0, 8.0), Cs::Axis(750.0, 8.0), "colorblind1".into());
     let tikz = TikzPicture::from_axis(ax);
     tikz.write("../paper/fig_adapt_rust.tex").unwrap();
 }
