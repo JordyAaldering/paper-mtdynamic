@@ -28,8 +28,8 @@ int main()
     N = String::toi(CommandLine::argv(1));
     #endif
 
-    a = { [i,j] -> tod(i) | [i,j] < [N,N] };
-    b = { [i,j] -> tod(j) | [i,j] < [N,N] };
+    a = { [i,j] -> _tod_S_(i) | [i,j] < [N,N] };
+    b = { [i,j] -> _tod_S_(j) | [i,j] < [N,N] };
 
     for (i = 0; _lt_SxS_(i, 250); i = _add_SxS_(i, 1)) {
         rapl = Rapl::raplStart(0);

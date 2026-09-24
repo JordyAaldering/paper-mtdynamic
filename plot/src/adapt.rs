@@ -13,7 +13,7 @@ fn plot(benchmark: Benchmark, ymin: f64, ymax: f64) -> Axis {
     let n = df.len();
 
     let xlabel = if matches!(benchmark, Benchmark::Nbody) { "Bodies" } else { "Size" };
-    let mut ax = TimeSeries::new(xlabel, "Threads")
+    let mut ax = TimeSeries::<Record, usize>::new(xlabel, "Threads")
         .series(&df, |r| r.threads as f64, "Threads", "colorblind0")
         .build_axis()
         .line(Cs::Axis(250.0, ymin), Cs::Axis(250.0, ymax), None)
@@ -34,6 +34,7 @@ fn plot(benchmark: Benchmark, ymin: f64, ymax: f64) -> Axis {
         }
     }).collect::<Vec<_>>();
     ax.style.xtick_labels = Some(sizes.into());
+
     ax
 }
 
